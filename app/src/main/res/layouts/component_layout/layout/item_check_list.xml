@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="wrap_content" android:orientation="horizontal"
+    android:paddingBottom="@dimen/marginBetweenField"
+    android:paddingTop="@dimen/marginBetweenField">
+    <CheckBox
+        android:id="@+id/checkbox"
+        android:layout_weight="1"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/textSize_Field"
+        android:textAlignment="inherit"
+        android:ellipsize="marquee"
+        android:layout_gravity="center_vertical"
+        android:singleLine="true"
+        android:text="test1" />
+
+    <Button
+        android:id="@+id/editButton"
+        android:background="@drawable/selector_edit_button"
+        android:layout_width="28dp"
+        android:layout_height="28dp"
+        android:layout_marginRight="14dp"
+        android:layout_gravity="center_vertical"/>
+    <Button
+        android:id="@+id/deleteButton"
+        android:background="@drawable/selector_delete_button"
+        android:layout_width="28dp"
+        android:layout_height="28dp"
+        android:layout_gravity="center_vertical"
+        android:layout_marginRight="7dp"/>
+</LinearLayout>

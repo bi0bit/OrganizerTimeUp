@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <data>
+        <variable
+            name="task"
+            type="AssambleClassManagmentApp.AbsTask"/>
+    </data>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <include layout="@layout/viewer_header_standart_task"
+            app:task ="@{task}"/>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/startDateDaily"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:text="22.22.22"
+                android:layout_marginTop="7dp"
+                android:layout_marginBottom="5dp"/>
+            <TextView
+                android:id="@+id/endDateDaily"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@id/startDateDaily"
+                android:layout_below="@id/startDateDaily"
+                android:text="22.22.22"
+                android:layout_marginBottom="7dp"/>
+            <TextView
+                android:layout_toLeftOf="@id/startDateDaily"
+                android:layout_marginRight="4dp"
+                android:layout_alignBaseline="@id/startDateDaily"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Начало:"/>
+            <TextView
+                android:layout_marginRight="4dp"
+                android:layout_toLeftOf="@id/endDateDaily"
+                android:layout_alignBaseline="@id/endDateDaily"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Конец:"/>
+        </RelativeLayout>
+
+    </LinearLayout>
+</layout>

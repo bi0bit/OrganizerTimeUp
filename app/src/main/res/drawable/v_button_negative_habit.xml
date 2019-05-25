@@ -1,0 +1,5 @@
+<vector android:height="24dp" android:viewportHeight="5700"
+    android:viewportWidth="5700" android:width="24dp" xmlns:android="http://schemas.android.com/apk/res/android">
+    <path android:fillColor="@color/colorTypeHabitButton_Negativy" android:pathData="M82,2850c0,-1522.4 1245.6,-2768 2768,-2768 1522.4,0 2768,1245.6 2768,2768 0,1522.4 -1245.6,2768 -2768,2768 -1522.4,0 -2768,-1245.6 -2768,-2768z"/>
+    <path android:fillColor="#F3FFF6" android:pathData="M1004.67,2850l0,0c0,-261.42 199.91,-461.33 461.33,-461.33l2768,0c246.04,0 461.33,199.91 461.33,461.33l0,0c0,246.04 -199.91,461.33 -461.33,461.33l-2768,0c-261.42,0 -461.33,-199.91 -461.33,-461.33z"/>
+</vector>

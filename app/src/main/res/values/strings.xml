@@ -1,0 +1,67 @@
+<resources>
+    <string name="app_name">TimeUp</string>
+    <string name="app_add">Добавить</string>
+    <string name="app_clear">Очистить</string>
+    <string name="app_select">Выбрать</string>
+    <string name="app_delete">Удалить</string>
+    <string name="dialog_OK">Ок</string>
+    <string name="dialog_CANCEL">Отмена</string>
+    <string name="dialog_BACK">Назад</string>
+    <string name="dialog_YES">Да</string>
+    <string name="dialog_NO">Нет</string>
+    <string name="dialog_CONFIRM">Принять</string>
+    <string name="activityTasks_title">Задачи</string>
+    <string name="fieldName">Название</string>
+    <string name="fieldPriority">Приоритет</string>
+    <string name="fieldDescription">Описание</string>
+    <string name="fieldNotifycation">Уведомления</string>
+    <string name="fieldEnterNameUnderTask">Введите название</string>
+    <string name="fieldCheckList">Чек-лист</string>
+    <string name="fieldTypeDailyTask">Тип ежедневной задачи</string>
+    <string name="fieldDayList">Повторять</string>
+    <string name="fieldSeries">Выполненно вподряд</string>
+    <string name="fieldTypeHabit">Тип превычки</string>
+    <string name="fieldTitle">Заглавие</string>
+    <string name="fieldMessage">Сообщение</string>
+    <string name="fieldTimeNotify">Время уведомления</string>
+    <string name="fieldDateNotify">Дата уведомления</string>
+    <string name="fieldExecute">Выполнять:</string>
+    <string name="typeHabitPositivy">Полезная</string>
+    <string name="typeHabitNegativy">Вредная</string>
+    <string name="askDeleteTask">Вы хотите удалить задачу \"%s\" ?</string>
+    <string name="askClearUnderTask">Вы хотите очистить весь чек-лист ?</string>
+    <string name="askClearNotification">Вы хотите очистить уведомления ?</string>
+    <string name="askDeleteUnderTask">Вы хотите удалить эту подзадачу ?</string>
+    <string name="askDeleteNotification">Вы хотите удалить это уведомление ?</string>
+    <string name="eventAddNewUnderTask">Добавление новой подзадачи</string>
+    <string name="eventAddNewNotification">Добавление нового уведомления</string>
+    <string name="eventDeleteTask">Удаление задачи</string>
+    <string name="eventEditUnderTask">Редоктирование подзадачи</string>
+    <string name="eventEditNotification">Редоктирование уведомления</string>
+    <string name="eventClearUnderTask">Очистка чек-листа</string>
+    <string name="eventClearNotification">Очистка уведомлений</string>
+    <string name="eventDeleteUnderTask">Удаление подзадачи</string>
+    <string name="eventDeleteNotification">Удаление уведомления</string>
+    <string name="eventEmptyField">Обязательное поле не заполненно</string>
+    <string-array name="strings_type_task">
+        <item>Превычки</item>
+        <item>Ежедневные дела</item>
+        <item>Задачи</item>
+    </string-array>
+    <string-array name="strings_priority_type_task">
+        <item>Нормально</item>
+        <item>Важно</item>
+        <item>Очень важно</item>
+    </string-array>
+    <string-array name="strings_type_habit">
+        <item>Вредная</item>
+        <item>Полезная</item>
+        <item>Вредная и полезная</item>
+    </string-array>
+    <string-array name="strings_type_daily">
+        <item>Ежедневно</item>
+        <item>Еженедельно</item>
+        <item>Ежемесячно</item>
+        <item>Ежегодно</item>
+    </string-array>
+</resources>

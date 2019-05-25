@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/colorBackgroundLight">
+
+    <include layout="@layout/app_tools_bar"/>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <LinearLayout
+                android:id="@+id/HeaderViewTask"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingLeft="@dimen/standartPaddingLeftRight"
+                android:paddingRight="@dimen/standartPaddingLeftRight"
+                android:paddingTop="@dimen/standartPaddingTopBottom"
+                android:paddingBottom="@dimen/standartPaddingTopBottom"
+                />
+
+            <include layout="@layout/editor_content_standart_task" />
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

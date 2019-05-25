@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="appTheme" parent="Theme.AppCompat.Light.NoActionBar">
+
+    </style>
+    <style name="appThemeEditorActivity" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="buttonStyle">@style/buttonStyle</item>
+        <item name="spinnerStyle">@style/SpinnerTheme</item>
+        <item name="android:textViewStyle">@style/TitleTextViewTheme</item>
+        <item name="editTextStyle">@style/EditorTextTheme</item>
+        <item name="checkboxStyle">@style/AppCheckBoxStyle</item>
+        <item name="android:checkboxStyle">@style/AppCheckBoxStyle</item>
+    </style>
+    <style name="appThemeDialog" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <item name="android:windowBackground">@drawable/selector_dialog_background</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:buttonStyle">@style/buttonStyle</item>
+    </style>
+    <style name="AppCheckBoxStyle" parent="Widget.AppCompat.CompoundButton.CheckBox">
+        <item name="android:button">@drawable/selector_checkbox</item>
+        <item name="buttonCompat">@drawable/selector_checkbox</item>
+    </style>
+    <style name="ToolBarApp" parent = "Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimary">@color/colorPrimaryBar</item>
+        <item name="colorControlNormal">@color/colorTextPrimaryBar</item>
+        <item name="actionMenuTextColor">@color/colorTextPrimaryBar</item>
+    </style>
+    <style name="PopupToolBar" parent = "Widget.AppCompat.PopupMenu">
+        <item name="android:itemBackground">@color/colorPrimaryBar</item>
+        <item name="android:textColor">@color/colorTextPrimaryBar</item>
+    </style>
+    <style name="titleTextToolBar" parent ="Base.TextAppearance.AppCompat.Title">
+        <item name="android:textSize">@dimen/textSize_ToolBar_Title</item>
+        <item name="android:textColor">@color/colorTextPrimaryBar</item>
+    </style>
+    <style name="SpinnerTheme" parent="Base.Widget.AppCompat.Spinner">
+        <item name="android:background">@drawable/selector_spinner_app</item>
+        <item name="android:textSize">@dimen/textSize_Field</item>
+        <item name="android:textColor">@color/colorTextApp</item>
+        <item name="android:popupBackground">@drawable/selector_popup_app</item>
+    </style>
+    <style name="TitleTextViewTheme">
+        <item name="android:textColor">@color/colorTitleTextApp</item>
+        <item name="android:textSize">@dimen/textSize_FieldTitle</item>
+    </style>
+    <style name="EditorTextTheme" parent="Base.Widget.AppCompat.EditText">
+        <item name="android:background">@drawable/selector_field_edit</item>
+        <item name="android:textColor">@color/colorTextApp</item>
+        <item name="android:textSize">@dimen/textSize_Field</item>
+    </style>
+    <style name="buttonStyle" parent="Base.Widget.AppCompat.Button.Borderless">
+        <item name="android:background">@drawable/selector_button</item>
+        <item name="android:textColor">@drawable/selector_text</item>
+        <item name="android:textSize">@dimen/textSize_Min</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+    <style name="buttonStyleAlternative" parent="Base.Widget.AppCompat.Button.Borderless">
+        <item name="android:background">@drawable/selector_button_alternative</item>
+        <item name="android:textColor">@drawable/selector_text_alternative</item>
+        <item name="android:textSize">@dimen/textSize_Min</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+</resources>

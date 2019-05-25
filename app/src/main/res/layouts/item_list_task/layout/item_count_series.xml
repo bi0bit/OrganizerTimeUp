@@ -1,0 +1,31 @@
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <data>
+    </data>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:paddingLeft="4dp"
+        android:paddingRight="4dp"
+        android:paddingBottom="4dp">
+
+        <ImageView
+            android:id="@+id/imgSerias"
+            app:srcCompat="@drawable/v_counter_icon"
+            android:src="@drawable/v_counter_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true" />
+
+        <TextView
+            android:id="@+id/countSerias"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/imgSerias"
+            android:layout_marginTop="14dp"
+            android:text="0"
+            android:textAlignment="center"
+            android:textSize="12sp" />
+    </RelativeLayout>
+</layout>

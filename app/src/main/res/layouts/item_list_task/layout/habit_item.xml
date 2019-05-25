@@ -1,0 +1,59 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="#EFF5F5"
+    android:paddingLeft="6dp"
+    android:paddingRight="6dp"
+    android:paddingBottom="3dp"
+    android:paddingTop="3dp"
+    android:descendantFocusability="blocksDescendants">
+
+    <include layout="@layout/item_tag_task"
+        android:layout_width="match_parent"
+        android:layout_height="16dp"/>
+
+    <LinearLayout android:id="@+id/layoutItem"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <LinearLayout android:id="@+id/controlItem"
+            android:orientation="horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:paddingLeft="4dp"
+            android:paddingRight="5.9dp"
+            android:paddingTop="7dp">
+            <Button android:id="@+id/AddPossitivyButton"
+                style="@style/Widget.AppCompat.Button.Borderless"
+                android:layout_width="37dp"
+                android:layout_height="37dp"
+                android:layout_marginLeft="4dp"
+                android:background="@drawable/selector_positivy_button"
+                android:visibility="gone"/>
+            <Button android:id="@+id/AddNegativyButton"
+                style="@style/Widget.AppCompat.Button.Borderless"
+                android:layout_width="37dp"
+                android:layout_height="37dp"
+                android:layout_marginLeft="4dp"
+                android:background="@drawable/selector_negativy_button"
+                android:visibility="gone"/>
+        </LinearLayout>
+
+        <LinearLayout android:id="@+id/contentItem"
+            android:orientation="vertical"
+            android:layout_weight="1"
+            android:padding="9dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+        </LinearLayout>
+
+        <include
+            android:layout_width="26dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            layout="@layout/item_count_series"
+            />
+
+    </LinearLayout>
+</LinearLayout>

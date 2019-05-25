@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimaryBar">#6cea8e</color>
+    <color name="colorTextPrimaryBar">#f1fff2</color>
+    <color name="colorTitleTextApp">#949090</color>
+    <color name="colorTextApp">#272525</color>
+    <color name="colorGreenTextApp">#3FA85C</color>
+    <color name="colorLGreenTextApp">#3CF568</color>
+    <color name="colorFieldApp">#3FA85C</color>
+    <color name="colorFocusFieldApp">#3CF568</color>
+    <color name="colorBackgroundLight">#F1F3FD</color>
+    <color name="colorTypePriority_Easy">#4CAF50</color>
+    <color name="colorTypePriority_Normal">#CFD82D</color>
+    <color name="colorTypePriority_Necessary">#F01818</color>
+    <color name="colorTypeHabitButton_Negativy">#E04552</color>
+    <color name="colorTypeHabitButtonFocus_Negativy">#EE0D21</color>
+    <color name="colorTypeHabitButton_Positivy">#3FA85C</color>
+    <color name="colorTypeHabitButtonFocus_Positivy">#11C941</color>
+</resources>

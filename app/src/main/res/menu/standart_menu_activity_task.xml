@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item app:showAsAction="always"
+          app:actionViewClass="android.widget.Spinner"
+          android:title=""
+          android:id="@+id/spinnerTypeTask" />
+
+    <item
+        app:showAsAction="never"
+        android:title="Главная"/>
+    <item
+        app:showAsAction="never"
+        android:title="Создать тэг"/>
+    <item
+        app:showAsAction="never"
+        android:title="Только действительные"
+        android:checkable="true"/>
+    <item
+        app:showAsAction="never"
+        android:title="Календарь"/>
+    <item
+        app:showAsAction="never"
+        android:title="Настройки"/>
+    <item
+        app:showAsAction="ifRoom"
+        android:title="Сортировать по..."/>
+    <item app:showAsAction="ifRoom"
+        android:title="Тэги..." />
+    <item
+        app:showAsAction="ifRoom"
+        android:title="Сокращенный режим"
+        android:checkable="true"/>
+</menu>

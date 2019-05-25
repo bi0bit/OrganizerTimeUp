@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:ignore="ContentDescription">
+    <data>
+        <import type="android.view.View" />
+        <variable
+            name="task"
+            type="AssambleClassManagmentApp.Habit"/>
+    </data>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <include layout="@layout/viewer_header_standart_task"
+            app:task ="@{task}"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Тип превычки"/>
+        <RelativeLayout android:id="@+id/typeHabit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_alignRight="@+id/centerPoint"
+                android:paddingLeft="14dp"
+                android:paddingRight="14dp"
+                android:visibility="@{task.typeHabitInt &gt;= 0 ? View.VISIBLE : View.GONE}">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/typeHabitPositivy"
+                    android:textSize="@dimen/textSize_Min"
+                    android:layout_marginBottom="5dp" />
+                <Button android:id="@+id/possitivyType"
+                    android:layout_width="38dp"
+                    android:layout_height="38dp"
+                    android:layout_gravity="center_horizontal"
+                    android:background="@drawable/selector_positivy_button" />
+            </LinearLayout>
+            <TextView
+                android:id="@+id/centerPoint"
+                android:text=""
+                android:textSize="@dimen/textSize_Min"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_centerVertical="true"
+                android:layout_centerHorizontal="true"/>
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingLeft="14dp"
+                android:paddingRight="14dp"
+                android:layout_alignLeft="@id/centerPoint"
+                android:visibility="@{task.typeHabitInt &lt;= 0 ? View.VISIBLE : View.GONE}">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/typeHabitNegativy"
+                    android:textSize="@dimen/textSize_Min"
+                    android:layout_marginBottom="5dp"/>
+                <Button
+                    android:id="@+id/negativyType"
+                    android:layout_width="38dp"
+                    android:layout_height="38dp"
+                    android:layout_gravity="center_horizontal"
+                    android:background="@drawable/selector_negativy_button" />
+            </LinearLayout>
+
+        </RelativeLayout>
+    </LinearLayout>
+</layout>

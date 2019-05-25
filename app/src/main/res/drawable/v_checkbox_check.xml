@@ -1,0 +1,14 @@
+<vector android:height="29dp" android:viewportHeight="22.1"
+    android:viewportWidth="22.1" android:width="29dp" xmlns:android="http://schemas.android.com/apk/res/android">
+    <path
+        android:name="block"
+        android:fillColor="@android:color/transparent"
+        android:pathData="M14.7,19.7H3.6c-1.2,0 -2.1,-1 -2.1,-2.1V6.5c0,-1.2 1,-2.1 2.1,-2.1h11.1c1.2,0 2.1,1 2.1,2.1v11.1C16.8,18.7 15.8,19.7 14.7,19.7z"
+        android:strokeColor="@color/colorFieldApp" android:strokeWidth="1.0215"/>
+    <path
+        android:name="tick"
+        android:fillColor="@android:color/transparent"
+        android:pathData="M20.2,3.2L9.8,17.3L4.7,9.5"
+        android:strokeColor="@color/colorFocusFieldApp" android:strokeLineCap="round"
+        android:strokeLineJoin="round" android:strokeWidth="2.0878" android:trimPathEnd="1"/>
+</vector>

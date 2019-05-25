@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<data>
+
+    <import type="android.text.TextUtils" />
+    <import type="android.view.View" />
+    <import type="android.widget.Spinner"/>
+    <import type="android.widget.EditText"/>
+    <variable
+        name="task"
+        type="AssambleClassManagmentApp.AbsTask" />
+</data>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <EditText
+            android:id="@+id/viewNameTask"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentLeft="true"
+            android:layout_marginTop="@dimen/marginRowField"
+            android:layout_marginBottom="@dimen/marginRowField"
+            android:layout_toLeftOf="@id/spinnerTypePriority"
+            android:maxLength="35"
+            android:ellipsize="end"
+            android:hint="@string/fieldName"
+            android:singleLine="true"
+            android:text="@={task.name}" />
+
+        <Spinner
+            android:id="@+id/spinnerTypePriority"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/marginBetweenField"
+            android:layout_marginTop="@dimen/marginRowField"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:onItemSelected="@{task::onItemSelectedPriority}"
+            android:visibility="@{(task.TYPE.ordinal == 0)? View.GONE : View.VISIBLE}"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignStart="@id/viewNameTask"
+            android:layout_alignLeft="@id/viewNameTask"
+            android:text="@string/fieldName" />
+
+
+   <!--     <Spinner
+            android:id="@+id/spinnerTypePriority"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/marginBetweenField"
+            android:layout_marginTop="@dimen/marginRowField"
+            android:layout_toEndOf="@id/viewNameTask"
+            android:layout_toRightOf="@id/viewNameTask"
+            android:onItemSelected="@{task::onItemSelectedPriority}"/>-->
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignStart="@id/spinnerTypePriority"
+            android:layout_alignLeft="@id/spinnerTypePriority"
+            android:text="@string/fieldPriority"
+            android:visibility="@{(task.TYPE.ordinal == 0)? View.GONE : View.VISIBLE}" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@id/viewDescriptionTask"
+            android:layout_alignLeft="@id/viewNameTask"
+            android:layout_marginBottom="3dp"
+            android:text="@string/fieldDescription" />
+
+        <EditText
+            android:id="@+id/viewDescriptionTask"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/viewNameTask"
+            android:layout_alignStart="@id/viewNameTask"
+            android:layout_alignLeft="@id/viewNameTask"
+            android:layout_marginBottom="@dimen/marginRowField"
+            android:gravity="top|left"
+            android:hint="@string/fieldDescription"
+            android:inputType="textMultiLine"
+            android:lines="5"
+            android:text='@={task.description}' />
+
+    </RelativeLayout>
+</layout>

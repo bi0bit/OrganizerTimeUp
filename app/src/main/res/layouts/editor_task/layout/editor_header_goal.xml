@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:ignore="ContentDescription">
+    <data>
+        <variable
+            name="task"
+            type="AssambleClassManagmentApp.Goal"/>
+    </data>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <include layout="@layout/editor_header_standart_task"
+            app:task ="@{task}"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="7dp"
+                android:text="Начало:"/>
+            <TextView
+                android:id="@+id/textStartDateDaily"
+                android:layout_weight="3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <Button
+                android:id="@+id/selectStartDate"
+                android:layout_height="34dp"
+                android:layout_width="wrap_content"
+                android:text="@string/app_select"
+                android:textSize="@dimen/textSize_Min"
+                android:onClick="@{task::onClickSelectStartDate}"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Выполнить до:"
+                android:layout_marginRight="7dp"/>
+            <TextView
+                android:layout_weight="3"
+                android:id="@+id/textEndDateDaily"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <Button
+                android:id="@+id/selectEndDate"
+                android:text="@string/app_select"
+                android:layout_height="34dp"
+                android:layout_width="wrap_content"
+                android:textSize="@dimen/textSize_Min"
+                android:onClick="@{task::onClickSelectEndDate}"/>
+        </LinearLayout>
+
+    </LinearLayout>
+</layout>

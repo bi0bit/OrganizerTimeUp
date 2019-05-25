@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:ignore="ContentDescription">
+    <data>
+        <import type="android.view.View"/>
+        <variable
+            name="task"
+            type="AssambleClassManagmentApp.Habit"/>
+    </data>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <include layout="@layout/editor_header_standart_task"
+            app:task ="@{task}"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Тип превычки"/>
+        <Spinner
+            android:id="@+id/spinnerTypeHabit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onItemSelected="@{task::onItemSelectedTypeHabit}"/>
+    </LinearLayout>
+</layout>
