@@ -6,8 +6,8 @@
     android:background="#EFF5F5"
     android:paddingLeft="6dp"
     android:paddingRight="6dp"
-    android:paddingBottom="3dp"
-    android:paddingTop="3dp"
+    android:paddingBottom="6dp"
+    android:paddingTop="4dp"
     android:descendantFocusability="blocksDescendants">
 
     <include layout="@layout/item_tag_task"
@@ -18,7 +18,8 @@
         android:id="@id/layoutItem"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:layout_marginBottom="@dimen/marginBetweenField">
 
         <LinearLayout
             android:id="@id/controlItem"

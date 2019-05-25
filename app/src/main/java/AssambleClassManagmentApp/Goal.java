@@ -32,6 +32,8 @@ public class Goal  extends AbsTask{
     private long dateStart;
     public Goal(int id) {
         super(id, Type_Task.GOAL);
+        dateStart = System.currentTimeMillis();
+        dateDeadLine = System.currentTimeMillis();
     }
 
     static{
@@ -41,6 +43,8 @@ public class Goal  extends AbsTask{
 
     protected Goal(Parcel in) {
         super(in,Type_Task.GOAL);
+        setStartDate(in.readLong());
+        setEndDate(in.readLong());
     }
 
     public static final Creator<Goal> CREATOR = new Creator<Goal>() {
@@ -59,12 +63,24 @@ public class Goal  extends AbsTask{
         return dateDeadLine;
     }
 
+    public String getEndDate(String stringPattern) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat(stringPattern);
+        Date date = new Date(getEndDate());
+        return dateFormat.format(date);
+    }
+
     public void setEndDate(long dateDeadLine) {
         this.dateDeadLine = dateDeadLine;
     }
 
     public long getStartDate() {
         return dateStart;
+    }
+
+    public String getStartDate(String stringPattern) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat(stringPattern);
+        Date date = new Date(getStartDate());
+        return dateFormat.format(date);
     }
 
     public void setStartDate(long dateStart) {
@@ -74,6 +90,10 @@ public class Goal  extends AbsTask{
     public static AbsTask initTaskByCursor(Cursor cur){
         Goal goal = new Goal(0);
         AbsTask.initTaskByCursor(cur,goal);
+        long startDate = cur.getLong(cur.getColumnIndex(ManagerDB.GOALSTARTDATE_COLUMNNAME));
+        goal.setStartDate(startDate);
+        long endDate = cur.getLong(cur.getColumnIndex(ManagerDB.GOALENDDATE_COLUMNNAME));
+        goal.setEndDate(endDate);
         return goal;
     }
 
@@ -107,6 +127,8 @@ public class Goal  extends AbsTask{
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         writeInToParcel(dest,flags);
+        dest.writeLong(getStartDate());
+        dest.writeLong(getEndDate());
     }
 
     @Override
@@ -135,6 +157,7 @@ public class Goal  extends AbsTask{
                     TextView textView = rootView.findViewById(R.id.textStartDateDaily);
                     SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy", Locale.getDefault());
                     textView.setText(format.format(cldStart.getTime()));
+                    setStartDate(cldStart.getTimeInMillis());
                 },
                 cldStart.get(Calendar.YEAR),
                 cldStart.get(Calendar.MONTH),
@@ -152,6 +175,7 @@ public class Goal  extends AbsTask{
                     TextView textView = rootView.findViewById(R.id.textEndDateDaily);
                     SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy", Locale.getDefault());
                     textView.setText(format.format(cldEnd.getTime()));
+                    setEndDate(cldEnd.getTimeInMillis());
                 },
                 cldEnd.get(Calendar.YEAR),
                 cldEnd.get(Calendar.MONTH),
