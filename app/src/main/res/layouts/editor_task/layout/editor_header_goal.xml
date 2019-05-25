@@ -23,7 +23,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="7dp"
-                android:text="Начало:"/>
+                android:text="@string/fieldStart"/>
             <TextView
                 android:id="@+id/textStartDateDaily"
                 android:layout_weight="3"
@@ -45,7 +45,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Выполнить до:"
+                android:text="@string/fieldEnd"
                 android:layout_marginRight="7dp"/>
             <TextView
                 android:layout_weight="3"

@@ -25,7 +25,9 @@
     <string name="fieldMessage">Сообщение</string>
     <string name="fieldTimeNotify">Время уведомления</string>
     <string name="fieldDateNotify">Дата уведомления</string>
-    <string name="fieldExecute">Выполнять:</string>
+    <string name="fieldExecute">Выполнить до:</string>
+    <string name="fieldStart">Начало:</string>
+    <string name="fieldEnd">Конец:</string>
     <string name="typeHabitPositivy">Полезная</string>
     <string name="typeHabitNegativy">Вредная</string>
     <string name="askDeleteTask">Вы хотите удалить задачу \"%s\" ?</string>

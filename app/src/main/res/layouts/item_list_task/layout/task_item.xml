@@ -49,5 +49,5 @@
         android:id="@+id/dateDeadLineTask"
         android:layout_width="match_parent"
         android:layout_height="15dp"
-        android:text="Выполнить до 222222222222" />
+        android:text="@string/fieldExecute" />
 </LinearLayout>

@@ -3,6 +3,12 @@
     <style name="appTheme" parent="Theme.AppCompat.Light.NoActionBar">
 
     </style>
+
+    <style name="appThemeTaskListActivity" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="checkboxStyle">@style/AppCheckBoxStyle</item>
+        <item name="android:checkboxStyle">@style/AppCheckBoxStyle</item>
+    </style>
+
     <style name="appThemeEditorActivity" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="buttonStyle">@style/buttonStyle</item>
         <item name="spinnerStyle">@style/SpinnerTheme</item>
