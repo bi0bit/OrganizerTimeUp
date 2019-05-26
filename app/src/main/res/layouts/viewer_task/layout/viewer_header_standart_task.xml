@@ -27,7 +27,7 @@
                 android:layout_marginRight="17dp"
                 android:layout_marginLeft="17dp"
                 android:text="@{task.name}"
-                android:textColor="@color/colorTextApp"
+                android:textColor="@color/TextApp"
                 android:textSize="@dimen/textSize_large"
                 android:textAlignment="inherit"
                 android:textStyle="bold"
@@ -52,7 +52,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="28dp"
-                    android:textColor="@color/colorTextApp"
+                    android:textColor="@color/TextApp"
                     android:layout_centerInParent="true"
                     android:text="@{@stringArray/strings_priority_type_task[task.getPRIORITY.ordinal].toString}"
                     android:textSize="@dimen/textSize_Field"
@@ -78,7 +78,7 @@
             android:layout_alignLeft="@id/blk1"
             android:layout_below="@id/blk1"
             android:text="@{task.description}"
-            android:textColor="@color/colorTextApp"
+            android:textColor="@color/TextApp"
             android:visibility="@{TextUtils.isEmpty(task.description)? View.GONE : View.VISIBLE}"/>
     </RelativeLayout>
 </layout>

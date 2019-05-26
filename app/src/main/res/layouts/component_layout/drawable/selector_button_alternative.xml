@@ -3,7 +3,7 @@
     <item android:state_pressed="false">
         <shape xmlns:android="http://schemas.android.com/apk/res/android"
             android:shape="rectangle">
-            <solid android:color="@color/colorFieldApp" android:width="@dimen/borderWeight"/>
+            <solid android:color="@color/FieldApp" android:width="@dimen/borderWeight"/>
             <corners
                 android:radius="6dp" />
             <padding android:bottom="3dp"
@@ -15,7 +15,7 @@
     <item android:state_pressed="true">
         <shape xmlns:android="http://schemas.android.com/apk/res/android"
             android:shape="rectangle">
-            <stroke android:color="@color/colorFocusFieldApp" android:width="@dimen/borderWeight"/>
+            <stroke android:color="@color/FocusFieldApp" android:width="@dimen/borderWeight"/>
             <corners
                 android:radius="6dp" />
             <padding android:bottom="3dp"

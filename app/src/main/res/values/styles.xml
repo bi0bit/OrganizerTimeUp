@@ -28,31 +28,31 @@
         <item name="buttonCompat">@drawable/selector_checkbox</item>
     </style>
     <style name="ToolBarApp" parent = "Theme.AppCompat.Light.NoActionBar">
-        <item name="colorPrimary">@color/colorPrimaryBar</item>
-        <item name="colorControlNormal">@color/colorTextPrimaryBar</item>
-        <item name="actionMenuTextColor">@color/colorTextPrimaryBar</item>
+        <item name="colorPrimary">@color/PrimaryBar</item>
+        <item name="colorControlNormal">@color/TextPrimaryBar</item>
+        <item name="actionMenuTextColor">@color/TextPrimaryBar</item>
     </style>
     <style name="PopupToolBar" parent = "Widget.AppCompat.PopupMenu">
-        <item name="android:itemBackground">@color/colorPrimaryBar</item>
-        <item name="android:textColor">@color/colorTextPrimaryBar</item>
+        <item name="android:itemBackground">@color/PrimaryBar</item>
+        <item name="android:textColor">@color/TextPrimaryBar</item>
     </style>
     <style name="titleTextToolBar" parent ="Base.TextAppearance.AppCompat.Title">
         <item name="android:textSize">@dimen/textSize_ToolBar_Title</item>
-        <item name="android:textColor">@color/colorTextPrimaryBar</item>
+        <item name="android:textColor">@color/TextPrimaryBar</item>
     </style>
     <style name="SpinnerTheme" parent="Base.Widget.AppCompat.Spinner">
         <item name="android:background">@drawable/selector_spinner_app</item>
         <item name="android:textSize">@dimen/textSize_Field</item>
-        <item name="android:textColor">@color/colorTextApp</item>
+        <item name="android:textColor">@color/TextApp</item>
         <item name="android:popupBackground">@drawable/selector_popup_app</item>
     </style>
     <style name="TitleTextViewTheme">
-        <item name="android:textColor">@color/colorTitleTextApp</item>
+        <item name="android:textColor">@color/TitleTextApp</item>
         <item name="android:textSize">@dimen/textSize_FieldTitle</item>
     </style>
     <style name="EditorTextTheme" parent="Base.Widget.AppCompat.EditText">
         <item name="android:background">@drawable/selector_field_edit</item>
-        <item name="android:textColor">@color/colorTextApp</item>
+        <item name="android:textColor">@color/TextApp</item>
         <item name="android:textSize">@dimen/textSize_Field</item>
     </style>
     <style name="buttonStyle" parent="Base.Widget.AppCompat.Button.Borderless">

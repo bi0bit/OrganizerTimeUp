@@ -2,6 +2,7 @@ package appmanagmenttime.ilagoproject.com.managertimeapplicationtimeup;
 
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -19,6 +20,7 @@ import androidx.databinding.ViewDataBinding;
 public class ActivityViewTask extends AppCompatActivity {
 
     AbsTask task;
+    ViewDataBinding binding;
 
     static{
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
@@ -28,7 +30,7 @@ public class ActivityViewTask extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         task = getIntent().getParcelableExtra("object");
-        ViewDataBinding binding = task.createBindingViewerHeader(this);
+        binding = task.createBindingViewerHeader(this);
         setContentView(R.layout.activity_view_task);
         LinearLayout l = findViewById(R.id.HeaderViewTask);
         l.addView(binding.getRoot());
@@ -44,9 +46,19 @@ public class ActivityViewTask extends AppCompatActivity {
     }
 
     @Override
+    protected void onResume() {
+        binding.invalidateAll();
+        super.onResume();
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
             case R.id.editButton:
+                Intent intent = new Intent(ActivityViewTask.this, ActivityViewEditorTask.class);
+                intent.putExtra("update",true);
+                intent.putExtra("object",task);
+                startActivity(intent);
                 return true;
             case R.id.deleteButton:
                 AlertDialog.Builder dialog = QDialog.getBuilder()

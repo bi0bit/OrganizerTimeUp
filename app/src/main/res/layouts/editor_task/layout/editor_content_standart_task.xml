@@ -12,7 +12,7 @@
         android:text="@string/fieldCheckList" />
 
     <ListView
-        android:divider="@color/colorFocusFieldApp"
+        android:divider="@color/FocusFieldApp"
         android:dividerHeight="1dp"
         android:id="@+id/underTaskList"
         android:layout_width="match_parent"
@@ -24,6 +24,7 @@
         android:id="@+id/panelControlCheckList"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/marginBetweenField"
         android:orientation="horizontal">
 
         <Button
@@ -42,10 +43,33 @@
             android:text="@string/app_clear" />
     </LinearLayout>
 
-    <include
-        layout="@layout/item_count_series"
+    <LinearLayout
+        android:id="@+id/panelCounter"
         android:layout_width="match_parent"
-        android:layout_height="40dp" />
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/marginBetweenField"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/addCounterButton"
+            android:layout_width="28dp"
+            android:layout_height="28dp"
+            android:layout_gravity="center_vertical"
+            android:background="@drawable/selector_button_positive_flat"/>
+        <include
+            layout="@layout/item_count_series"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <Button
+            android:id="@+id/subCounterButton"
+            android:layout_width="28dp"
+            android:layout_height="28dp"
+            android:layout_gravity="center_vertical"
+            android:background="@drawable/selector_button_negativy_flat"/>
+
+    </LinearLayout>
 
     <TextView
         android:layout_width="match_parent"
@@ -54,7 +78,7 @@
 
     <ListView
         android:id="@+id/notifyList"
-        android:divider="@color/colorFocusFieldApp"
+        android:divider="@color/FocusFieldApp"
         android:dividerHeight="1dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -64,6 +88,7 @@
         android:id="@+id/panelNotify"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/marginBetweenField"
         android:orientation="horizontal">
 
         <Button

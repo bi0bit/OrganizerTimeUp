@@ -16,7 +16,8 @@
     <LinearLayout android:id="@+id/layoutItem"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:paddingRight="6.7dp">
         <LinearLayout android:id="@+id/controlItem"
             android:orientation="horizontal"
             android:layout_width="wrap_content"

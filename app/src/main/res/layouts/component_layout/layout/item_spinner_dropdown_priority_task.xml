@@ -18,7 +18,7 @@
         android:singleLine="true"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textColor="@color/colorTextApp"
+        android:textColor="@color/TextApp"
         android:textSize="@dimen/textSize_Field"
         android:ellipsize="marquee"/>
 </LinearLayout>

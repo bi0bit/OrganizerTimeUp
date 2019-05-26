@@ -142,6 +142,7 @@ public class Goal  extends AbsTask{
     @Override
     public void updateInDb() {
         SQLiteDatabase dbLite = ManagerDB.getManagerDB(null).getDbWriteble();
+        super.updateInDb();
         dbLite.execSQL(ManagerDB.UPDATE_STRING_GOAL, new String[]{
                 String.valueOf(getStartDate()), String.valueOf(getEndDate()), String.valueOf(getId())
         });
@@ -230,6 +231,9 @@ public class Goal  extends AbsTask{
         @Override
         public void setDateItem(View view) {
             super.setDateItem(view);
+            TextView dateView = view.findViewById(R.id.dateDeadLineTask);
+            String date = dateView.getText() + " " + getObject().getEndDate("dd.MM.yyyy");
+            dateView.setText(date);
         }
 
         @Override
@@ -245,6 +249,8 @@ public class Goal  extends AbsTask{
         @Override
         public void setEditorTask(View view) {
             super.setEditorTask(view);
+            View panelCounter = view.findViewById(R.id.panelCounter);
+            panelCounter.setVisibility(View.GONE);
         }
     }
 }

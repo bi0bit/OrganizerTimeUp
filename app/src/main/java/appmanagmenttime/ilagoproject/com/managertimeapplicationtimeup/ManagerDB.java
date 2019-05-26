@@ -443,11 +443,17 @@ public final class ManagerDB {
 
     public void notifyTagHandler(int flag){ handlerUpdateTagInDb.notifyChangeTag(flag);}
 
-    public void incrementTaskCountSeriesDb(int idTask, int increment){
+    public void incrementTaskCountSeriesDb(final int idTask, final int increment){
         Cursor c = dbR.rawQuery(SEL_STRING_GETTASKBYID,new String[]{String.valueOf(idTask)});
         c.moveToFirst();
         int i = c.getInt(c.getColumnIndex(TASKCOUNT_COLUMNNAME));
         dbW.execSQL(UPDATE_STRING_COUNTSERIES, new String[]{String.valueOf(i+increment), String.valueOf(idTask)});
+    }
+
+    public void updateTaskCountSeriesDb(final int idTask, final int count){
+        Cursor c = dbR.rawQuery(SEL_STRING_GETTASKBYID,new String[]{String.valueOf(idTask)});
+        c.moveToFirst();
+        dbW.execSQL(UPDATE_STRING_COUNTSERIES, new String[]{String.valueOf(count), String.valueOf(idTask)});
     }
 
     public interface HandlerUpdateTaskInDb {

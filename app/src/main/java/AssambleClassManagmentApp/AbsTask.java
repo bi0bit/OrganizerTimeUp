@@ -222,6 +222,7 @@ public abstract class AbsTask implements Parcelable {
         dbLite.execSQL(ManagerDB.INSERT_STRING_TASK, new String[]{getName(),getDescription(),String.valueOf(getPRIORITY().ordinal())});
         initIdTask(dbLite);
         TaskNoInitInDB = false;
+        ManagerDB.getManagerDB(null).updateTaskCountSeriesDb(getId(), getCountSerias());
     }
 
     /**
@@ -517,6 +518,9 @@ public abstract class AbsTask implements Parcelable {
         public void setEditorTask(View view){
             AbsTask task = getObject();
 
+            TextView countSeries = view.findViewById(R.id.countSerias);
+            countSeries.setText(String.valueOf(task.getCountSerias()));
+
             Spinner spinner = view.findViewById(R.id.spinnerTypePriority);
             ArrayAdapter adapter = new AdapterArrayPriorityType(view.getContext(),
                     Arrays.asList(view.getContext().getResources().getStringArray(R.array.strings_priority_type_task)));
@@ -530,6 +534,18 @@ public abstract class AbsTask implements Parcelable {
             buttonAddCheckBox.setOnClickListener((v)-> task.addCheck(view,listViewUnderTask,adapterCheckList));
             Button buttonClearCheckBox = view.findViewById(R.id.clearCheckTask);
             buttonClearCheckBox.setOnClickListener((v)-> task.clearCheck(view,listViewUnderTask,adapterCheckList));
+
+            Button buttonAddCount = view.findViewById(R.id.addCounterButton);
+            buttonAddCount.setOnClickListener(v ->{
+                task.setCountSerias(task.getCountSerias() + 1);
+                countSeries.setText(String.valueOf(task.getCountSerias()));
+                    });
+
+            Button buttonSubCount = view.findViewById(R.id.subCounterButton);
+            buttonSubCount.setOnClickListener(v ->{
+                task.setCountSerias(task.getCountSerias() - 1);
+                countSeries.setText(String.valueOf(task.getCountSerias()));
+            });
 
             ListView listViewNotify = view.findViewById(R.id.notifyList);
             NotifyAdapterList adapterListNotification = new NotifyAdapterList(view.getContext(), task.getListNotify());

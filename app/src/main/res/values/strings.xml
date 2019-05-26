@@ -23,8 +23,8 @@
     <string name="fieldTypeHabit">Тип превычки</string>
     <string name="fieldTitle">Заглавие</string>
     <string name="fieldMessage">Сообщение</string>
-    <string name="fieldTimeNotify">Время уведомления</string>
-    <string name="fieldDateNotify">Дата уведомления</string>
+    <string name="fieldTimeNotify">Время</string>
+    <string name="fieldDateNotify">Дата</string>
     <string name="fieldExecute">Выполнить до:</string>
     <string name="fieldStart">Начало:</string>
     <string name="fieldEnd">Конец:</string>

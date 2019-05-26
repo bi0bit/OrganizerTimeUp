@@ -2,7 +2,7 @@
 <TextView xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@android:id/text1"
     style="?android:attr/spinnerItemStyle"
-    android:textColor="@color/colorTextApp"
+    android:textColor="@color/TextApp"
     android:textSize="@dimen/textSize_ToolBar_Other"
     android:singleLine="true"
     android:layout_width="match_parent"

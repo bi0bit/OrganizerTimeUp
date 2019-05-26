@@ -29,7 +29,7 @@
                 android:id="@+id/textStartDateDaily"
                 android:layout_weight="3"
                 android:text='@{task.getStartDate("dd.MM.yyyy")}'
-                android:textColor="@color/colorTextApp"
+                android:textColor="@color/TextApp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
             <Button
@@ -56,7 +56,7 @@
                 android:id="@+id/textEndDateDaily"
                 android:text='@{task.getStartDate("dd.MM.yyyy")}'
                 android:layout_width="wrap_content"
-                android:textColor="@color/colorTextApp"
+                android:textColor="@color/TextApp"
                 android:layout_height="wrap_content" />
             <Button
                 android:id="@+id/selectEndDate"

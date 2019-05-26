@@ -4,7 +4,7 @@
             <item>
                 <shape xmlns:android="http://schemas.android.com/apk/res/android"
                     android:shape="rectangle">
-                    <stroke android:color="@color/colorFieldApp" android:width="@dimen/borderWeight"/>
+                    <stroke android:color="@color/FieldApp" android:width="@dimen/borderWeight"/>
                     <corners
                         android:radius="6dp" />
                     <padding android:bottom="5dp"

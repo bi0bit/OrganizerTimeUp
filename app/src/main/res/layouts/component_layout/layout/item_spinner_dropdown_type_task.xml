@@ -5,7 +5,7 @@
     android:singleLine="true"
     android:layout_width="match_parent"
     android:layout_height="?attr/dropdownListPreferredItemHeight"
-    android:background="@color/colorPrimaryBar"
-    android:textColor="@color/colorTextPrimaryBar"
+    android:background="@color/PrimaryBar"
+    android:textColor="@color/TextPrimaryBar"
     android:textSize="@dimen/textSize_ToolBar_Other"
     android:ellipsize="marquee"/>

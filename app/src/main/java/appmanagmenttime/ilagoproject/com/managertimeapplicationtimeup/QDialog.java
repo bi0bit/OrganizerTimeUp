@@ -84,7 +84,7 @@ public final class QDialog {
             cancelable = false;
             message = "";
             title = "";
-            color = R.color.colorGreenTextApp;
+            color = R.color.GreenTextApp;
             styleDialog = STANDART_STYLEDIALOG;
             negativeBtn = STANDART_ONCLICK_CANCEL;
             positiveBtn = null;

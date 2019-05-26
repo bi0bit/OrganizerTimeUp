@@ -7,7 +7,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Name_Task"
-        android:textColor="@color/colorTextApp"
+        android:textColor="@color/TextApp"
         android:textAlignment="inherit"
         android:textSize="16sp"
         android:maxLines="2"

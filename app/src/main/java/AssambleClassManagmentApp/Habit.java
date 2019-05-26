@@ -129,6 +129,7 @@ public class Habit extends AbsTask{
     @Override
     public void updateInDb() {
         SQLiteDatabase dbLite = ManagerDB.getManagerDB(null).getDbWriteble();
+        super.updateInDb();
         dbLite.execSQL(ManagerDB.UPDATE_STRING_HABIT, new String[]{
                 String.valueOf(getTypeHabitInt()),String.valueOf(getId())
         });
@@ -154,6 +155,17 @@ public class Habit extends AbsTask{
     public void onItemSelectedTypeHabit(AdapterView<?> parent, View view, int pos, long id){
         int typeHabit = (pos == 0)? -1 : (pos == 1)? 1 : 0;
         Habit.initTypeHabit(typeHabit, getTypeHabit());
+        View btnAddCount = view.getRootView().findViewById(R.id.addCounterButton);
+        View btnSubCount = view.getRootView().findViewById(R.id.subCounterButton);
+        if(typeHabit >= 0)
+            btnAddCount.setVisibility(View.VISIBLE);
+        else
+            btnAddCount.setVisibility(View.GONE);
+
+        if(typeHabit <= 0)
+            btnSubCount.setVisibility(View.VISIBLE);
+        else
+            btnSubCount.setVisibility(View.GONE);
     }
 
     public enum Type_Habit{
