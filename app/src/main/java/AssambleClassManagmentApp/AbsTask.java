@@ -516,7 +516,8 @@ public abstract class AbsTask implements Parcelable {
 
         public void setViewerTask(View view){
             AbsTask task = getObject();
-
+            TextView countSeries = view.findViewById(R.id.countSerias);
+            countSeries.setText(String.valueOf(task.getCountSerias()));
         }
 
 

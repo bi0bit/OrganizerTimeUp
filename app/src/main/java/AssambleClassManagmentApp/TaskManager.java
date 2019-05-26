@@ -53,6 +53,11 @@ public class TaskManager implements ManagerDB.HandlerUpdateTaskInDb {
         }
     }
 
+    public AbsTask getById(int id){
+       AbsTask task = tasks.get(id);
+       return task;
+    }
+
     public void setHandlerUpdateTaskInDb(ManagerDB.HandlerUpdateTaskInDb handlerUpdateTaskInDb) {
         this.handlerUpdateTaskInDb = handlerUpdateTaskInDb;
     }

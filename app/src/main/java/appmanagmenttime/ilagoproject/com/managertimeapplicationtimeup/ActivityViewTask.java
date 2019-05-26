@@ -9,12 +9,18 @@ import android.view.MenuItem;
 import android.widget.LinearLayout;
 
 import AssambleClassManagmentApp.AbsTask;
+import AssambleClassManagmentApp.Daily;
+import AssambleClassManagmentApp.Goal;
+import AssambleClassManagmentApp.Habit;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.Toolbar;
 import androidx.databinding.ViewDataBinding;
+import appmanagmenttime.ilagoproject.com.managertimeapplicationtimeup.databinding.ViewerHeaderDailyBinding;
+import appmanagmenttime.ilagoproject.com.managertimeapplicationtimeup.databinding.ViewerHeaderGoalBinding;
+import appmanagmenttime.ilagoproject.com.managertimeapplicationtimeup.databinding.ViewerHeaderHabitBinding;
 
 
 public class ActivityViewTask extends AppCompatActivity {
@@ -47,7 +53,17 @@ public class ActivityViewTask extends AppCompatActivity {
 
     @Override
     protected void onResume() {
-        binding.invalidateAll();
+        task = MainAppActivity.taskManager.getById(task.getId());
+        if(task instanceof Habit){
+        ((ViewerHeaderHabitBinding)binding).setTask((Habit) task);
+        }
+        else if(task instanceof Daily){
+        ((ViewerHeaderDailyBinding)binding).setTask((Daily)task);
+        }
+        else{
+        ((ViewerHeaderGoalBinding)binding).setTask((Goal) task);
+        }
+        task.setViewerTask(findViewById(android.R.id.content));
         super.onResume();
     }
 

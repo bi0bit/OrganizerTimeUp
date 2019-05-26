@@ -43,6 +43,11 @@
             android:text="@string/app_clear" />
     </LinearLayout>
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/fieldCounter" />
+
     <LinearLayout
         android:id="@+id/panelCounter"
         android:layout_width="match_parent"

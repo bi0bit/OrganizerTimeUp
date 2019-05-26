@@ -26,7 +26,7 @@ public class MainAppActivity extends AppCompatActivity implements ManagerDB.Hand
 
     private AbsTask.Type_Task selectTypeTask;
     ManagerDB dbManager;
-    TaskManager taskManager;
+    static TaskManager taskManager;
     ListView listView;
     TaskAdapterList dailyList;
     TaskAdapterList goalList;

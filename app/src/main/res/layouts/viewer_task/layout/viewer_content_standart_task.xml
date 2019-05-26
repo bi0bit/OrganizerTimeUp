@@ -9,17 +9,25 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Уведомления:"/>
+        android:text="@string/fieldCheckList"/>
     <ListView
-        android:id="@+id/listNotify"
+        android:id="@+id/checkListTask"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Будильники:"/>
+        android:text="@string/fieldCounter" />
+    <include
+        layout="@layout/item_count_series"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/fieldNotifycation"/>
     <ListView
-        android:id="@+id/listAlarm"
+        android:id="@+id/notifyList"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 </LinearLayout>
