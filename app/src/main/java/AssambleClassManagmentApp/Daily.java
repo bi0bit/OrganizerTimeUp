@@ -192,8 +192,6 @@ public class Daily extends AbsTask {
             adapter.setDropDownViewResource(R.layout.item_spinner_dropdown_simple_string);
             Spinner spinner = view.findViewById(R.id.spinnerTypeDaily);
             spinner.setAdapter(adapter);
-            View btnSubCount = view.findViewById(R.id.subCounterButton);
-            btnSubCount.setVisibility(View.GONE);
         }
     }
 }

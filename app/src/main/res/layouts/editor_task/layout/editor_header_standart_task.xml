@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 <data>
 
     <import type="android.text.TextUtils" />
@@ -38,6 +39,7 @@
             android:layout_marginTop="@dimen/marginRowField"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
+            app:selectSpin="@{task.getPriority.ordinal}"
             android:onItemSelected="@{task::onItemSelectedPriority}"
             android:visibility="@{(task.TYPE.ordinal == 0)? View.GONE : View.VISIBLE}"/>
 
@@ -47,17 +49,6 @@
             android:layout_alignStart="@id/viewNameTask"
             android:layout_alignLeft="@id/viewNameTask"
             android:text="@string/fieldName" />
-
-
-   <!--     <Spinner
-            android:id="@+id/spinnerTypePriority"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/marginBetweenField"
-            android:layout_marginTop="@dimen/marginRowField"
-            android:layout_toEndOf="@id/viewNameTask"
-            android:layout_toRightOf="@id/viewNameTask"
-            android:onItemSelected="@{task::onItemSelectedPriority}"/>-->
 
         <TextView
             android:layout_width="match_parent"

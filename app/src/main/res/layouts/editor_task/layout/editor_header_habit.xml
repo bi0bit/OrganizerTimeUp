@@ -23,6 +23,7 @@
             android:id="@+id/spinnerTypeHabit"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            app:selectTypeHabit="@{task.getTypeHabitInt}"
             android:onItemSelected="@{task::onItemSelectedTypeHabit}"/>
     </LinearLayout>
 </layout>

@@ -31,6 +31,7 @@ import java.util.Locale;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
+import androidx.databinding.BindingAdapter;
 import androidx.databinding.ViewDataBinding;
 import appmanagmenttime.ilagoproject.com.managertimeapplicationtimeup.AdapterArrayPriorityType;
 import appmanagmenttime.ilagoproject.com.managertimeapplicationtimeup.CheckListAdapter;
@@ -164,7 +165,7 @@ public abstract class AbsTask implements Parcelable {
         dest.writeByte((byte)(NonLinkedWithDBId ? 1 : 0));
         dest.writeString(getName());
         dest.writeString(getDescription());
-        dest.writeInt(getPRIORITY().ordinal());
+        dest.writeInt(getPriority().ordinal());
         dest.writeSerializable(getTags());
         dest.writeInt(getCountSerias());
         dest.writeList(getListUnderTaskChecked());
@@ -197,7 +198,7 @@ public abstract class AbsTask implements Parcelable {
         this.countSerias = countSerias;
     }
 
-    public Priority_Task getPRIORITY() {
+    public Priority_Task getPriority() {
         return PRIORITY;
     }
 
@@ -219,7 +220,7 @@ public abstract class AbsTask implements Parcelable {
      */
     public void initialTaskInDB() {
         SQLiteDatabase dbLite = ManagerDB.getManagerDB(null).getDbWriteble();
-        dbLite.execSQL(ManagerDB.INSERT_STRING_TASK, new String[]{getName(),getDescription(),String.valueOf(getPRIORITY().ordinal())});
+        dbLite.execSQL(ManagerDB.INSERT_STRING_TASK, new String[]{getName(),getDescription(),String.valueOf(getPriority().ordinal())});
         initIdTask(dbLite);
         TaskNoInitInDB = false;
         ManagerDB.getManagerDB(null).updateTaskCountSeriesDb(getId(), getCountSerias());
@@ -230,7 +231,8 @@ public abstract class AbsTask implements Parcelable {
      */
     public void updateInDb(){
         SQLiteDatabase dbLite = ManagerDB.getManagerDB(null).getDbWriteble();
-        dbLite.execSQL(ManagerDB.UPDATE_STRING_TASK, new String[]{getName(),getDescription(),String.valueOf(getPRIORITY().ordinal()), String.valueOf(getId())});
+        dbLite.execSQL(ManagerDB.UPDATE_STRING_TASK, new String[]{getName(),getDescription(),String.valueOf(getPriority().ordinal()), String.valueOf(getId())});
+        ManagerDB.getManagerDB(null).updateTaskCountSeriesDb(getId(), getCountSerias());
     }
 
     /**
@@ -265,21 +267,14 @@ public abstract class AbsTask implements Parcelable {
         return getBuilderView().getBindingEditorHeader(activity);
     }
 
-    public enum Type_Task {
-        HABIT,
-        DAILY,
-        GOAL
-    }
-
-    public enum Priority_Task {
-        MAX,
-        NORMAL,
-        MIN
-    }
-
     public void onItemSelectedPriority(AdapterView<?> parent, View view, int position, long id){
         Priority_Task priority = Priority_Task.values()[position];
         setPriority(priority);
+    }
+
+    @BindingAdapter({"app:selectSpin"})
+    public static void selectSpin(Spinner spin, int priority){
+        spin.setSelection(priority);
     }
 
     public void addCheck(View view, ListView listView, CheckListAdapter checkListAdapter){
@@ -407,6 +402,18 @@ public abstract class AbsTask implements Parcelable {
                 }));
         AlertDialog.Builder alertDialog = builder.buildDialog(view,QDialog.DIALOG_QUATION);
         alertDialog.show();
+    }
+
+    public enum Type_Task {
+        HABIT,
+        DAILY,
+        GOAL
+    }
+
+    public enum Priority_Task {
+        MIN,
+        NORMAL,
+        MAX
     }
 
 

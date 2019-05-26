@@ -18,6 +18,7 @@ import java.util.Date;
 import java.util.EnumSet;
 import java.util.List;
 
+import androidx.databinding.BindingAdapter;
 import androidx.databinding.DataBindingUtil;
 import androidx.databinding.ViewDataBinding;
 import appmanagmenttime.ilagoproject.com.managertimeapplicationtimeup.ManagerDB;
@@ -166,6 +167,12 @@ public class Habit extends AbsTask{
             btnSubCount.setVisibility(View.VISIBLE);
         else
             btnSubCount.setVisibility(View.GONE);
+    }
+
+    @BindingAdapter({"app:selectTypeHabit"})
+    public static void selectTypeHabit(Spinner spin, int type){
+        int pos = (type==0)? 2 : (type<0)? 0 : 1;
+        spin.setSelection(pos);
     }
 
     public enum Type_Habit{

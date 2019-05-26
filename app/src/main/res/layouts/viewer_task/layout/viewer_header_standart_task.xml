@@ -43,7 +43,7 @@
                     android:layout_width="25dp"
                     android:layout_height="25dp"
                     android:layout_toLeftOf="@id/textPriority"
-                    android:src="@{task.getPRIORITY.ordinal == 0 ? @drawable/rectengle_priority_common : (task.getPRIORITY.ordinal == 1 ? @drawable/rectengle_priority_impotant : @drawable/rectengle_priority_necessary)}"
+                    android:src="@{task.getPriority.ordinal == 0 ? @drawable/rectengle_priority_common : (task.getPriority.ordinal == 1 ? @drawable/rectengle_priority_impotant : @drawable/rectengle_priority_necessary)}"
                     android:layout_marginLeft="24pt"
                     android:layout_marginRight="12dp" />
 
@@ -54,7 +54,7 @@
                     android:layout_marginRight="28dp"
                     android:textColor="@color/TextApp"
                     android:layout_centerInParent="true"
-                    android:text="@{@stringArray/strings_priority_type_task[task.getPRIORITY.ordinal].toString}"
+                    android:text="@{@stringArray/strings_priority_type_task[task.getPriority.ordinal].toString}"
                     android:textSize="@dimen/textSize_Field"
                     android:layout_gravity="center_vertical|center_horizontal" />
             </RelativeLayout>
