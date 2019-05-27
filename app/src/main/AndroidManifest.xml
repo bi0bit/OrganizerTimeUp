@@ -8,9 +8,8 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/appTheme">
-        <activity android:name=".MainAppActivity"
-            android:theme="@style/appThemeTaskListActivity">
+        android:theme="@style/appActivityTheme">
+        <activity android:name=".MainAppActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>

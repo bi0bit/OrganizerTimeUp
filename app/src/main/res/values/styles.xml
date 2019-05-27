@@ -1,21 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <style name="appTheme" parent="Theme.AppCompat.Light.NoActionBar">
-
-    </style>
-
-    <style name="appThemeTaskListActivity" parent="Theme.AppCompat.Light.NoActionBar">
-        <item name="checkboxStyle">@style/AppCheckBoxStyle</item>
-        <item name="android:checkboxStyle">@style/AppCheckBoxStyle</item>
-    </style>
-
-    <style name="appThemeEditorActivity" parent="Theme.AppCompat.Light.NoActionBar">
-        <item name="buttonStyle">@style/buttonStyle</item>
-        <item name="spinnerStyle">@style/SpinnerTheme</item>
-        <item name="android:textViewStyle">@style/TitleTextViewTheme</item>
+    <style name="appActivityTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="editTextStyle">@style/EditorTextTheme</item>
+        <item name="spinnerStyle">@style/SpinnerTheme</item>
         <item name="checkboxStyle">@style/AppCheckBoxStyle</item>
         <item name="android:checkboxStyle">@style/AppCheckBoxStyle</item>
+    </style>
+
+    <style name="appThemeEditorActivity" parent="appActivityTheme">
+        <item name="buttonStyle">@style/buttonStyle</item>
+        <item name="android:textViewStyle">@style/TitleTextViewTheme</item>
     </style>
     <style name="appThemeDialog" parent="Theme.AppCompat.Light.Dialog.Alert">
         <item name="android:windowBackground">@drawable/selector_dialog_background</item>

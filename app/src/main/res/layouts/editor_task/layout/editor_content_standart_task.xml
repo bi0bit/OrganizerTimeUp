@@ -6,41 +6,45 @@
     android:paddingLeft="@dimen/standartPaddingLeftRight"
     android:paddingRight="@dimen/standartPaddingLeftRight"
     android:paddingBottom="@dimen/standartPaddingTopBottom">
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/fieldCheckList" />
 
-    <ListView
-        android:divider="@color/FocusFieldApp"
-        android:dividerHeight="1dp"
-        android:id="@+id/underTaskList"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
 
-        android:layout_marginBottom="@dimen/marginRowField" />
 
     <LinearLayout
         android:id="@+id/panelControlCheckList"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/marginBetweenField"
-        android:orientation="horizontal">
-
-        <Button
-            android:id="@+id/addCheckTask"
+        android:orientation="vertical">
+        <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginRight="12dp"
-            android:layout_weight="1"
-            android:text="@string/app_add" />
-
-        <Button
-            android:id="@+id/clearCheckTask"
+            android:text="@string/fieldCheckList" />
+        <ListView
+            android:divider="@color/FocusFieldApp"
+            android:dividerHeight="1dp"
+            android:id="@+id/underTaskList"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="2"
-            android:text="@string/app_clear" />
+            android:orientation="horizontal"
+            android:layout_marginTop="@dimen/marginRowField">
+            <Button
+                android:id="@+id/addCheckTask"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="12dp"
+                android:layout_weight="1"
+                android:text="@string/app_add" />
+
+            <Button
+                android:id="@+id/clearCheckTask"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:text="@string/app_clear" />
+        </LinearLayout>
     </LinearLayout>
 
 
@@ -54,7 +58,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/fieldEditCounter" />
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -81,40 +84,61 @@
 
     </LinearLayout>
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/fieldNotifycation" />
-
-    <ListView
-        android:id="@+id/notifyList"
-        android:divider="@color/FocusFieldApp"
-        android:dividerHeight="1dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/marginRowField" />
-
     <LinearLayout
         android:id="@+id/panelNotify"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/marginBetweenField"
-        android:orientation="horizontal">
-
-        <Button
-            android:id="@+id/addNotify"
+        android:orientation="vertical">
+        <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginRight="12dp"
-            android:layout_weight="1"
-            android:text="@string/app_add" />
-
-        <Button
-            android:id="@+id/clearNotify"
+            android:text="@string/fieldNotifycation" />
+        <ListView
+            android:id="@+id/notifyList"
+            android:divider="@color/FocusFieldApp"
+            android:dividerHeight="1dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="2"
-            android:text="@string/app_clear" />
+            android:orientation="horizontal"
+            android:layout_marginTop="@dimen/marginRowField">
+            <Button
+                android:id="@+id/addNotify"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="12dp"
+                android:layout_weight="1"
+                android:text="@string/app_add" />
+
+            <Button
+                android:id="@+id/clearNotify"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:text="@string/app_clear" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/panelTag"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/marginBetweenField"
+        android:orientation="vertical">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/fieldTag" />
+        <ListView
+            android:id="@+id/tagList"
+            android:divider="@color/FocusFieldApp"
+            android:dividerHeight="1dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
     </LinearLayout>
 
 </LinearLayout>

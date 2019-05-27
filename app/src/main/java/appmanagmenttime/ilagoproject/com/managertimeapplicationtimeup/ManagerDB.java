@@ -465,4 +465,12 @@ public final class ManagerDB {
     public interface UpdateTaskInDb {
         void update();
     }
+
+    public static class TaskNoInitInDB extends Error{
+
+    }
+
+    public static class TaskInitInDB extends Error{
+
+    }
 }

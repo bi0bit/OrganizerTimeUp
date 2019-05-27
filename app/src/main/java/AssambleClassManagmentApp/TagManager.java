@@ -32,6 +32,12 @@ public class TagManager {
         }
     }
 
+    public static void addTag(String nameTag){
+        ManagerDB.getManagerDB(null).addTag(nameTag);
+        Cursor c = ManagerDB.getManagerDB(null).getCursorTag();
+        object.tags.put(c.getInt(c.getColumnIndex(ManagerDB.ID_COLUMN)), c.getString(c.getColumnIndex(ManagerDB.NAME_COLUMN)));
+    }
+
     public static void update(){
         Cursor  c = ManagerDB.getManagerDB(null).getCursorTag();
         while(c.moveToNext()){

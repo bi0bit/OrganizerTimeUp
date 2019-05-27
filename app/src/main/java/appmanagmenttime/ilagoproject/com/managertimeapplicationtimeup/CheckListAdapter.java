@@ -40,6 +40,41 @@ public class CheckListAdapter extends ArrayAdapter<CheckTask> {
         this.editable = editable;
     }
 
+
+    public void onClickEditCheck(View view, ViewGroup parent, CheckTask checkTask){
+        QDialog.SetterGetterDialogEdit dialogSG = new QDialog.SetterGetterDialogEdit();
+        QDialog.Builder builder = QDialog.getBuilder();
+        builder.setTitle(view.getResources().getString(R.string.eventEditUnderTask))
+                .setCancelable(true)
+                .setSetterGetterDialog(dialogSG)
+                .setPositiveBtn((dialog,which)->{
+                    if(!dialogSG.getUserInputString().isEmpty()) {
+                        checkTask.setText(dialogSG.getUserInputString());
+                        this.notifyDataSetChanged();
+                        MainAppActivity.setListViewHeightBasedOnChildren((ListView) parent);
+                    }else Toast.makeText(view.getContext(),R.string.eventEmptyField,Toast.LENGTH_LONG).show();
+                    dialog.dismiss();
+                });
+        AlertDialog.Builder alertDialog = builder.buildDialog(view,QDialog.DIALOG_INPUT_STRING);
+        dialogSG.setLabelString(view.getResources().getString(R.string.fieldEnterNameUnderTask));
+        dialogSG.setUserInputString(checkTask.getText());
+        alertDialog.show();
+    }
+
+    public void onClickDeleteCheck(View view, ViewGroup parent, CheckTask checkTask){
+        QDialog.Builder builder = QDialog.getBuilder();
+        builder.setTitle(view.getResources().getString(R.string.eventDeleteUnderTask))
+                .setMessage(view.getResources().getString(R.string.askDeleteUnderTask))
+                .setCancelable(true)
+                .setPositiveBtn((dialog, which) -> {
+                    tasks.remove(checkTask);
+                    this.notifyDataSetChanged();
+                    MainAppActivity.setListViewHeightBasedOnChildren((ListView) parent);
+                });
+        AlertDialog.Builder alertDialog = builder.buildDialog(view,QDialog.DIALOG_QUATION);
+        alertDialog.show();
+    }
+
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
@@ -50,42 +85,12 @@ public class CheckListAdapter extends ArrayAdapter<CheckTask> {
         chBox.setText(checkTask.getText());
         chBox.setOnCheckedChangeListener((v,c)->{});
         Button editButton = view.findViewById(R.id.editButton);
-        editButton.setOnClickListener((v)->{
-            QDialog.SetterGetterDialogEdit dialogSG = new QDialog.SetterGetterDialogEdit();
-            QDialog.Builder builder = QDialog.getBuilder();
-            builder.setTitle(view.getResources().getString(R.string.eventEditUnderTask))
-                    .setCancelable(true)
-                    .setSetterGetterDialog(dialogSG)
-                    .setPositiveBtn((dialog,which)->{
-                        if(!dialogSG.getUserInputString().isEmpty()) {
-                            checkTask.setText(dialogSG.getUserInputString());
-                            this.notifyDataSetChanged();
-                            MainAppActivity.setListViewHeightBasedOnChildren((ListView) parent);
-                        }else Toast.makeText(view.getContext(),R.string.eventEmptyField,Toast.LENGTH_LONG).show();
-                        dialog.dismiss();
-                    });
-            AlertDialog.Builder alertDialog = builder.buildDialog(view,QDialog.DIALOG_INPUT_STRING);
-            dialogSG.setLabelString(view.getResources().getString(R.string.fieldEnterNameUnderTask));
-            dialogSG.setUserInputString(checkTask.getText());
-            alertDialog.show();
-        });
         Button deleteButton = view.findViewById(R.id.deleteButton);
-        deleteButton.setOnClickListener((v)->{
-            QDialog.Builder builder = QDialog.getBuilder();
-            builder.setTitle(view.getResources().getString(R.string.eventDeleteUnderTask))
-                    .setMessage(view.getResources().getString(R.string.askDeleteUnderTask))
-                    .setCancelable(true)
-                    .setPositiveBtn((dialog, which) -> {
-                        tasks.remove(checkTask);
-                        this.notifyDataSetChanged();
-                        MainAppActivity.setListViewHeightBasedOnChildren((ListView) parent);
-                    });
-            AlertDialog.Builder alertDialog = builder.buildDialog(view,QDialog.DIALOG_QUATION);
-            alertDialog.show();
-        });
+        editButton.setOnClickListener((v)-> onClickEditCheck(v, parent, checkTask));
+        deleteButton.setOnClickListener((v)-> onClickDeleteCheck(v, parent, checkTask));
         if(!editable){
-            editButton.setVisibility(View.INVISIBLE);
-            deleteButton.setVisibility(View.INVISIBLE);
+            editButton.setVisibility(View.GONE);
+            deleteButton.setVisibility(View.GONE);
         }
         return view;
     }

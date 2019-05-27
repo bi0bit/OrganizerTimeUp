@@ -11,6 +11,7 @@
         app:showAsAction="never"
         android:title="Главная"/>
     <item
+        android:id="@+id/addTag"
         app:showAsAction="never"
         android:title="Создать тэг"/>
     <item

@@ -118,32 +118,17 @@ public class MainAppActivity extends AppCompatActivity implements ManagerDB.Hand
         }
     }
 
-    //!!!
-    public void createNewTask(AbsTask.Type_Task type) {
-        switch (type){
-            case HABIT:
-                habitList.add(new Habit(1));
-                break;
-            case DAILY:
-                dailyList.add(new Daily(1));
-                break;
-            case GOAL:
-                goalList.add(new Goal(1));
-                break;
-        }
-    }
-
     public AbsTask createNewTask() {
         AbsTask returnObject = null;
         switch (selectTypeTask){
             case HABIT:
-                returnObject = new Habit(1);
+                returnObject = new Habit(0);
                 break;
             case DAILY:
-                returnObject = new Daily(1);
+                returnObject = new Daily(0);
                 break;
             case GOAL:
-                returnObject = new Goal(1);
+                returnObject = new Goal(0);
                 break;
         }
         return returnObject;

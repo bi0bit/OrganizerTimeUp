@@ -19,6 +19,7 @@
     <string name="fieldCheckList">Чек-лист</string>
     <string name="fieldEditCounter">Востоновить серию:</string>
     <string name="fieldCounter">Cерия:</string>
+    <string name="fieldTag">Тэги:</string>
     <string name="fieldTypeDailyTask">Тип ежедневной задачи</string>
     <string name="fieldDayList">Повторять</string>
     <string name="fieldSeries">Выполненно вподряд</string>

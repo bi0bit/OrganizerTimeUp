@@ -27,6 +27,9 @@ public class NotifyAdapterList extends ArrayAdapter<NotificationTask> {
     List<NotificationTask> objects;
     LayoutInflater inflater;
 
+
+    private boolean editable = true;
+
     public NotifyAdapterList(@NonNull  Context context, @NonNull List<NotificationTask> objects){
         super(context,0,objects);
         this.objects = objects;
@@ -37,6 +40,10 @@ public class NotifyAdapterList extends ArrayAdapter<NotificationTask> {
     @Override
     public NotificationTask getItem(int position) {
         return objects.get(position);
+    }
+
+    public void setEditable(boolean editable) {
+        this.editable = editable;
     }
 
     public void onClickEditButton(View view, ViewGroup parent, NotificationTask notificationTask){
@@ -157,10 +164,13 @@ public class NotifyAdapterList extends ArrayAdapter<NotificationTask> {
         viewTime.setText(date);
 
         Button buttonEdit = view.findViewById(R.id.editButton);
-        buttonEdit.setOnClickListener(v -> onClickEditButton(view,parent,notificationTask));
         Button buttonDel = view.findViewById(R.id.deleteButton);
-        buttonDel.setOnClickListener(v -> onClickDeleteButton(view,parent,notificationTask));
-
+        buttonEdit.setOnClickListener(v -> onClickEditButton(view, parent, notificationTask));
+        buttonDel.setOnClickListener(v -> onClickDeleteButton(view, parent, notificationTask));
+        if(!editable) {
+            buttonEdit.setVisibility(View.GONE);
+            buttonDel.setVisibility(View.GONE);
+        }
         return view;
     }
 }

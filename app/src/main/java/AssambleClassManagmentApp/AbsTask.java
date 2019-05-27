@@ -219,20 +219,28 @@ public abstract class AbsTask implements Parcelable {
      * add new record about task in DB
      */
     public void initialTaskInDB() {
-        SQLiteDatabase dbLite = ManagerDB.getManagerDB(null).getDbWriteble();
-        dbLite.execSQL(ManagerDB.INSERT_STRING_TASK, new String[]{getName(),getDescription(),String.valueOf(getPriority().ordinal())});
-        initIdTask(dbLite);
-        TaskNoInitInDB = false;
-        ManagerDB.getManagerDB(null).updateTaskCountSeriesDb(getId(), getCountSerias());
+        if(TaskNoInitInDB) {
+            SQLiteDatabase dbLite = ManagerDB.getManagerDB(null).getDbWriteble();
+            dbLite.execSQL(ManagerDB.INSERT_STRING_TASK, new String[]{getName(), getDescription(), String.valueOf(getPriority().ordinal())});
+            initIdTask(dbLite);
+            TaskNoInitInDB = false;
+            ManagerDB.getManagerDB(null).updateTaskCountSeriesDb(getId(), getCountSerias());
+        }
+        else throw new ManagerDB.TaskInitInDB();
     }
 
     /**
      * update task in DB
      */
     public void updateInDb(){
-        SQLiteDatabase dbLite = ManagerDB.getManagerDB(null).getDbWriteble();
-        dbLite.execSQL(ManagerDB.UPDATE_STRING_TASK, new String[]{getName(),getDescription(),String.valueOf(getPriority().ordinal()), String.valueOf(getId())});
-        ManagerDB.getManagerDB(null).updateTaskCountSeriesDb(getId(), getCountSerias());
+        if (!TaskNoInitInDB && !NonLinkedWithDBId){
+            SQLiteDatabase dbLite = ManagerDB.getManagerDB(null).getDbWriteble();
+            dbLite.execSQL(ManagerDB.UPDATE_STRING_TASK, new String[]{getName(),getDescription(),String.valueOf(getPriority().ordinal()), String.valueOf(getId())});
+            ManagerDB.getManagerDB(null).updateTaskCountSeriesDb(getId(), getCountSerias());
+        }
+        else {
+            throw new ManagerDB.TaskNoInitInDB();
+        }
     }
 
     /**
@@ -518,6 +526,34 @@ public abstract class AbsTask implements Parcelable {
             AbsTask task = getObject();
             TextView countSeries = view.findViewById(R.id.countSerias);
             countSeries.setText(String.valueOf(task.getCountSerias()));
+
+            ArrayAdapter<String> adapterTag =
+                    new ArrayAdapter<>(view.getContext(), android.R.layout.simple_list_item_checked, new String[]{});
+            ListView tagList = view.findViewById(R.id.panelTag);
+            tagList.setAdapter(adapterTag);
+
+            if(task.getListUnderTaskChecked().size() > 0){
+                CheckListAdapter adapterCheckList = new CheckListAdapter(view.getContext(),getObject().getListUnderTaskChecked());
+                adapterCheckList.setEditable(false);
+                ListView listViewUnderTask = view.findViewById(R.id.underTaskList);
+                listViewUnderTask.setAdapter(adapterCheckList);
+            }
+            else {
+                View v = view.findViewById(R.id.panelControlCheckList);
+                v.setVisibility(View.GONE);
+            }
+
+            if(task.getListNotify().size() > 0){
+                NotifyAdapterList adapterListNotification = new NotifyAdapterList(view.getContext(), task.getListNotify());
+                adapterListNotification.setEditable(false);
+                ListView listViewNotify = view.findViewById(R.id.notifyList);
+                listViewNotify.setAdapter(adapterListNotification);
+            }
+            else {
+                View v = view.findViewById(R.id.panelNotify);
+                v.setVisibility(View.GONE);
+            }
+
         }
 
 
