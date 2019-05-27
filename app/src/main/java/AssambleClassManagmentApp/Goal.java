@@ -241,9 +241,12 @@ public class Goal  extends AbsTask{
             return;
         }
 
+
         @Override
         public void setViewerTask(View view) {
             super.setViewerTask(view);
+            View panelCounter = view.findViewById(R.id.panelCounter);
+            panelCounter.setVisibility(View.GONE);
         }
 
         @Override

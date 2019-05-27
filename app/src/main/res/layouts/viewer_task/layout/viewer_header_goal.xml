@@ -21,6 +21,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
                 android:text='@{task.getStartDate("dd.MM.yyyy")}'
+                android:textColor="@color/TextApp"
                 android:layout_marginTop="7dp"
                 android:layout_marginBottom="5dp"/>
             <TextView
@@ -30,6 +31,7 @@
                 android:layout_alignLeft="@id/startDateDaily"
                 android:layout_below="@id/startDateDaily"
                 android:text='@{task.getEndDate("dd.MM.yyyy")}'
+                android:textColor="@color/TextApp"
                 android:layout_marginBottom="7dp"/>
             <TextView
                 android:layout_toLeftOf="@id/startDateDaily"

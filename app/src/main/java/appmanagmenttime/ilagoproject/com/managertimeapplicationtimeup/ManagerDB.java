@@ -156,11 +156,8 @@ public final class ManagerDB {
     /**
      * <pre>command task: 1 ? - idTask(int)
      *                     2 ? - typeDaily(int)
-     *                     3 ? - fromTime(text)
-     *                     4 ? - toTime(text)</pre>
      */
-    public static final String INSERT_STRING_DAILY = "INSERT INTO "+ TABLENAME_DAILY + "(idTask,typeDaily, " +
-            "fromTime, toTime) VALUES(?,?,?,?)";
+    public static final String INSERT_STRING_DAILY = "INSERT INTO "+ TABLENAME_DAILY + "(idTask,typeDaily)" + " VALUES(?,?)";
 
     /**
      * <pre>command task: 1 ? - idTask(int)
@@ -187,12 +184,9 @@ public final class ManagerDB {
 
     /**
      * <pre>command mask: 1 ? - typeDaily(int)
-     *                     2 ? - fromTime(text)
-     *                     3 ? - toTime(text)
-     *                     4 ? - idTask(id) key for where</pre>
+     *                     2 ? - idTask(id) key for where</pre>
      */
-    public static final String UPDATE_STRING_DAILY = "UPDATE "+ TABLENAME_DAILY + " SET typeDaily = ?, " +
-            "fromTime = ?, toTime = ? WHERE idTask = ?";
+    public static final String UPDATE_STRING_DAILY = "UPDATE "+ TABLENAME_DAILY + " SET typeDaily = ? WHERE idTask = ?";
 
     /**
      * <pre>command mask: 1 ? - startDate(text)

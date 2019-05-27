@@ -14,14 +14,22 @@
         android:id="@+id/checkListTask"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
-    <TextView
+    <LinearLayout
+        android:id="@+id/panelCounter"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/fieldCounter" />
-    <include
-        layout="@layout/item_count_series"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_marginBottom="@dimen/marginBetweenField"
+        android:orientation="vertical">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/fieldCounter" />
+        <include
+            layout="@layout/item_count_series"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

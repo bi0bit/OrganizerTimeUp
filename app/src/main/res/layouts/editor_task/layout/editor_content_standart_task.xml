@@ -43,36 +43,41 @@
             android:text="@string/app_clear" />
     </LinearLayout>
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/fieldCounter" />
 
     <LinearLayout
         android:id="@+id/panelCounter"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/marginBetweenField"
-        android:orientation="horizontal">
+        android:orientation="vertical">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/fieldEditCounter" />
 
-        <Button
-            android:id="@+id/addCounterButton"
-            android:layout_width="28dp"
-            android:layout_height="28dp"
-            android:layout_gravity="center_vertical"
-            android:background="@drawable/selector_button_positive_flat"/>
-        <include
-            layout="@layout/item_count_series"
-            android:layout_gravity="center_vertical"
-            android:layout_weight="1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-        <Button
-            android:id="@+id/subCounterButton"
-            android:layout_width="28dp"
-            android:layout_height="28dp"
-            android:layout_gravity="center_vertical"
-            android:background="@drawable/selector_button_negativy_flat"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <Button
+                android:id="@+id/addCounterButton"
+                android:layout_width="28dp"
+                android:layout_height="28dp"
+                android:layout_gravity="center_vertical"
+                android:background="@drawable/selector_button_positive_flat"/>
+            <include
+                layout="@layout/item_count_series"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <Button
+                android:id="@+id/subCounterButton"
+                android:layout_width="28dp"
+                android:layout_height="28dp"
+                android:layout_gravity="center_vertical"
+                android:background="@drawable/selector_button_negativy_flat"/>
+        </LinearLayout>
 
     </LinearLayout>
 

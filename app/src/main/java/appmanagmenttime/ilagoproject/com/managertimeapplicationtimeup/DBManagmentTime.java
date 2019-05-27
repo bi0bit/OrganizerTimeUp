@@ -85,7 +85,7 @@ public class DBManagmentTime extends SQLiteOpenHelper {
     public static final String CREATE_TABLE_HISTORYCOMPLETETASK = "CREATE TABLE IF NOT EXISTS " + TABLENAME_HISTORYCOMPLETE + "(" +
             "idTask integer," +
             "TypeComplete integer,"+
-            "DateComplete integer,"+
+            "DateComplete real,"+
             "foreign key(idTask) references " + TABLENAME_TASK + "(id))";
 
     public static final String CREATE_TRIGGER_INITTASK = "CREATE TRIGGER IF NOT EXISTS InitTask " +
@@ -96,8 +96,17 @@ public class DBManagmentTime extends SQLiteOpenHelper {
     public static final String CREATE_TRIGGER_DELTASK = "CREATE TRIGGER IF NOT EXISTS DelTask" +
             " BEFORE DELETE ON "+ TABLENAME_TASK + " BEGIN" +
             " DELETE FROM "+ TABLENAME_COUNTTASK + " WHERE idTask = old.id;" +
+            " DELETE FROM "+ TABLENAME_NOTIFYTASK + " WHERE idTask = old.id;"+
             " DELETE FROM "+ TABLENAME_CHECKLISTTASK + " WHERE idTask = old.id;"+
-            " DELETE FROM "+ TABLENAME_TASKTAG + " WHERE idTask = old.id;"+
+            " DELETE FROM "+ TABLENAME_TASKTAG + " WHERE idTask = old.id;" +
+            " DELETE FROM "+ TABLENAME_DAILY + " WHERE idTask = old.id;"+
+            " DELETE FROM "+ TABLENAME_GOAL + " WHERE idTask = old.id;"+
+            " DELETE FROM "+ TABLENAME_HABIT + " WHERE idTask = old.id;"+
+            "END";
+
+    public static final String CREATE_TRIGGER_DELDAILY = "CREATE TRIGGER IF NOT EXISTS DelDaily" +
+            " BEFORE DELETE ON "+ TABLENAME_TASK + " BEGIN" +
+            " DELETE FROM "+ TABLENAME_DATEDAILY + " WHERE idTask = old.id;" +
             "END";
 
     public static final String CREATE_TRIGGER_DELTAG = "CREATE TRIGGER IF NOT EXISTS DelTag " +
@@ -127,6 +136,7 @@ public class DBManagmentTime extends SQLiteOpenHelper {
             db.execSQL(CREATE_TABLE_HISTORYCOMPLETETASK);
             db.execSQL(CREATE_TRIGGER_DELTAG);
             db.execSQL(CREATE_TRIGGER_DELTASK);
+            db.execSQL(CREATE_TRIGGER_DELDAILY);
             db.execSQL(CREATE_TRIGGER_INITTASK);
             db.setTransactionSuccessful();
         }finally {

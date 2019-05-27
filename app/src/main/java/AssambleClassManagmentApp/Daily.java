@@ -34,7 +34,7 @@ public class Daily extends AbsTask {
         super(id, Type_Task.DAILY);
         typeDaily = Type_Daily.EVERDAY;
         dates = new ArrayList<>();
-        setCountSerias(3);
+        setCountSerias(0);
     }
 
     static{

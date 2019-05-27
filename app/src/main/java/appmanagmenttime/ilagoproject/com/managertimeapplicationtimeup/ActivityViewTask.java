@@ -53,18 +53,26 @@ public class ActivityViewTask extends AppCompatActivity {
 
     @Override
     protected void onResume() {
-        task = MainAppActivity.taskManager.getById(task.getId());
-        if(task instanceof Habit){
-        ((ViewerHeaderHabitBinding)binding).setTask((Habit) task);
-        }
-        else if(task instanceof Daily){
-        ((ViewerHeaderDailyBinding)binding).setTask((Daily)task);
-        }
-        else{
-        ((ViewerHeaderGoalBinding)binding).setTask((Goal) task);
-        }
+        updateTask();
+        updateBinding();
         task.setViewerTask(findViewById(android.R.id.content));
         super.onResume();
+    }
+
+    protected void updateBinding(){
+        if(task instanceof Habit){
+            ((ViewerHeaderHabitBinding)binding).setTask((Habit) task);
+        }
+        else if(task instanceof Daily){
+            ((ViewerHeaderDailyBinding)binding).setTask((Daily)task);
+        }
+        else{
+            ((ViewerHeaderGoalBinding)binding).setTask((Goal) task);
+        }
+    }
+
+    protected void updateTask(){
+        task = MainAppActivity.taskManager.getById(task.getId());
     }
 
     @Override
@@ -91,7 +99,9 @@ public class ActivityViewTask extends AppCompatActivity {
     }
 
     public void deleteTask(DialogInterface dialog, int witch ){
+        ManagerDB.getManagerDB(null).deleteTask(task.getId());
         dialog.dismiss();
+        finish();
     }
 
     public void editTask(DialogInterface dialog, int witch ){
