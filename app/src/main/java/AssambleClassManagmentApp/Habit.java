@@ -46,10 +46,7 @@ public class Habit extends AbsTask{
         EnumSet<Type_Habit> typeHabits = EnumSet.noneOf(Type_Habit.class);
         List<Type_Habit> listHabits = new ArrayList<>();
         in.readList(listHabits,Type_Habit.class.getClassLoader());
-        for(Type_Habit t : listHabits)
-        {
-            typeHabits.add(t);
-        }
+        typeHabits.addAll(listHabits);
         setTypeHabit(typeHabits);
     }
 
@@ -65,7 +62,7 @@ public class Habit extends AbsTask{
         }
     };
 
-    public EnumSet getTypeHabit() {
+    public EnumSet<Type_Habit> getTypeHabit() {
         return typeHabit;
     }
 
@@ -105,18 +102,14 @@ public class Habit extends AbsTask{
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         writeInToParcel(dest,flags);
-        List<Type_Habit> list = new ArrayList<>();
-        for(Type_Habit t : typeHabit){
-            list.add(t);
-        }
+        List<Type_Habit> list = new ArrayList<>(typeHabit);
         dest.writeList(list);
     }
 
     @Override
     public Cursor getCursorOnTask(){
-        Cursor c = ManagerDB.getManagerDB(null).getDbReadable()
+        return ManagerDB.getManagerDB(null).getDbReadable()
                 .rawQuery(ManagerDB.SEL_STRING_GETHABIT,new String[]{String.valueOf(getId())});
-        return c;
     }
 
     @Override
@@ -138,18 +131,18 @@ public class Habit extends AbsTask{
 
     public int getTypeHabitInt(){
         int intTypeHabit = 0;
-        intTypeHabit += (typeHabit.contains(Type_Habit.NEGATIVY))? -1 : 0;
-        intTypeHabit += (typeHabit.contains(Type_Habit.POSITIVY))? 1 : 0;
+        intTypeHabit += (typeHabit.contains(Type_Habit.NEGATIVE))? -1 : 0;
+        intTypeHabit += (typeHabit.contains(Type_Habit.POSITIVE))? 1 : 0;
         return intTypeHabit;
     }
 
     public static void initTypeHabit(int type, EnumSet<Type_Habit> type_habits){
         type_habits.clear();
         if(type >= 0){
-            type_habits.add(Type_Habit.POSITIVY);
+            type_habits.add(Type_Habit.POSITIVE);
         }
         if(type <= 0){
-            type_habits.add(Type_Habit.NEGATIVY);
+            type_habits.add(Type_Habit.NEGATIVE);
         }
     }
 
@@ -169,15 +162,15 @@ public class Habit extends AbsTask{
             btnSubCount.setVisibility(View.GONE);
     }
 
-    @BindingAdapter({"app:selectTypeHabit"})
+    @BindingAdapter({"selectTypeHabit"})
     public static void selectTypeHabit(Spinner spin, int type){
         int pos = (type==0)? 2 : (type<0)? 0 : 1;
         spin.setSelection(pos);
     }
 
     public enum Type_Habit{
-        POSITIVY,
-        NEGATIVY;
+        POSITIVE,
+        NEGATIVE
     }
 
     /**
@@ -226,24 +219,29 @@ public class Habit extends AbsTask{
         @Override
         public void setControlItem(View view){
             Habit habit = getObject();
-            if(getObject().typeHabit.contains(Type_Habit.NEGATIVY)){
-                Button button = view.findViewById(R.id.AddNegativyButton);
-                button.setVisibility(View.VISIBLE);
-                button.setOnClickListener((v)->{
+            Button buttonN = view.findViewById(R.id.AddNegativyButton);
+            Button buttonP = view.findViewById(R.id.AddPossitivyButton);
+            if(getObject().typeHabit.contains(Type_Habit.NEGATIVE)){
+                buttonN.setVisibility(View.VISIBLE);
+                buttonN.setOnClickListener((v)->{
                     habit.setCountSerias(habit.getCountSerias() - 1);
                     ManagerDB.getManagerDB(null).incrementTaskCountSeriesDb(habit.getId(),-1);
                     setCountItem(view,habit);
                 });
             }
-            if(getObject().typeHabit.contains(Type_Habit.POSITIVY)){
-                Button button = view.findViewById(R.id.AddPossitivyButton);
-                button.setVisibility(View.VISIBLE);
-                button.setOnClickListener((v)->{
+            else
+                buttonN.setVisibility(View.GONE);
+
+            if(getObject().typeHabit.contains(Type_Habit.POSITIVE)){
+                buttonP.setVisibility(View.VISIBLE);
+                buttonP.setOnClickListener((v)->{
                     habit.setCountSerias(habit.getCountSerias() + 1);
                     ManagerDB.getManagerDB(null).incrementTaskCountSeriesDb(habit.getId(),+1);
                     setCountItem(view,habit);
                 });
             }
+            else
+                buttonP.setVisibility(View.GONE);
         }
 
         @Override
@@ -254,7 +252,6 @@ public class Habit extends AbsTask{
         @Override
         public void setEditorTask(View view) {
             super.setEditorTask(view);
-            Habit habit = getObject();
             ArrayAdapter strArrAdapter =
                     ArrayAdapter.createFromResource(view.getContext(),R.array.strings_type_habit,R.layout.item_spinner_simple_string);
             strArrAdapter.setDropDownViewResource(R.layout.item_spinner_dropdown_simple_string);

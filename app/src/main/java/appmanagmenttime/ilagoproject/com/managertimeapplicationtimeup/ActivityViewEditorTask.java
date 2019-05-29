@@ -70,8 +70,6 @@ public class ActivityViewEditorTask extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         String name = editName.getText().toString();
-        String description = editDesc.getText().toString();
-        AbsTask.Priority_Task priority_task = AbsTask.Priority_Task.values()[spnPriority.getSelectedItemPosition()];
         switch (item.getItemId()){
             case R.id.saveButton:
                 if (name.isEmpty()){

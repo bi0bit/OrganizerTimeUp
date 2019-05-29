@@ -90,7 +90,7 @@ public class ActivityViewTask extends AppCompatActivity {
                         .setTitle(getResources().getString(R.string.eventDeleteTask))
                         .setMessage(String.format(getResources().getString(R.string.askDeleteTask), task.getName()))
                         .setPositiveBtnStr(R.string.app_delete)
-                        .setPositiveBtn(this::deleteTask)
+                        .setOnClickPositiveBtn(this::deleteTask)
                         .buildDialog(this.findViewById(android.R.id.content),QDialog.DIALOG_QUATION);
                 dialog.show();
                 return true;

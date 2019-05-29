@@ -17,7 +17,7 @@
         style="@style/EditorTextTheme"
         android:id="@+id/input_text"
         android:maxLength="55"
-        android:maxLines="1"
+        android:singleLine="true"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
     </EditText>

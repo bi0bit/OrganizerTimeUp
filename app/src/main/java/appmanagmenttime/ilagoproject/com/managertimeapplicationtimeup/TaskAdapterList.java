@@ -32,15 +32,27 @@ public class TaskAdapterList extends ArrayAdapter<AbsTask> {
 
     @Override
     public View getView(int position, @NonNull View convertView, @NonNull ViewGroup parent) {
-        AbsTask.BuilderView builder = tasks.get(position).getBuilderView();
-        builder.setInflater(inflater);
-        builder.setParent(parent);
-        View view = tasks.get(position).createView();
-        return view;
+            AbsTask.BuilderView builder = tasks.get(position).getBuilderView();
+            builder.setObject(tasks.get(position));
+        if(convertView == null) {
+            builder.setInflater(inflater);
+            builder.setParent(parent);
+            convertView = tasks.get(position).createView();
+        }
+        else {
+            builder.setViewItemTask(convertView);
+        }
+
+        return convertView;
     }
 
+    class ViewHolder{
 
+        ViewHolder(ViewHolder holder){
 
+        }
+
+    }
 
 }
 

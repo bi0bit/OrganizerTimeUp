@@ -33,6 +33,7 @@ public class TaskManager implements ManagerDB.HandlerUpdateTaskInDb {
         Cursor c = dbM.getCursorDaily();
         while(c.moveToNext()){
             Daily daily = (Daily) Daily.initTaskByCursor(c);
+            TagManager.initTagByTask(daily);
             tasks.put(daily.getId(),daily);
         }
     }
@@ -41,6 +42,7 @@ public class TaskManager implements ManagerDB.HandlerUpdateTaskInDb {
         Cursor c = dbM.getCursorHabit();
         while(c.moveToNext()){
             Habit habit = (Habit) Habit.initTaskByCursor(c);
+            TagManager.initTagByTask(habit);
             tasks.put(habit.getId(),habit);
         }
     }
@@ -49,6 +51,7 @@ public class TaskManager implements ManagerDB.HandlerUpdateTaskInDb {
         Cursor c = dbM.getCursorGoal();
         while(c.moveToNext()){
             Goal goal = (Goal) Goal.initTaskByCursor(c);
+            TagManager.initTagByTask(goal);
             tasks.put(goal.getId(),goal);
         }
     }

@@ -3,7 +3,7 @@ package appmanagmenttime.ilagoproject.com.managertimeapplicationtimeup;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
-import java.util.HashMap;
+import java.util.List;
 
 import AssambleClassManagmentApp.AbsTask;
 
@@ -19,7 +19,7 @@ import static appmanagmenttime.ilagoproject.com.managertimeapplicationtimeup.DBM
 /**
  * <pre>ManagerDB to managment data base, remove, additional, update for table db, so it return cursor
  * at table. Singleton
- * Purpose: provide easy remove, additional, update, and other function for action datebase.
+ * Purpose: provide easy remove, additional, update, and other function for action database.
  * </pre>
  */
 public final class ManagerDB {
@@ -43,8 +43,6 @@ public final class ManagerDB {
     public static final String TASKPRIORITY_COLUMNNAME = "Priority";
     public static final String HABITTYPE_COLUMNNAME = "Type_Habit";
     public static final String DAILYTYPE_COLUMNNAME = "Type_Daily";
-    public static final String DAILYFROMTIME_COLUMNNAME = "FromDate";
-    public static final String DAILYTOTIME_COLUMNNAME = "ToDate";
     public static final String GOALSTARTDATE_COLUMNNAME = "StartDate";
     public static final String GOALENDDATE_COLUMNNAME = "EndDate";
     public static final String CHECKLISTTEXT_COLUMNNAME = "UnderTaskText";
@@ -195,6 +193,14 @@ public final class ManagerDB {
      */
     public static final String UPDATE_STRING_GOAL = "UPDATE "+ TABLENAME_GOAL + " SET startDate = ?, endDate = ? WHERE idTask = ?";
 
+
+    /**
+     * <pre>command mask: 1 ? - name tag
+     *                     2 ? - id tag</pre>
+     */
+    public static final String UPDATE_STRING_TAG = "UPDATE "+ TABLENAME_TAG +
+            "SET name = ? WHERE id = ?";
+
     /**
      * <pre>command mask: 1 ? - countSeries(int)
      *                     2 ? - idTask(int)</pre>
@@ -202,13 +208,6 @@ public final class ManagerDB {
     public static final String UPDATE_STRING_COUNTSERIES = "UPDATE "+ TABLENAME_COUNTTASK +
             "SET countSeries = ? WHERE idTask = ?";
 
-    public static final String UPDATE_STRING_PRIORITYTASK = "UPDATE " + TABLENAME_TASK +
-            "SET priority = ? WHERE id = ?";
-
-    public static final String UPDATE_STRING_TYPEHABIT = "UPDATE "+ TABLENAME_HABIT + " SET typeHabit = ?" +
-            "WHERE idTask = ?";
-    public static final String UPDATE_STRING_TYPEDAILY = "UPDATE "+ TABLENAME_DAILY + " SET typeDaily = ?" +
-            "WHERE idTask = ?";
 
     /**
      * <pre>command mask: 1 ? - name(text)
@@ -269,6 +268,15 @@ public final class ManagerDB {
             }
         }
         return managerDB;
+    }
+
+    public void close(){
+        if(getDbReadable()!=null){
+            dbR.close();
+        }
+        if(getDbWriteble()!=null){
+            dbW.close();
+        }
     }
 
     public SQLiteDatabase getDbReadable() {
@@ -380,11 +388,11 @@ public final class ManagerDB {
      * insert record in table tag_task
      * @param task
      */
-    public void initTagTaskInDb(AbsTask task) {
-        HashMap<Integer, String> tags = task.getTags();
+    public void initTagTaskInDb(final AbsTask task) {
+        List<Integer> tags = task.getIntTags();
         try {
             dbW.beginTransaction();
-            for (int key : tags.keySet()) {
+            for (int key : tags) {
                 dbW.execSQL(INSERT_STRING_TASKTAG, new String[]{
                         String.valueOf(task.getId()), String.valueOf(key)});
             }

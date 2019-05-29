@@ -17,13 +17,13 @@
     <string name="fieldNotifycation">Уведомления</string>
     <string name="fieldEnterNameUnderTask">Введите название</string>
     <string name="fieldCheckList">Чек-лист</string>
-    <string name="fieldEditCounter">Востоновить серию:</string>
+    <string name="fieldEditCounter">Востановить серию:</string>
     <string name="fieldCounter">Cерия:</string>
     <string name="fieldTag">Тэги:</string>
     <string name="fieldTypeDailyTask">Тип ежедневной задачи</string>
     <string name="fieldDayList">Повторять</string>
     <string name="fieldSeries">Выполненно вподряд</string>
-    <string name="fieldTypeHabit">Тип превычки</string>
+    <string name="fieldTypeHabit">Тип привычки</string>
     <string name="fieldTitle">Заглавие</string>
     <string name="fieldMessage">Сообщение</string>
     <string name="fieldTimeNotify">Время</string>
@@ -38,18 +38,19 @@
     <string name="askClearNotification">Вы хотите очистить уведомления ?</string>
     <string name="askDeleteUnderTask">Вы хотите удалить эту подзадачу ?</string>
     <string name="askDeleteNotification">Вы хотите удалить это уведомление ?</string>
+    <string name="eventAddTag">Добавление нового тэга</string>
     <string name="eventAddNewUnderTask">Добавление новой подзадачи</string>
     <string name="eventAddNewNotification">Добавление нового уведомления</string>
     <string name="eventDeleteTask">Удаление задачи</string>
-    <string name="eventEditUnderTask">Редоктирование подзадачи</string>
-    <string name="eventEditNotification">Редоктирование уведомления</string>
+    <string name="eventEditUnderTask">Редактирование подзадачи</string>
+    <string name="eventEditNotification">Редактирование уведомления</string>
     <string name="eventClearUnderTask">Очистка чек-листа</string>
     <string name="eventClearNotification">Очистка уведомлений</string>
     <string name="eventDeleteUnderTask">Удаление подзадачи</string>
     <string name="eventDeleteNotification">Удаление уведомления</string>
     <string name="eventEmptyField">Обязательное поле не заполненно</string>
     <string-array name="strings_type_task">
-        <item>Превычки</item>
+        <item>Привычки</item>
         <item>Ежедневные дела</item>
         <item>Задачи</item>
     </string-array>

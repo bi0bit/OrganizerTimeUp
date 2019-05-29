@@ -16,16 +16,19 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import AssambleClassManagmentApp.NotificationTask;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 public class NotifyAdapterList extends ArrayAdapter<NotificationTask> {
 
-    List<NotificationTask> objects;
-    LayoutInflater inflater;
+    private List<NotificationTask> objects;
+    private LayoutInflater inflater;
 
 
     private boolean editable = true;
@@ -36,7 +39,7 @@ public class NotifyAdapterList extends ArrayAdapter<NotificationTask> {
         inflater = LayoutInflater.from(context);
     }
 
-    @Nullable
+    @NonNull
     @Override
     public NotificationTask getItem(int position) {
         return objects.get(position);
@@ -46,7 +49,7 @@ public class NotifyAdapterList extends ArrayAdapter<NotificationTask> {
         this.editable = editable;
     }
 
-    public void onClickEditButton(View view, ViewGroup parent, NotificationTask notificationTask){
+    private void onClickEditButton(View view, ViewGroup parent, NotificationTask notificationTask){
         Calendar cldDate = Calendar.getInstance();
         cldDate.setTimeInMillis(notificationTask.getDateAlarm());
 
@@ -66,11 +69,13 @@ public class NotifyAdapterList extends ArrayAdapter<NotificationTask> {
                 .setSetterGetterDialog(dialogSG)
                 .setIdView(R.layout.dialog_notify_view)
                 .setCancelable(true)
-                .setPositiveBtn((dialog,which)->{
+                .setOnClickPositiveBtn((dialog, which)->{
                     Object result = dialogSG.getValueView(0,"getText",null,null);
+                    assert result != null;
                     String title = result.toString();
 
                     result = dialogSG.getValueView(1, "getText",null,null);
+                    assert result != null;
                     String message = result.toString();
 
                     if (title.isEmpty()){
@@ -88,7 +93,7 @@ public class NotifyAdapterList extends ArrayAdapter<NotificationTask> {
 
                     dialog.dismiss();
                 });
-        AlertDialog.Builder dialog = builder.buildDialog(view,QDialog.DIALOG_CUSTOM);
+        AlertDialog.Builder dialog = QDialog.make(builder, view, QDialog.DIALOG_CUSTOM);
         dialogSG.setValueView(4,"setOnClickListener",
                 new Class[]{View.OnClickListener.class},
                 new View.OnClickListener[]{(v2) ->{
@@ -127,18 +132,18 @@ public class NotifyAdapterList extends ArrayAdapter<NotificationTask> {
         dialogSG.setValueView(1,"setText", new Class[]{CharSequence.class},
                 new Object[]{notificationTask.getMessage()});
         dialogSG.setValueView(2,"setText", new Class[]{CharSequence.class},
-                new Object[]{new SimpleDateFormat("HH:mm").format(cldTime.getTime())} );
+                new Object[]{new SimpleDateFormat("HH:mm", Locale.getDefault()).format(cldTime.getTime())} );
         dialogSG.setValueView(3,"setText", new Class[]{CharSequence.class},
-                new Object[]{new SimpleDateFormat("dd.MM.yyyy").format(cldDate.getTime())} );
+                new Object[]{new SimpleDateFormat("dd.MM.yyyy",Locale.getDefault()).format(cldDate.getTime())} );
         dialog.show();
     }
 
-    public void onClickDeleteButton(View view, ViewGroup parent, NotificationTask notificationTask){
+    private void onClickDeleteButton(View view, ViewGroup parent, NotificationTask notificationTask){
         QDialog.Builder builder = QDialog.getBuilder();
         builder.setTitle(view.getResources().getString(R.string.eventDeleteNotification))
                 .setMessage(view.getResources().getString(R.string.askDeleteNotification))
                 .setCancelable(true)
-                .setPositiveBtn(((dialog, which) -> {
+                .setOnClickPositiveBtn(((dialog, which) -> {
                     objects.remove(notificationTask);
                     notifyDataSetChanged();
                     MainAppActivity.setListViewHeightBasedOnChildren((ListView) parent);
@@ -150,27 +155,39 @@ public class NotifyAdapterList extends ArrayAdapter<NotificationTask> {
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-        NotificationTask notificationTask = getItem(position);
-
-        View view = inflater.inflate(R.layout.item_notify_list,parent,false);
-
-        TextView viewTitle = view.findViewById(R.id.title);
-        viewTitle.setText(notificationTask.getTitle());
-        TextView viewTime = view.findViewById(R.id.time);
-
-        String time = new SimpleDateFormat("HH:mm").format(new Date(notificationTask.getTimeAlarm()));
-        String date = new SimpleDateFormat("dd.MM.yyyy").format(new Date(notificationTask.getDateAlarm()));
-        date = time + " " + date;
-        viewTime.setText(date);
-
-        Button buttonEdit = view.findViewById(R.id.editButton);
-        Button buttonDel = view.findViewById(R.id.deleteButton);
-        buttonEdit.setOnClickListener(v -> onClickEditButton(view, parent, notificationTask));
-        buttonDel.setOnClickListener(v -> onClickDeleteButton(view, parent, notificationTask));
-        if(!editable) {
-            buttonEdit.setVisibility(View.GONE);
-            buttonDel.setVisibility(View.GONE);
+        @NonNull NotificationTask notificationTask = getItem(position);
+        ViewHolder holder;
+        if (convertView == null){
+            convertView = inflater.inflate(R.layout.item_notify_list,parent,false);
+            holder = new ViewHolder(convertView);
+            convertView.setTag(holder);
         }
-        return view;
+        else{
+            holder = (ViewHolder) convertView.getTag();
+        }
+        String time = new SimpleDateFormat("HH:mm", Locale.getDefault()).format(new Date(notificationTask.getTimeAlarm()));
+        String date = new SimpleDateFormat("dd.MM.yyyy", Locale.getDefault()).format(new Date(notificationTask.getDateAlarm()));
+        date = time + " " + date;
+        holder.title.setText(notificationTask.getTitle());
+        holder.time.setText(date);
+        View finalConvertView = convertView;
+        holder.editButton.setOnClickListener(v -> onClickEditButton(finalConvertView, parent, notificationTask));
+        holder.deleteButton.setOnClickListener(v -> onClickDeleteButton(finalConvertView, parent, notificationTask));
+        if(!editable) {
+            holder.editButton.setVisibility(View.GONE);
+            holder.deleteButton.setVisibility(View.GONE);
+        }
+        return convertView;
+    }
+
+    class ViewHolder{
+        @BindView(R.id.title) TextView title;
+        @BindView(R.id.time) TextView time;
+        @BindView(R.id.editButton) Button editButton;
+        @BindView(R.id.deleteButton) Button deleteButton;
+
+        private ViewHolder(View view) {
+            ButterKnife.bind(this, view);
+        }
     }
 }

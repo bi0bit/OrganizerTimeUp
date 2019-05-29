@@ -11,9 +11,11 @@ import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckedTextView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Spinner;
@@ -25,11 +27,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.databinding.BindingAdapter;
 import androidx.databinding.ViewDataBinding;
@@ -48,7 +48,7 @@ public abstract class AbsTask implements Parcelable {
     private int id;
     private String name;
     private String description;
-    private HashMap<Integer,String> tag;
+    private List<Integer> tag;
     private List<CheckTask> listUnderTaskChecked;
 
 
@@ -63,7 +63,7 @@ public abstract class AbsTask implements Parcelable {
         this.id = id;
         this.TYPE = type;
         this.PRIORITY = Priority_Task.MIN;
-        this.tag = new HashMap<>();
+        this.tag = new ArrayList<>();
         this.listUnderTaskChecked = new ArrayList<>();
         this.listNotify = new ArrayList<>();
         listUnderTaskChecked.add(new CheckTask("test1"));
@@ -77,7 +77,8 @@ public abstract class AbsTask implements Parcelable {
         setName(in.readString());
         setDescription(in.readString());
         setPriority(Priority_Task.values()[in.readInt()]);
-        setTags((HashMap<Integer,String>)in.readSerializable());
+        setTags(new ArrayList<>());
+        in.readList(getIntTags(), Integer.class.getClassLoader());
         setCountSerias(in.readInt());
         setListUnderTaskChecked(new ArrayList<>());
         in.readList(getListUnderTaskChecked(),CheckTask.class.getClassLoader());
@@ -113,22 +114,16 @@ public abstract class AbsTask implements Parcelable {
         this.description = description;
     }
 
-    public HashMap<Integer,String> getTags() {
+    public List<Integer> getIntTags() {
         return tag;
     }
 
-    protected void setTags(HashMap tags) {
-        this.tag = tags;
-    }
-
-    @Nullable
-    public String getTag(int id){
-        String s = tag.get(id);
-        return s;
+    protected void setTags(List tag) {
+        this.tag = tag;
     }
 
     public void setTag(int id, String tag){
-        this.tag.put(id,tag);
+        this.tag.add(id);
     }
 
     public List<CheckTask> getListUnderTaskChecked() {
@@ -154,10 +149,11 @@ public abstract class AbsTask implements Parcelable {
 
     }
 
+
     /**
      * <pre>Standart write in to parcel object for children</pre>
-     * @param dest
-     * @param flags
+     * @param dest parcel
+     * @param flags flag
      */
     protected void writeInToParcel(Parcel dest, int flags){
         dest.writeInt(getId());
@@ -166,7 +162,7 @@ public abstract class AbsTask implements Parcelable {
         dest.writeString(getName());
         dest.writeString(getDescription());
         dest.writeInt(getPriority().ordinal());
-        dest.writeSerializable(getTags());
+        dest.writeList(getIntTags());
         dest.writeInt(getCountSerias());
         dest.writeList(getListUnderTaskChecked());
         dest.writeList(getListNotify());
@@ -222,7 +218,7 @@ public abstract class AbsTask implements Parcelable {
         if(TaskNoInitInDB) {
             SQLiteDatabase dbLite = ManagerDB.getManagerDB(null).getDbWriteble();
             dbLite.execSQL(ManagerDB.INSERT_STRING_TASK, new String[]{getName(), getDescription(), String.valueOf(getPriority().ordinal())});
-            initIdTask(dbLite);
+            initIdTask();
             TaskNoInitInDB = false;
             ManagerDB.getManagerDB(null).updateTaskCountSeriesDb(getId(), getCountSerias());
         }
@@ -245,10 +241,9 @@ public abstract class AbsTask implements Parcelable {
 
     /**
      * init field id
-     * @param db object db
      */
-    protected void initIdTask(SQLiteDatabase db){
-        Cursor c = db.rawQuery(ManagerDB.SEL_STRING_GETTASK,null);
+    protected void initIdTask(){
+        Cursor c = ManagerDB.getManagerDB(null).getDbReadable().rawQuery(ManagerDB.SEL_STRING_GETTASK,null);
         c.moveToLast();
         setId(c.getInt(0));
         NonLinkedWithDBId = false;
@@ -280,18 +275,19 @@ public abstract class AbsTask implements Parcelable {
         setPriority(priority);
     }
 
-    @BindingAdapter({"app:selectSpin"})
-    public static void selectSpin(Spinner spin, int priority){
-        spin.setSelection(priority);
+
+    @BindingAdapter({"selectSpin"})
+    public static void selectSpin(Spinner spin, int pos){
+        spin.setSelection(pos);
     }
 
-    public void addCheck(View view, ListView listView, CheckListAdapter checkListAdapter){
+    private void addCheck(View view, ListView listView, CheckListAdapter checkListAdapter){
         QDialog.SetterGetterDialogEdit dialogSG = new QDialog.SetterGetterDialogEdit();
         QDialog.Builder builder = QDialog.getBuilder();
         builder.setTitle(view.getResources().getString(R.string.eventAddNewUnderTask))
                 .setCancelable(true)
                 .setSetterGetterDialog(dialogSG)
-                .setPositiveBtn((dialog,which)->{
+                .setOnClickPositiveBtn((dialog, which)->{
                     if(!dialogSG.getUserInputString().isEmpty()) {
                         getListUnderTaskChecked().add(new CheckTask(dialogSG.getUserInputString()));
                         checkListAdapter.notifyDataSetChanged();
@@ -304,21 +300,21 @@ public abstract class AbsTask implements Parcelable {
         alertDialog.show();
     }
 
-    public void clearCheck(View view, ListView listView, CheckListAdapter checkListAdapter){
+    private void clearCheck(View view, ListView listView, CheckListAdapter checkListAdapter){
         QDialog.Builder builder = QDialog.getBuilder();
         builder.setTitle(view.getResources().getString(R.string.eventClearUnderTask))
                 .setMessage(view.getResources().getString(R.string.askClearUnderTask))
                 .setCancelable(true)
-                .setPositiveBtn(((dialog, which) -> {
+                .setOnClickPositiveBtn(((dialog, which) -> {
                     getListUnderTaskChecked().clear();
                     checkListAdapter.notifyDataSetChanged();
                     MainAppActivity.setListViewHeightBasedOnChildren(listView);
                 }));
-        AlertDialog.Builder alertDialog = builder.buildDialog(view,QDialog.DIALOG_QUATION);
+        AlertDialog.Builder alertDialog = QDialog.make(builder, view, QDialog.DIALOG_QUATION);
         alertDialog.show();
     }
 
-    public void  addNotify(View view, ListView listView, NotifyAdapterList notifyAdapterList){
+    private void  addNotify(View view, ListView listView, NotifyAdapterList notifyAdapterList){
         Calendar cldDate = Calendar.getInstance();
 
         QDialog.Builder builder = QDialog.getBuilder();
@@ -334,12 +330,12 @@ public abstract class AbsTask implements Parcelable {
                 .setSetterGetterDialog(dialogSG)
                 .setIdView(R.layout.dialog_notify_view)
                 .setCancelable(true)
-                .setPositiveBtn((dialog,which)->{
+                .setOnClickPositiveBtn((dialog, which)->{
                     Object result = dialogSG.getValueView(0,"getText",null,null);
-                    String title = result.toString();
+                    String title = (result!=null)? result.toString() : "";
 
                     result = dialogSG.getValueView(1, "getText",null,null);
-                    String message = result.toString();
+                    String message = (result!=null)? result.toString() : "";
 
                     if(title.isEmpty()){
                         Toast.makeText(view.getContext(), R.string.eventEmptyField, Toast.LENGTH_LONG).show();
@@ -355,7 +351,7 @@ public abstract class AbsTask implements Parcelable {
                     MainAppActivity.setListViewHeightBasedOnChildren(listView);
                     dialog.dismiss();
                 });
-        AlertDialog.Builder dialog = builder.buildDialog(view,QDialog.DIALOG_CUSTOM);
+        AlertDialog.Builder dialog = QDialog.make(builder, view, QDialog.DIALOG_CUSTOM);
         dialogSG.setValueView(4,"setOnClickListener",
                 new Class[]{View.OnClickListener.class},
                 new View.OnClickListener[]{(v2) ->{
@@ -398,17 +394,17 @@ public abstract class AbsTask implements Parcelable {
     }
 
 
-    public void clearNotify(View view, ListView listView, NotifyAdapterList notifyAdapterList){
+    private void clearNotify(View view, ListView listView, NotifyAdapterList notifyAdapterList){
         QDialog.Builder builder = QDialog.getBuilder();
         builder.setTitle(view.getResources().getString(R.string.eventClearNotification))
                 .setMessage(view.getResources().getString(R.string.askClearNotification))
                 .setCancelable(true)
-                .setPositiveBtn(((dialog, which) -> {
+                .setOnClickPositiveBtn(((dialog, which) -> {
                     getListNotify().clear();
                     notifyAdapterList.notifyDataSetChanged();
                     MainAppActivity.setListViewHeightBasedOnChildren(listView);
                 }));
-        AlertDialog.Builder alertDialog = builder.buildDialog(view,QDialog.DIALOG_QUATION);
+        AlertDialog.Builder alertDialog = QDialog.make(builder, view, QDialog.DIALOG_QUATION);
         alertDialog.show();
     }
 
@@ -483,12 +479,13 @@ public abstract class AbsTask implements Parcelable {
             LinearLayout.LayoutParams layout = new LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.WRAP_CONTENT,LinearLayout.LayoutParams.WRAP_CONTENT);
             float margin = 5;
-            float textSize = 9;
+            float textSize = 10;
             margin = dp * margin;
             layout.setMargins((int) margin,0,0,0);
-            for(String tag : object.getTags().values()){
+            linearLayout.removeAllViews();
+            for(Integer tagId : object.getIntTags()){
                 TextView textView = new TextView(linearLayout.getContext());
-                textView.setText(tag);
+                textView.setText(TagManager.getStringTag(tagId));
                 textView.setLayoutParams(layout);
                 textView.setTextSize(TypedValue.COMPLEX_UNIT_SP,textSize);
                 linearLayout.addView(textView);
@@ -503,20 +500,25 @@ public abstract class AbsTask implements Parcelable {
         }
         public void setCountItem(View view,AbsTask task){
             TextView textCount = view.findViewById(R.id.countSerias);
-            textCount.setText(Integer.toString(task.getCountSerias()));
+            textCount.setText(String.valueOf(task.getCountSerias()));
         }
         public void setControlItem(View view){
 
         }
         public abstract View createBasicViewItem();
-        public View createViewItemTask(){
+
+        public final View createViewItemTask(){
             View view = createBasicViewItem();
+            setViewItemTask(view);
+            return view;
+        }
+
+        public void setViewItemTask(View view){
             setControlItem(view);
             setContentItem(view);
             setCountItem(view,object);
             setTagItem(view);
             setDateItem(view);
-            return view;
         }
 
         public abstract ViewDataBinding getBindingViewerHeader(Activity activity);
@@ -527,11 +529,11 @@ public abstract class AbsTask implements Parcelable {
             TextView countSeries = view.findViewById(R.id.countSerias);
             countSeries.setText(String.valueOf(task.getCountSerias()));
 
-            ArrayAdapter<String> adapterTag =
+         /*   ArrayAdapter<String> adapterTag =
                     new ArrayAdapter<>(view.getContext(), android.R.layout.simple_list_item_checked, new String[]{});
             ListView tagList = view.findViewById(R.id.panelTag);
             tagList.setAdapter(adapterTag);
-
+            */
             if(task.getListUnderTaskChecked().size() > 0){
                 CheckListAdapter adapterCheckList = new CheckListAdapter(view.getContext(),getObject().getListUnderTaskChecked());
                 adapterCheckList.setEditable(false);
@@ -564,6 +566,27 @@ public abstract class AbsTask implements Parcelable {
 
             TextView countSeries = view.findViewById(R.id.countSerias);
             countSeries.setText(String.valueOf(task.getCountSerias()));
+
+            ArrayAdapter<String> adapterTag =
+                    new ArrayAdapter<>(view.getContext(), android.R.layout.simple_list_item_checked, TagManager.getListNameTag());
+            ListView tagList = view.findViewById(R.id.tagList);
+            tagList.setAdapter(adapterTag);
+            tagList.setChoiceMode(AbsListView.CHOICE_MODE_MULTIPLE);
+            tagList.setOnItemClickListener((parent, v, pos, id)->{
+                List<Integer> listKeys = TagManager.getListIdTag();
+                CheckedTextView checked = (CheckedTextView) v;
+                int key = listKeys.get(pos);
+                    if(checked.isChecked()){
+                        if(!task.getIntTags().contains(key))
+                            task.getIntTags().add(key);
+                    }
+                    else {
+                        if(task.getIntTags().contains(key));
+                            task.getIntTags().remove(key);
+                    }
+            });
+            MainAppActivity.setListViewHeightBasedOnChildren(tagList);
+
 
             Spinner spinner = view.findViewById(R.id.spinnerTypePriority);
             ArrayAdapter adapter = new AdapterArrayPriorityType(view.getContext(),

@@ -3,6 +3,7 @@ package appmanagmenttime.ilagoproject.com.managertimeapplicationtimeup;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -11,6 +12,7 @@ import android.widget.Button;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import AssambleClassManagmentApp.AbsTask;
 import AssambleClassManagmentApp.Daily;
@@ -18,6 +20,7 @@ import AssambleClassManagmentApp.Goal;
 import AssambleClassManagmentApp.Habit;
 import AssambleClassManagmentApp.TagManager;
 import AssambleClassManagmentApp.TaskManager;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.Toolbar;
@@ -37,6 +40,7 @@ public class MainAppActivity extends AppCompatActivity implements ManagerDB.Hand
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
     }
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,6 +49,8 @@ public class MainAppActivity extends AppCompatActivity implements ManagerDB.Hand
         TagManager.initTags();
         dbManager = ManagerDB.getManagerDB(new DBManagmentTime(this));
         dbManager.setHandlerUpdateTagInDb(this);
+        TagManager.initTags();
+        TagManager.update();
         taskManager = new TaskManager();
         dbManager.setHandlerUpdateTaskInDb(taskManager);
         taskManager.setHandlerUpdateTaskInDb(this);
@@ -68,6 +74,30 @@ public class MainAppActivity extends AppCompatActivity implements ManagerDB.Hand
         Intent intent = new Intent(MainAppActivity.this, cls);
         intent.putExtra("object", obj);
         startActivity(intent);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.addTag:
+                QDialog.SetterGetterDialogEdit dialogSG = new QDialog.SetterGetterDialogEdit();
+                QDialog.Builder builder = QDialog.getBuilder();
+                builder.setTitle(getResources().getString(R.string.eventAddTag))
+                        .setCancelable(true)
+                        .setSetterGetterDialog(dialogSG)
+                        .setOnClickPositiveBtn((dialog, which)->{
+                            if(!dialogSG.getUserInputString().isEmpty()) {
+                                String nameTag = dialogSG.getUserInputString();
+                                TagManager.addTag(nameTag);
+                            }else Toast.makeText(this,R.string.eventEmptyField,Toast.LENGTH_LONG).show();
+                            dialog.dismiss();
+                        });
+                AlertDialog.Builder alertDialog = builder.buildDialog(findViewById(android.R.id.content),QDialog.DIALOG_INPUT_STRING);
+                dialogSG.setLabelString(getResources().getString(R.string.fieldEnterNameUnderTask));
+                alertDialog.show();
+                break;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -162,6 +192,12 @@ public class MainAppActivity extends AppCompatActivity implements ManagerDB.Hand
         if((flag & ManagerDB.DELETE) == ManagerDB.DELETE)
             TagManager.getTags().clear();
         TagManager.update();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        dbManager.close();
     }
 
     public static void setListViewHeightBasedOnChildren (ListView listView) {

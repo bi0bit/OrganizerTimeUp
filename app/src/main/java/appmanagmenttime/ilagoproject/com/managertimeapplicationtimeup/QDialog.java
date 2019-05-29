@@ -1,6 +1,5 @@
 package appmanagmenttime.ilagoproject.com.managertimeapplicationtimeup;
 
-import android.content.DialogInterface;
 import android.graphics.drawable.Drawable;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
@@ -26,55 +25,52 @@ import androidx.annotation.StyleRes;
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.content.ContextCompat;
 
+import static android.content.DialogInterface.OnClickListener;
+
 public final class QDialog {
 
     @IntDef({DIALOG_INPUT_STRING,DIALOG_QUATION,DIALOG_LIST,DIALOG_CUSTOM})
     @Retention(RetentionPolicy.SOURCE)
-    public @interface DialogType{}
+    private @interface DialogType{}
 
     public static final int DIALOG_INPUT_STRING = 0b01;
     public static final int DIALOG_QUATION = 0b10;
     public static final int DIALOG_LIST = 0b11;
     public static final int DIALOG_CUSTOM = 0b100;
     private static final int STANDART_STYLEDIALOG = R.style.appThemeDialog;
-    private static final DialogInterface.OnClickListener STANDART_ONCLICK_CANCEL = (dialog, which) -> dialog.cancel();
-    private static int DIALOG_BTN_STR_OK = R.string.dialog_OK;
-    private static int DIALOG_BTN_STR_CANCEL = R.string.dialog_CANCEL;
-    private static int DIALOG_BTN_STR_CONFIRM = R.string.dialog_CONFIRM;
-    private static int DIALOG_BTN_STR_BACK = R.string.dialog_BACK;
-    private static int DIALOG_BTN_STR_YES = R.string.dialog_YES;
-    private static int DIALOG_BTN_STR_NO = R.string.dialog_NO;
-
-    private static final Builder builder = new Builder();
+    private static final OnClickListener STANDART_ONCLICK_BUTTON = (dialog, which) -> dialog.cancel();
 
     public static Builder getBuilder() {
-        return builder;
+        return new Builder();
     }
-    public static AlertDialog.Builder make(View view, @DialogType int dialogType) {
-        return getBuilder().buildDialog(view, dialogType);
+
+    @NonNull
+    public static AlertDialog.Builder make(@NonNull Builder builder, View view, @DialogType int dialogType) {
+        return builder.buildDialog(view, dialogType);
     }
 
     public static class Builder{
-        protected boolean cancelable = false;
-        protected String message;
-        protected String title;
+        private boolean cancelable = false;
+        private String message;
+        private String title;
          @StringRes
-        protected int neutralBtnStr,positiveBtnStr,negativeBtnStr;
+        private int neutralBtnStr,positiveBtnStr,negativeBtnStr;
          @LayoutRes
-        protected int idView;
+        private int idView;
          @StyleRes
-        protected int styleDialog;
+        private int styleDialog;
+        private String[] items;
 
 
-        protected int color;
+        private int color;
 
-        protected Drawable iconDialog;
+        private Drawable iconDialog;
 
-        protected SetterGetterDialog setterGetterDialog;
-        protected DialogInterface.OnClickListener positiveBtn;
-        protected DialogInterface.OnClickListener negativeBtn;
-        protected DialogInterface.OnClickListener neutralBtn;
-        protected DialogInterface.OnClickListener onClickItem;
+        private SetterGetterDialog setterGetterDialog;
+        private OnClickListener onClickPositiveBtn;
+        private OnClickListener onClickNegativeBtn;
+        private OnClickListener onClickNeutralBtn;
+        private OnClickListener onClickItem;
 
         Builder(){
             reset();
@@ -86,13 +82,14 @@ public final class QDialog {
             title = "";
             color = R.color.GreenTextApp;
             styleDialog = STANDART_STYLEDIALOG;
-            negativeBtn = STANDART_ONCLICK_CANCEL;
-            positiveBtn = null;
-            neutralBtn = null;
+            iconDialog = null;
+            onClickNegativeBtn = null;
+            onClickPositiveBtn = null;
+            onClickNeutralBtn = null;
             onClickItem = null;
-            neutralBtnStr = DIALOG_BTN_STR_BACK;
-            positiveBtnStr = DIALOG_BTN_STR_OK;
-            negativeBtnStr = DIALOG_BTN_STR_CANCEL;
+            neutralBtnStr = R.string.dialog_CANCEL;
+            positiveBtnStr = R.string.dialog_OK;
+            negativeBtnStr = R.string.dialog_BACK;
         }
 
         public int getColorTitle() {
@@ -131,6 +128,11 @@ public final class QDialog {
             return this;
         }
 
+        public Builder setItems(String... items) {
+            this.items = items;
+            return this;
+        }
+
         public String getTitle() {
             return title;
         }
@@ -140,26 +142,14 @@ public final class QDialog {
             return this;
         }
 
-        public int getNeutralBtnStr() {
-            return neutralBtnStr;
-        }
-
         public Builder setNeutralBtnStr(int neutralBtnStr) {
             this.neutralBtnStr = neutralBtnStr;
             return this;
         }
 
-        public int getPositiveBtnStr() {
-            return positiveBtnStr;
-        }
-
         public Builder setPositiveBtnStr(int positiveBtnStr) {
             this.positiveBtnStr = positiveBtnStr;
             return this;
-        }
-
-        public int getNegativeBtnStr() {
-            return negativeBtnStr;
         }
 
         public Builder setNegativeBtnStr(int negativeBtnStr) {
@@ -194,79 +184,68 @@ public final class QDialog {
             return this;
         }
 
-        public DialogInterface.OnClickListener getPositiveBtn() {
-            return positiveBtn;
-        }
-
-        public Builder setPositiveBtn(DialogInterface.OnClickListener positiveBtn) {
-            this.positiveBtn = positiveBtn;
+        public Builder setOnClickPositiveBtn(OnClickListener onClickPositiveBtn) {
+            this.onClickPositiveBtn = onClickPositiveBtn;
             return this;
         }
 
-        public DialogInterface.OnClickListener getNegativeBtn() {
-            return negativeBtn;
-        }
-
-        public Builder setNegativeBtn(DialogInterface.OnClickListener negativeBtn) {
-            this.negativeBtn = negativeBtn;
+        public Builder setOnClickNegativeBtn(OnClickListener onClickNegativeBtn) {
+            this.onClickNegativeBtn = onClickNegativeBtn;
             return this;
         }
 
-        public DialogInterface.OnClickListener getOnClickItem() {
-            return onClickItem;
-        }
 
-        public Builder setOnClickItem(DialogInterface.OnClickListener onClickItem) {
+        public Builder setOnClickItem(OnClickListener onClickItem) {
             this.onClickItem = onClickItem;
             return this;
         }
 
-        public DialogInterface.OnClickListener getNeutralBtn() {
-            return neutralBtn;
-        }
-
-        public Builder setNeutralBtn(DialogInterface.OnClickListener neutralBtn) {
-            this.neutralBtn = neutralBtn;
+        public Builder setOnClickNeutralBtn(OnClickListener onClickNeutralBtn) {
+            this.onClickNeutralBtn = onClickNeutralBtn;
             return this;
         }
 
         public AlertDialog.Builder buildDialog(View viewParent, @DialogType int createDialog){
-            AlertDialog.Builder dialogBuilder =  new AlertDialog.Builder(viewParent.getContext(),styleDialog);;
+            AlertDialog.Builder dialogBuilder =  new AlertDialog.Builder(viewParent.getContext(),styleDialog);
             View viewInflated;
-            SpannableStringBuilder ssbTitle = new SpannableStringBuilder(title);
+            SpannableStringBuilder ssbTitle = new SpannableStringBuilder(getTitle());
             ssbTitle.setSpan(
-                    new ForegroundColorSpan(ContextCompat.getColor(viewParent.getContext(),color)),
+                    new ForegroundColorSpan(ContextCompat.getColor(viewParent.getContext(),getColorTitle())),
                     0,
-                    title.length(),
+                    getTitle().length(),
                     Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-            dialogBuilder.setTitle(ssbTitle);
+            dialogBuilder.setTitle(ssbTitle)
+                    .setCancelable(isCancelable())
+                    .setPositiveButton(positiveBtnStr,(onClickPositiveBtn != null)? onClickPositiveBtn : STANDART_ONCLICK_BUTTON);
+            if (getIconDialog() != null) {
+                dialogBuilder.setIcon(getIconDialog());
+            }
+            if(onClickNegativeBtn != null){
+                dialogBuilder.setNegativeButton(negativeBtnStr, onClickNegativeBtn);
+            }
+            if(onClickNeutralBtn != null){
+                dialogBuilder.setNeutralButton(neutralBtnStr, onClickNeutralBtn);
+            }
             switch (createDialog){
                 case DIALOG_INPUT_STRING:
                     viewInflated = LayoutInflater.from(viewParent.getContext()).inflate(R.layout.dialog_input_string, (ViewGroup) viewParent,false);
-                    if(setterGetterDialog != null)
-                        setterGetterDialog.setView(viewInflated);
-                    dialogBuilder.setView(viewInflated)
-                            .setCancelable(cancelable)
-                            .setPositiveButton(positiveBtnStr, positiveBtn)
-                            .setNegativeButton(negativeBtnStr, negativeBtn);
+                    if(setterGetterDialog == null)
+                        setSetterGetterDialog(new SetterGetterDialogEdit());
+                    setterGetterDialog.setView(viewInflated);
+                    dialogBuilder.setView(viewInflated);
                     break;
                 case DIALOG_QUATION:
-                    dialogBuilder.setMessage(message)
-                            .setCancelable(true)
-                            .setNegativeButton(negativeBtnStr,negativeBtn);
-                    if(positiveBtn != null) dialogBuilder.setPositiveButton(positiveBtnStr,positiveBtn);
-                    if(neutralBtn != null) dialogBuilder.setNeutralButton(neutralBtnStr, neutralBtn);
+                    dialogBuilder.setMessage(message);
                     break;
                 case DIALOG_LIST:
+                    dialogBuilder.setItems(items, (onClickItem != null)? onClickItem : STANDART_ONCLICK_BUTTON);
                     break;
                 case DIALOG_CUSTOM:
                     viewInflated = LayoutInflater.from(viewParent.getContext()).inflate(getIdView(), (ViewGroup) viewParent,false);
-                    if(setterGetterDialog != null)
-                        setterGetterDialog.setView(viewInflated);
-                    dialogBuilder.setView(viewInflated)
-                            .setCancelable(cancelable)
-                            .setPositiveButton(positiveBtnStr, positiveBtn)
-                            .setNegativeButton(negativeBtnStr, negativeBtn);
+                    if(setterGetterDialog == null)
+                        setSetterGetterDialog(new SetterGetterDialogCustom());
+                    setterGetterDialog.setView(viewInflated);
+                    dialogBuilder.setView(viewInflated);
                     break;
             }
             return dialogBuilder;
@@ -285,11 +264,13 @@ public final class QDialog {
             this.valuesId = valuesId;
         }
 
+        @NonNull
         public View getValuesView(int pos) {
+            if (pos<0 || pos > getLengthValues() - 1) throw new NullPointerException();
             return valuesView[pos];
         }
 
-        public int getLengthValues(){
+        private int getLengthValues(){
             return (valuesView != null)? valuesView.length : 0;
         }
 
@@ -304,11 +285,12 @@ public final class QDialog {
         public void setValueView(int pos, String mutatorName, @NonNull Class<?>[] paramTypes, @NonNull Object[] objectSet){
             View view = getValuesView(pos);
             Class<?> cls = view.getClass();
-            Method method = null;
+            Method method;
             try {
                 method = cls.getMethod(mutatorName,paramTypes);
             } catch (NoSuchMethodException e) {
                 e.printStackTrace();
+                throw new NullPointerException(e.getMessage());
             }
 
             try {
@@ -321,14 +303,15 @@ public final class QDialog {
         }
 
         @Nullable
-        public Object getValueView(int pos, String accesorName, Class<?>[] paramTypes, Object[] objectSet){
+        public Object getValueView(int pos, String accesorName, @Nullable Class<?>[] paramTypes, @Nullable Object[] objectSet){
             View view = getValuesView(pos);
             Class<?> cls = view.getClass();
-            Method method = null;
+            Method method;
             try {
                 method = cls.getMethod(accesorName,paramTypes);
             } catch (NoSuchMethodException e) {
                 e.printStackTrace();
+                throw new NullPointerException(e.getMessage());
             }
             Object obj = null;
             try {
@@ -366,9 +349,7 @@ public final class QDialog {
           if(label != null)
               label.setText(text);
         }
-        public String getLabelString(){
-           return (label != null)? label.getText().toString() : null;
-        }
+
         @Override
         protected void setView(View view){
             super.setView(view);
@@ -379,7 +360,6 @@ public final class QDialog {
 
     public static abstract class SetterGetterDialog{
         View view;
-        public SetterGetterDialog(){}
         protected void setView(View view){
             this.view = view;
         }
