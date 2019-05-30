@@ -1,13 +1,12 @@
 package AssambleClassManagmentApp;
 
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.util.SparseArray;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import appmanagmenttime.ilagoproject.com.managertimeapplicationtimeup.ManagerDB;
+import by.ilago_project.timeUp_ManagerTime.ManagerDB;
 
 public class TagManager {
     private volatile static TagManager object = null;
@@ -60,6 +59,7 @@ public class TagManager {
 
     public static void deleteTag(int idTag){
         ManagerDB.getManagerDB(null).deleteTag(idTag);
+        getTags().clear();
         update();
     }
 
@@ -73,7 +73,6 @@ public class TagManager {
 
     public static void update(){
         Cursor  c = ManagerDB.getManagerDB(null).getCursorTag();
-        getTags().clear();
         while(c.moveToNext()){
             getTags().put(c.getInt(c.getColumnIndex(ManagerDB.ID_COLUMN)),
                     c.getString(c.getColumnIndex(ManagerDB.NAME_COLUMN)));
@@ -81,9 +80,7 @@ public class TagManager {
     }
 
     public static void rename(int idTag, String newName){
-        SQLiteDatabase dbLite = ManagerDB.getManagerDB(null).getDbWriteble();
-        dbLite.execSQL(ManagerDB.UPDATE_STRING_TAG, new String[]{newName, String.valueOf(idTag)});
+        ManagerDB.getManagerDB(null).updateTag(idTag, newName);
         getTags().put(idTag, newName);
-
     }
 }

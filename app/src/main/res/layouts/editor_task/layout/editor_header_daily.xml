@@ -12,7 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
-        <include layout="@layout/editor_header_standart_task"
+        <include layout="@layout/editor_header_standard_task"
             app:task ="@{task}"/>
 
         <LinearLayout
@@ -27,16 +27,11 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/fieldExecute"/>
+                android:text="@string/fieldExecuteDaily"/>
         </LinearLayout>
         <TextView
             android:id="@+id/dateDaily"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
-        <LinearLayout
-            android:id="@+id/panelDailyDay"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"></LinearLayout>
     </LinearLayout>
 </layout>

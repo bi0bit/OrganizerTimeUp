@@ -1,5 +1,6 @@
 package AssambleClassManagmentApp;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -16,17 +17,20 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.databinding.ViewDataBinding;
-import appmanagmenttime.ilagoproject.com.managertimeapplicationtimeup.ManagerDB;
-import appmanagmenttime.ilagoproject.com.managertimeapplicationtimeup.R;
-import appmanagmenttime.ilagoproject.com.managertimeapplicationtimeup.databinding.EditorHeaderDailyBinding;
-import appmanagmenttime.ilagoproject.com.managertimeapplicationtimeup.databinding.ViewerHeaderDailyBinding;
+import by.ilago_project.timeUp_ManagerTime.databinding.EditorHeaderDailyBinding;
+import by.ilago_project.timeUp_ManagerTime.databinding.ViewerHeaderDailyBinding;
+import by.ilago_project.timeUp_ManagerTime.ManagerDB;
+import by.ilago_project.timeUp_ManagerTime.R;
+
 
 public class Daily extends AbsTask {
 
 
-    private static AbsTask.BuilderView builderView;
+    @SuppressLint("StaticFieldLeak")
+    private static BuilderView builderView;
     private List<Date> dates;
     private Type_Daily typeDaily;
 
@@ -34,11 +38,11 @@ public class Daily extends AbsTask {
         super(id, Type_Task.DAILY);
         typeDaily = Type_Daily.EVERDAY;
         dates = new ArrayList<>();
-        setCountSerias(0);
+        setCountSeries(0);
     }
 
     static{
-        builderView = new Daily.BuilderView(null,null,null,false);
+        builderView = new Daily.BuilderView(null,null,null);
     }
 
     protected Daily(Parcel in) {
@@ -59,11 +63,14 @@ public class Daily extends AbsTask {
         }
     };
 
+    public static BuilderView getBuilder(){
+        return  builderView;
+    }
+
     @Override
     public Cursor getCursorOnTask(){
-        Cursor c = ManagerDB.getManagerDB(null).getDbReadable()
+        return ManagerDB.getManagerDB(null).getDbReadable()
                 .rawQuery(ManagerDB.SEL_STRING_GETDAILY,new String[]{String.valueOf(getId())});
-        return c;
     }
 
     @Override
@@ -73,7 +80,7 @@ public class Daily extends AbsTask {
 
     @Override
     public void setBuilderView(AbsTask.BuilderView<? extends AbsTask> builder) {
-        builderView = builder;
+        builderView = (BuilderView) builder;
     }
 
     @Override
@@ -142,8 +149,8 @@ public class Daily extends AbsTask {
      */
     public static class BuilderView extends AbsTask.BuilderView<Daily>{
 
-        BuilderView(Daily object,  LayoutInflater inflater, ViewGroup parent, boolean attachToRoot) {
-            super(object, inflater, parent, attachToRoot);
+        BuilderView(@Nullable Daily object, @Nullable LayoutInflater inflater, @Nullable ViewGroup parent) {
+            super(object, inflater, parent);
         }
 
         @Override

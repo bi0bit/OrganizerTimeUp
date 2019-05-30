@@ -1,16 +1,14 @@
-<layout  xmlns:android="http://schemas.android.com/apk/res/android">
-    <data>
-    </data>
-    <LinearLayout
-        android:id="@+id/tagPanel"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="right|center_vertical"
-        android:orientation="horizontal"
-        android:paddingBottom="2dp"
-        android:paddingLeft="7dp"
-        android:paddingTop="2dp"
-        android:paddingRight="7dp">
-    </LinearLayout>
-
-</layout>
+<com.google.android.flexbox.FlexboxLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/tagPanel"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    app:flexWrap="wrap"
+    app:layout_flexGrow="2"
+    app:alignItems="flex_start"
+    android:paddingBottom="2dp"
+    android:paddingLeft="7dp"
+    android:paddingTop="2dp"
+    android:paddingRight="7dp">
+</com.google.android.flexbox.FlexboxLayout>

@@ -1,4 +1,4 @@
-package appmanagmenttime.ilagoproject.com.managertimeapplicationtimeup;
+package by.ilago_project.timeUp_ManagerTime;
 
 import android.content.Context;
 
@@ -22,6 +22,6 @@ public class ExampleInstrumentedTest {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getTargetContext();
 
-        assertEquals("appmanagmenttime.ilagoproject.com.managertimeapplicationtimeup", appContext.getPackageName());
+        assertEquals("appmanagmenttime.ilagoproject.com", appContext.getPackageName());
     }
 }

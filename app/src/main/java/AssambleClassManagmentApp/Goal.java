@@ -1,5 +1,6 @@
 package AssambleClassManagmentApp;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.database.Cursor;
@@ -19,15 +20,16 @@ import java.util.Locale;
 
 import androidx.databinding.DataBindingUtil;
 import androidx.databinding.ViewDataBinding;
-import appmanagmenttime.ilagoproject.com.managertimeapplicationtimeup.ManagerDB;
-import appmanagmenttime.ilagoproject.com.managertimeapplicationtimeup.R;
-import appmanagmenttime.ilagoproject.com.managertimeapplicationtimeup.databinding.EditorHeaderGoalBinding;
-import appmanagmenttime.ilagoproject.com.managertimeapplicationtimeup.databinding.ViewerHeaderGoalBinding;
+import by.ilago_project.timeUp_ManagerTime.databinding.EditorHeaderGoalBinding;
+import by.ilago_project.timeUp_ManagerTime.databinding.ViewerHeaderGoalBinding;
+import by.ilago_project.timeUp_ManagerTime.ManagerDB;
+import by.ilago_project.timeUp_ManagerTime.R;
 
 public class Goal  extends AbsTask{
 
 
-    private static AbsTask.BuilderView builderView;
+    @SuppressLint("StaticFieldLeak")
+    private static BuilderView builderView;
     private long dateDeadLine;
     private long dateStart;
     public Goal(int id) {
@@ -37,9 +39,13 @@ public class Goal  extends AbsTask{
     }
 
     static{
-        builderView = new Goal.BuilderView(null,null,null,false);
+        builderView = new Goal.BuilderView(null,null,null);
     }
 
+
+    public static BuilderView getBuilder(){
+        return builderView;
+    }
 
     protected Goal(Parcel in) {
         super(in,Type_Task.GOAL);
@@ -64,7 +70,7 @@ public class Goal  extends AbsTask{
     }
 
     public String getEndDate(String stringPattern) {
-        SimpleDateFormat dateFormat = new SimpleDateFormat(stringPattern);
+        SimpleDateFormat dateFormat = new SimpleDateFormat(stringPattern, Locale.getDefault());
         Date date = new Date(getEndDate());
         return dateFormat.format(date);
     }
@@ -78,7 +84,7 @@ public class Goal  extends AbsTask{
     }
 
     public String getStartDate(String stringPattern) {
-        SimpleDateFormat dateFormat = new SimpleDateFormat(stringPattern);
+        SimpleDateFormat dateFormat = new SimpleDateFormat(stringPattern, Locale.getDefault());
         Date date = new Date(getStartDate());
         return dateFormat.format(date);
     }
@@ -99,9 +105,8 @@ public class Goal  extends AbsTask{
 
     @Override
     public Cursor getCursorOnTask(){
-        Cursor c = ManagerDB.getManagerDB(null).getDbReadable()
+        return ManagerDB.getManagerDB(null).getDbReadable()
                 .rawQuery(ManagerDB.SEL_STRING_GETGOAL,new String[]{String.valueOf(getId())});
-        return c;
     }
 
     @Override
@@ -111,7 +116,7 @@ public class Goal  extends AbsTask{
 
     @Override
     public void setBuilderView(AbsTask.BuilderView<? extends AbsTask> builder) {
-        builderView = builder;
+        builderView = (BuilderView) builder;
     }
 
     @Override
@@ -190,8 +195,8 @@ public class Goal  extends AbsTask{
     public static class BuilderView extends AbsTask.BuilderView<Goal>{
 
 
-        BuilderView(Goal object, LayoutInflater inflater, ViewGroup parent, boolean attachToRoot) {
-            super(object,inflater,parent,attachToRoot);
+        BuilderView(Goal object, LayoutInflater inflater, ViewGroup parent) {
+            super(object,inflater,parent);
         }
 
         @Override
@@ -238,7 +243,6 @@ public class Goal  extends AbsTask{
 
         @Override
         public void setCountItem(View view,AbsTask task) {
-            return;
         }
 
 

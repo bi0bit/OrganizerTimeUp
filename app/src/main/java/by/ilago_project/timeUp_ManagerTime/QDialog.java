@@ -1,4 +1,4 @@
-package appmanagmenttime.ilagoproject.com.managertimeapplicationtimeup;
+package by.ilago_project.timeUp_ManagerTime;
 
 import android.graphics.drawable.Drawable;
 import android.text.SpannableStringBuilder;
@@ -37,8 +37,8 @@ public final class QDialog {
     public static final int DIALOG_QUATION = 0b10;
     public static final int DIALOG_LIST = 0b11;
     public static final int DIALOG_CUSTOM = 0b100;
-    private static final int STANDART_STYLEDIALOG = R.style.appThemeDialog;
-    private static final OnClickListener STANDART_ONCLICK_BUTTON = (dialog, which) -> dialog.cancel();
+    public static final OnClickListener STANDARD_ONCLICK_BUTTON = (dialog, which) -> dialog.cancel();
+    private static final int standard_STYLEDIALOG = R.style.appThemeDialog;
 
     public static Builder getBuilder() {
         return new Builder();
@@ -81,9 +81,9 @@ public final class QDialog {
             message = "";
             title = "";
             color = R.color.GreenTextApp;
-            styleDialog = STANDART_STYLEDIALOG;
+            styleDialog = standard_STYLEDIALOG;
             iconDialog = null;
-            onClickNegativeBtn = null;
+            onClickNegativeBtn = STANDARD_ONCLICK_BUTTON;
             onClickPositiveBtn = null;
             onClickNeutralBtn = null;
             onClickItem = null;
@@ -166,10 +166,6 @@ public final class QDialog {
             return this;
         }
 
-        public int getStyleDialog() {
-            return styleDialog;
-        }
-
         public Builder setStyleDialog(int styleDialog) {
             this.styleDialog = styleDialog;
             return this;
@@ -216,13 +212,13 @@ public final class QDialog {
                     Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
             dialogBuilder.setTitle(ssbTitle)
                     .setCancelable(isCancelable())
-                    .setPositiveButton(positiveBtnStr,(onClickPositiveBtn != null)? onClickPositiveBtn : STANDART_ONCLICK_BUTTON);
+                    .setPositiveButton(positiveBtnStr,(onClickPositiveBtn != null)? onClickPositiveBtn : STANDARD_ONCLICK_BUTTON)
+                    .setNegativeButton(negativeBtnStr, onClickNegativeBtn);
+
             if (getIconDialog() != null) {
                 dialogBuilder.setIcon(getIconDialog());
             }
-            if(onClickNegativeBtn != null){
-                dialogBuilder.setNegativeButton(negativeBtnStr, onClickNegativeBtn);
-            }
+
             if(onClickNeutralBtn != null){
                 dialogBuilder.setNeutralButton(neutralBtnStr, onClickNeutralBtn);
             }
@@ -238,7 +234,7 @@ public final class QDialog {
                     dialogBuilder.setMessage(message);
                     break;
                 case DIALOG_LIST:
-                    dialogBuilder.setItems(items, (onClickItem != null)? onClickItem : STANDART_ONCLICK_BUTTON);
+                    dialogBuilder.setItems(items, (onClickItem != null)? onClickItem : STANDARD_ONCLICK_BUTTON);
                     break;
                 case DIALOG_CUSTOM:
                     viewInflated = LayoutInflater.from(viewParent.getContext()).inflate(getIdView(), (ViewGroup) viewParent,false);
@@ -306,14 +302,14 @@ public final class QDialog {
         public Object getValueView(int pos, String accesorName, @Nullable Class<?>[] paramTypes, @Nullable Object[] objectSet){
             View view = getValuesView(pos);
             Class<?> cls = view.getClass();
-            Method method;
+            Method method = null;
             try {
                 method = cls.getMethod(accesorName,paramTypes);
             } catch (NoSuchMethodException e) {
                 e.printStackTrace();
-                throw new NullPointerException(e.getMessage());
             }
             Object obj = null;
+            if(method != null)
             try {
                 obj = method.invoke(view,objectSet);
             } catch (IllegalAccessException e) {

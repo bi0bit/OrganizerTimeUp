@@ -8,29 +8,26 @@
           android:id="@+id/spinnerTypeTask" />
 
     <item
-        app:showAsAction="never"
-        android:title="Главная"/>
-    <item
         android:id="@+id/addTag"
         app:showAsAction="never"
-        android:title="Создать тэг"/>
+        android:title="@string/createTag"/>
     <item
         app:showAsAction="never"
-        android:title="Только действительные"
+        android:title="@string/actualTask"
         android:checkable="true"/>
+
     <item
         app:showAsAction="never"
-        android:title="Календарь"/>
+        android:title="@string/setting"/>
+    <item
+        app:showAsAction="ifRoom"
+        android:title="@string/sortingBy"/>
+    <item
+        android:id="@+id/tags"
+        app:showAsAction="never"
+        android:title="@string/tags" />
     <item
         app:showAsAction="never"
-        android:title="Настройки"/>
-    <item
-        app:showAsAction="ifRoom"
-        android:title="Сортировать по..."/>
-    <item app:showAsAction="ifRoom"
-        android:title="Тэги..." />
-    <item
-        app:showAsAction="ifRoom"
-        android:title="Сокращенный режим"
+        android:title="@string/shortMode"
         android:checkable="true"/>
 </menu>

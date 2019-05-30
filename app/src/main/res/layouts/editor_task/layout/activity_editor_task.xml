@@ -19,13 +19,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:paddingLeft="@dimen/standartPaddingLeftRight"
-                android:paddingRight="@dimen/standartPaddingLeftRight"
-                android:paddingTop="@dimen/standartPaddingTopBottom"
-                android:paddingBottom="@dimen/standartPaddingTopBottom"
+                android:paddingLeft="@dimen/standardPaddingLeftRight"
+                android:paddingRight="@dimen/standardPaddingLeftRight"
+                android:paddingTop="@dimen/standardPaddingTopBottom"
+                android:paddingBottom="@dimen/standardPaddingTopBottom"
                 />
 
-            <include layout="@layout/editor_content_standart_task" />
+            <include layout="@layout/editor_content_standard_task" />
         </LinearLayout>
     </ScrollView>
 </LinearLayout>

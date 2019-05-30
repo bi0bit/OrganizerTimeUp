@@ -1,4 +1,4 @@
-package appmanagmenttime.ilagoproject.com.managertimeapplicationtimeup;
+package by.ilago_project.timeUp_ManagerTime;
 
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -7,14 +7,14 @@ import java.util.List;
 
 import AssambleClassManagmentApp.AbsTask;
 
-import static appmanagmenttime.ilagoproject.com.managertimeapplicationtimeup.DBManagmentTime.TABLENAME_CHECKLISTTASK;
-import static appmanagmenttime.ilagoproject.com.managertimeapplicationtimeup.DBManagmentTime.TABLENAME_COUNTTASK;
-import static appmanagmenttime.ilagoproject.com.managertimeapplicationtimeup.DBManagmentTime.TABLENAME_DAILY;
-import static appmanagmenttime.ilagoproject.com.managertimeapplicationtimeup.DBManagmentTime.TABLENAME_GOAL;
-import static appmanagmenttime.ilagoproject.com.managertimeapplicationtimeup.DBManagmentTime.TABLENAME_HABIT;
-import static appmanagmenttime.ilagoproject.com.managertimeapplicationtimeup.DBManagmentTime.TABLENAME_TAG;
-import static appmanagmenttime.ilagoproject.com.managertimeapplicationtimeup.DBManagmentTime.TABLENAME_TASK;
-import static appmanagmenttime.ilagoproject.com.managertimeapplicationtimeup.DBManagmentTime.TABLENAME_TASKTAG;
+import static by.ilago_project.timeUp_ManagerTime.DBManagmentTime.TABLENAME_CHECKLISTTASK;
+import static by.ilago_project.timeUp_ManagerTime.DBManagmentTime.TABLENAME_COUNTTASK;
+import static by.ilago_project.timeUp_ManagerTime.DBManagmentTime.TABLENAME_DAILY;
+import static by.ilago_project.timeUp_ManagerTime.DBManagmentTime.TABLENAME_GOAL;
+import static by.ilago_project.timeUp_ManagerTime.DBManagmentTime.TABLENAME_HABIT;
+import static by.ilago_project.timeUp_ManagerTime.DBManagmentTime.TABLENAME_TAG;
+import static by.ilago_project.timeUp_ManagerTime.DBManagmentTime.TABLENAME_TASK;
+import static by.ilago_project.timeUp_ManagerTime.DBManagmentTime.TABLENAME_TASKTAG;
 
 /**
  * <pre>ManagerDB to managment data base, remove, additional, update for table db, so it return cursor
@@ -33,6 +33,7 @@ public final class ManagerDB {
 
     public static final int DELETE = 0b01;
     public static final int UPDATE = 0b10;
+    public static final int INSERT = 0b11;
 
     public static final String ID_COLUMN = "Id";
     public static final String IDTASK_COLUMN = "IdTask";
@@ -380,13 +381,10 @@ public final class ManagerDB {
      * @param idTask id task
      * @param idTag  id tag
      */
-    public void deleteTaskTag(int idTask, int idTag) {
-        dbW.execSQL(DEL_STRING_TASKTAG, new String[]{String.valueOf(idTask), String.valueOf(idTag)});
-    }
 
     /**
      * insert record in table tag_task
-     * @param task
+     * @param task for which tags will be initialized
      */
     public void initTagTaskInDb(final AbsTask task) {
         List<Integer> tags = task.getIntTags();
@@ -439,23 +437,30 @@ public final class ManagerDB {
         notifyHandler(UPDATE);
     }
 
-    public void notifyHandler(int flag){
+    private void notifyHandler(int flag){
         handlerUpdateTaskInDb.notifyChange(flag);
     }
 
-    public void notifyTagHandler(int flag){ handlerUpdateTagInDb.notifyChangeTag(flag);}
+    private void notifyTagHandler(int flag){ handlerUpdateTagInDb.notifyChangeTag(flag);}
 
     public void incrementTaskCountSeriesDb(final int idTask, final int increment){
         Cursor c = dbR.rawQuery(SEL_STRING_GETTASKBYID,new String[]{String.valueOf(idTask)});
         c.moveToFirst();
         int i = c.getInt(c.getColumnIndex(TASKCOUNT_COLUMNNAME));
         dbW.execSQL(UPDATE_STRING_COUNTSERIES, new String[]{String.valueOf(i+increment), String.valueOf(idTask)});
+        c.close();
     }
 
     public void updateTaskCountSeriesDb(final int idTask, final int count){
         Cursor c = dbR.rawQuery(SEL_STRING_GETTASKBYID,new String[]{String.valueOf(idTask)});
         c.moveToFirst();
         dbW.execSQL(UPDATE_STRING_COUNTSERIES, new String[]{String.valueOf(count), String.valueOf(idTask)});
+        c.close();
+    }
+
+    public void updateTag(int idTag, String newName){
+        SQLiteDatabase dbLite = getDbWriteble();
+        dbLite.execSQL(ManagerDB.UPDATE_STRING_TAG, new String[]{newName, String.valueOf(idTag)});
     }
 
     public interface HandlerUpdateTaskInDb {

@@ -3,9 +3,9 @@
     xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:paddingLeft="@dimen/standartPaddingLeftRight"
-    android:paddingRight="@dimen/standartPaddingLeftRight"
-    android:paddingBottom="@dimen/standartPaddingTopBottom">
+    android:paddingLeft="@dimen/standardPaddingLeftRight"
+    android:paddingRight="@dimen/standardPaddingLeftRight"
+    android:paddingBottom="@dimen/standardPaddingTopBottom">
 
 
 

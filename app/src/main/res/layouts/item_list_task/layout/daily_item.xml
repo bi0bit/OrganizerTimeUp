@@ -9,9 +9,7 @@
     android:paddingTop="3dp"
     android:descendantFocusability="blocksDescendants">
 
-    <include layout="@layout/item_tag_task"
-        android:layout_width="match_parent"
-        android:layout_height="16dp"/>
+    <include layout="@layout/item_tag_task"/>
 
     <LinearLayout
         android:id="@id/layoutItem"

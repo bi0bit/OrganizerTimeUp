@@ -1,4 +1,4 @@
-package appmanagmenttime.ilagoproject.com.managertimeapplicationtimeup;
+package by.ilago_project.timeUp_ManagerTime;
 
 
 import android.content.Context;
@@ -14,8 +14,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 public class TaskAdapterList extends ArrayAdapter<AbsTask> {
-    List<AbsTask> tasks;
-    LayoutInflater inflater;
+    private List<AbsTask> tasks;
+    private LayoutInflater inflater;
 
 
     public TaskAdapterList(Context context, List<AbsTask> objects) {
@@ -30,8 +30,9 @@ public class TaskAdapterList extends ArrayAdapter<AbsTask> {
         return tasks.get(position);
     }
 
+    @NonNull
     @Override
-    public View getView(int position, @NonNull View convertView, @NonNull ViewGroup parent) {
+    public View getView(int position, View convertView, @NonNull ViewGroup parent) {
             AbsTask.BuilderView builder = tasks.get(position).getBuilderView();
             builder.setObject(tasks.get(position));
         if(convertView == null) {
@@ -44,14 +45,6 @@ public class TaskAdapterList extends ArrayAdapter<AbsTask> {
         }
 
         return convertView;
-    }
-
-    class ViewHolder{
-
-        ViewHolder(ViewHolder holder){
-
-        }
-
     }
 
 }

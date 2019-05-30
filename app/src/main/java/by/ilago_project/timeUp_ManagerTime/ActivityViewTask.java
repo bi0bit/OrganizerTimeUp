@@ -1,4 +1,4 @@
-package appmanagmenttime.ilagoproject.com.managertimeapplicationtimeup;
+package by.ilago_project.timeUp_ManagerTime;
 
 
 import android.content.DialogInterface;
@@ -18,9 +18,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.Toolbar;
 import androidx.databinding.ViewDataBinding;
-import appmanagmenttime.ilagoproject.com.managertimeapplicationtimeup.databinding.ViewerHeaderDailyBinding;
-import appmanagmenttime.ilagoproject.com.managertimeapplicationtimeup.databinding.ViewerHeaderGoalBinding;
-import appmanagmenttime.ilagoproject.com.managertimeapplicationtimeup.databinding.ViewerHeaderHabitBinding;
+import by.ilago_project.timeUp_ManagerTime.databinding.ViewerHeaderDailyBinding;
+import by.ilago_project.timeUp_ManagerTime.databinding.ViewerHeaderGoalBinding;
+import by.ilago_project.timeUp_ManagerTime.databinding.ViewerHeaderHabitBinding;
 
 
 public class ActivityViewTask extends AppCompatActivity {
@@ -47,7 +47,7 @@ public class ActivityViewTask extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.standart_menu_activity_viewer_task,menu);
+        getMenuInflater().inflate(R.menu.standard_menu_activity_viewer_task,menu);
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -55,6 +55,7 @@ public class ActivityViewTask extends AppCompatActivity {
     protected void onResume() {
         updateTask();
         updateBinding();
+        task.getBuilderView().setObject(task);
         task.setViewerTask(findViewById(android.R.id.content));
         super.onResume();
     }
@@ -102,10 +103,6 @@ public class ActivityViewTask extends AppCompatActivity {
         ManagerDB.getManagerDB(null).deleteTask(task.getId());
         dialog.dismiss();
         finish();
-    }
-
-    public void editTask(DialogInterface dialog, int witch ){
-        dialog.dismiss();
     }
 
 }

@@ -1,4 +1,4 @@
-package appmanagmenttime.ilagoproject.com.managertimeapplicationtimeup;
+package by.ilago_project.timeUp_ManagerTime;
 
 import android.os.Bundle;
 import android.view.Menu;
@@ -63,7 +63,7 @@ public class ActivityViewEditorTask extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu){
-        getMenuInflater().inflate(R.menu.standart_menu_activity_editor_task, menu);
+        getMenuInflater().inflate(R.menu.standard_menu_activity_editor_task, menu);
         return super.onCreateOptionsMenu(menu);
     }
 

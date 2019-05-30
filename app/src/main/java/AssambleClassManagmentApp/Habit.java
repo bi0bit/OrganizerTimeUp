@@ -1,5 +1,6 @@
 package AssambleClassManagmentApp;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -21,15 +22,16 @@ import java.util.List;
 import androidx.databinding.BindingAdapter;
 import androidx.databinding.DataBindingUtil;
 import androidx.databinding.ViewDataBinding;
-import appmanagmenttime.ilagoproject.com.managertimeapplicationtimeup.ManagerDB;
-import appmanagmenttime.ilagoproject.com.managertimeapplicationtimeup.R;
-import appmanagmenttime.ilagoproject.com.managertimeapplicationtimeup.databinding.EditorHeaderHabitBinding;
-import appmanagmenttime.ilagoproject.com.managertimeapplicationtimeup.databinding.ViewerHeaderHabitBinding;
+import by.ilago_project.timeUp_ManagerTime.databinding.EditorHeaderHabitBinding;
+import by.ilago_project.timeUp_ManagerTime.databinding.ViewerHeaderHabitBinding;
+import by.ilago_project.timeUp_ManagerTime.ManagerDB;
+import by.ilago_project.timeUp_ManagerTime.R;
 
 public class Habit extends AbsTask{
 
+    @SuppressLint("StaticFieldLeak")
+    private static BuilderView builderView;
     private EnumSet<Type_Habit> typeHabit;
-    private static AbsTask.BuilderView builderView;
 
     public Habit(int id) {
         super(id, Type_Task.HABIT);
@@ -37,7 +39,7 @@ public class Habit extends AbsTask{
     }
 
     static{
-       builderView = new Habit.BuilderView(null,null,null,false);
+       builderView = new Habit.BuilderView(null,null,null);
     }
 
 
@@ -66,9 +68,14 @@ public class Habit extends AbsTask{
         return typeHabit;
     }
 
-    public void setTypeHabit(EnumSet typeHabit) {
+    public void setTypeHabit(EnumSet<Type_Habit> typeHabit) {
         this.typeHabit = typeHabit;
     }
+
+    public static BuilderView getBuilder(){
+        return  builderView;
+    }
+
 
     public static AbsTask initTaskByCursor(Cursor cur){
         Habit habit = new Habit(0);
@@ -86,7 +93,7 @@ public class Habit extends AbsTask{
 
     @Override
     public void setBuilderView(AbsTask.BuilderView<? extends AbsTask> builder) {
-        builderView = builder;
+        builderView = (BuilderView) builder;
     }
 
     @Override
@@ -178,8 +185,8 @@ public class Habit extends AbsTask{
      */
     public static class BuilderView extends AbsTask.BuilderView<Habit>{
 
-        BuilderView(Habit object, LayoutInflater inflater, ViewGroup parent, boolean attachToRoot) {
-            super(object, inflater, parent, attachToRoot);
+        BuilderView(Habit object, LayoutInflater inflater, ViewGroup parent) {
+            super(object, inflater, parent);
         }
 
         @Override
@@ -224,7 +231,7 @@ public class Habit extends AbsTask{
             if(getObject().typeHabit.contains(Type_Habit.NEGATIVE)){
                 buttonN.setVisibility(View.VISIBLE);
                 buttonN.setOnClickListener((v)->{
-                    habit.setCountSerias(habit.getCountSerias() - 1);
+                    habit.setCountSeries(habit.getCountSeries() - 1);
                     ManagerDB.getManagerDB(null).incrementTaskCountSeriesDb(habit.getId(),-1);
                     setCountItem(view,habit);
                 });
@@ -235,7 +242,7 @@ public class Habit extends AbsTask{
             if(getObject().typeHabit.contains(Type_Habit.POSITIVE)){
                 buttonP.setVisibility(View.VISIBLE);
                 buttonP.setOnClickListener((v)->{
-                    habit.setCountSerias(habit.getCountSerias() + 1);
+                    habit.setCountSeries(habit.getCountSeries() + 1);
                     ManagerDB.getManagerDB(null).incrementTaskCountSeriesDb(habit.getId(),+1);
                     setCountItem(view,habit);
                 });

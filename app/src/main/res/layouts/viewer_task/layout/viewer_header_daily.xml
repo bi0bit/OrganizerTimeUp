@@ -12,7 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
-        <include layout="@layout/viewer_header_standart_task"
+        <include layout="@layout/viewer_header_standard_task"
             app:task ="@{task}"/>
         <LinearLayout
             android:layout_width="match_parent"

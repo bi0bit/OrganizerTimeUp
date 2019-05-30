@@ -4,6 +4,8 @@
     <string name="app_clear">Очистить</string>
     <string name="app_select">Выбрать</string>
     <string name="app_delete">Удалить</string>
+    <string name="app_change">Изменить</string>
+    <string name="app_rename">Переименовать</string>
     <string name="dialog_OK">Ок</string>
     <string name="dialog_CANCEL">Отмена</string>
     <string name="dialog_BACK">Назад</string>
@@ -18,8 +20,9 @@
     <string name="fieldEnterNameUnderTask">Введите название</string>
     <string name="fieldCheckList">Чек-лист</string>
     <string name="fieldEditCounter">Востановить серию:</string>
-    <string name="fieldCounter">Cерия:</string>
+    <string name="fieldCounter">Серия:</string>
     <string name="fieldTag">Тэги:</string>
+    <string name="fieldNameTag">Название тэга:</string>
     <string name="fieldTypeDailyTask">Тип ежедневной задачи</string>
     <string name="fieldDayList">Повторять</string>
     <string name="fieldSeries">Выполненно вподряд</string>
@@ -29,6 +32,7 @@
     <string name="fieldTimeNotify">Время</string>
     <string name="fieldDateNotify">Дата</string>
     <string name="fieldExecute">Выполнить до:</string>
+    <string name="fieldExecuteDaily">Выполнить:</string>
     <string name="fieldStart">Начало:</string>
     <string name="fieldEnd">Конец:</string>
     <string name="typeHabitPositivy">Полезная</string>
@@ -38,7 +42,12 @@
     <string name="askClearNotification">Вы хотите очистить уведомления ?</string>
     <string name="askDeleteUnderTask">Вы хотите удалить эту подзадачу ?</string>
     <string name="askDeleteNotification">Вы хотите удалить это уведомление ?</string>
+    <string name="askDeleteTag">Удалить тэг \"%s\" ?</string>
+    <string name="askChangeTag">Выберите что сделать с тэгом</string>
     <string name="eventAddTag">Добавление нового тэга</string>
+    <string name="eventChangeTag">Изменение тэга</string>
+    <string name="eventDeleteTag">Удаление тэга</string>
+    <string name="eventRenameTag">Изменение названия тэга</string>
     <string name="eventAddNewUnderTask">Добавление новой подзадачи</string>
     <string name="eventAddNewNotification">Добавление нового уведомления</string>
     <string name="eventDeleteTask">Удаление задачи</string>
@@ -49,6 +58,12 @@
     <string name="eventDeleteUnderTask">Удаление подзадачи</string>
     <string name="eventDeleteNotification">Удаление уведомления</string>
     <string name="eventEmptyField">Обязательное поле не заполненно</string>
+    <string name="createTag">Создать тэг</string>
+    <string name="actualTask">Только действительные</string>
+    <string name="setting">Настройки</string>
+    <string name="sortingBy">Сортировать по…</string>
+    <string name="tags">Тэги</string>
+    <string name="shortMode">Сокращенный режим</string>
     <string-array name="strings_type_task">
         <item>Привычки</item>
         <item>Ежедневные дела</item>

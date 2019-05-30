@@ -3,9 +3,9 @@
     xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:paddingLeft="@dimen/standartPaddingLeftRight"
-    android:paddingRight="@dimen/standartPaddingLeftRight"
-    android:paddingBottom="@dimen/standartPaddingTopBottom">
+    android:paddingLeft="@dimen/standardPaddingLeftRight"
+    android:paddingRight="@dimen/standardPaddingLeftRight"
+    android:paddingBottom="@dimen/standardPaddingTopBottom">
 
     <LinearLayout
         android:id="@+id/panelControlCheckList"
@@ -57,5 +57,17 @@
             android:dividerHeight="1dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/panelTag"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/marginBetweenField"
+        android:orientation="vertical">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/fieldTag" />
+        <include layout="@layout/item_tag_task"/>
     </LinearLayout>
 </LinearLayout>

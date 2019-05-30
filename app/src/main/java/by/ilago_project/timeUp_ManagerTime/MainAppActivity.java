@@ -1,4 +1,4 @@
-package appmanagmenttime.ilagoproject.com.managertimeapplicationtimeup;
+package by.ilago_project.timeUp_ManagerTime;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -62,14 +62,13 @@ public class MainAppActivity extends AppCompatActivity implements ManagerDB.Hand
         setSelectTypeTask(AbsTask.Type_Task.HABIT);
         Button btn = findViewById(R.id.btnAddTask);
         btn.setOnClickListener((v) ->
-           /*!!!*/     startViewActivity(createNewTask(), ActivityViewEditorTask.class));
+        startViewActivity(createNewTask(), ActivityViewEditorTask.class));
         listView.setOnItemClickListener((parent, view, position, id) ->
-          /*!!!*/      startViewActivity((AbsTask) listView.getAdapter().getItem(position), ActivityViewTask.class));
+        startViewActivity((AbsTask) listView.getAdapter().getItem(position), ActivityViewTask.class));
         Toolbar toolbar = findViewById(R.id.appBar);
         setSupportActionBar(toolbar);
     }
 
-    //!!!
     protected void startViewActivity(AbsTask obj, Class cls){
         Intent intent = new Intent(MainAppActivity.this, cls);
         intent.putExtra("object", obj);
@@ -80,29 +79,104 @@ public class MainAppActivity extends AppCompatActivity implements ManagerDB.Hand
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
             case R.id.addTag:
-                QDialog.SetterGetterDialogEdit dialogSG = new QDialog.SetterGetterDialogEdit();
-                QDialog.Builder builder = QDialog.getBuilder();
-                builder.setTitle(getResources().getString(R.string.eventAddTag))
-                        .setCancelable(true)
-                        .setSetterGetterDialog(dialogSG)
-                        .setOnClickPositiveBtn((dialog, which)->{
-                            if(!dialogSG.getUserInputString().isEmpty()) {
-                                String nameTag = dialogSG.getUserInputString();
-                                TagManager.addTag(nameTag);
-                            }else Toast.makeText(this,R.string.eventEmptyField,Toast.LENGTH_LONG).show();
-                            dialog.dismiss();
-                        });
-                AlertDialog.Builder alertDialog = builder.buildDialog(findViewById(android.R.id.content),QDialog.DIALOG_INPUT_STRING);
-                dialogSG.setLabelString(getResources().getString(R.string.fieldEnterNameUnderTask));
-                alertDialog.show();
+                 addTag();
+                break;
+            case R.id.tags:
+                 allTag();
                 break;
         }
         return super.onOptionsItemSelected(item);
     }
 
+    private void renameTag(final int idTag){
+        QDialog.SetterGetterDialogEdit dialogSG = new QDialog.SetterGetterDialogEdit();
+        QDialog.Builder builder = QDialog.getBuilder();
+        String name = TagManager.getStringTag(idTag);
+        builder.setTitle(getResources().getString(R.string.eventRenameTag))
+                .setCancelable(true)
+                .setSetterGetterDialog(dialogSG)
+                .setOnClickPositiveBtn((dialog, which)->{
+                    if(!dialogSG.getUserInputString().isEmpty()) {
+                        String nameTag = dialogSG.getUserInputString();
+                        TagManager.rename(idTag, nameTag);
+                    }else Toast.makeText(this,R.string.eventEmptyField,Toast.LENGTH_LONG).show();
+                    dialog.dismiss();
+                });
+        AlertDialog.Builder alertDialog = QDialog.make(builder, findViewById(android.R.id.content), QDialog.DIALOG_INPUT_STRING);
+        dialogSG.setLabelString(getResources().getString(R.string.fieldNameTag));
+        dialogSG.setUserInputString(name);
+        alertDialog.show();
+    }
+
+    private void deleteTag(final int idTag){
+        QDialog.Builder builder = QDialog.getBuilder();
+        builder.setCancelable(true)
+                .setTitle(getResources().getString(R.string.eventDeleteTag))
+                .setMessage(String.format(getResources().getString(R.string.askDeleteTag), TagManager.getStringTag(idTag)))
+                .setNegativeBtnStr(R.string.dialog_CANCEL)
+                .setPositiveBtnStr(R.string.app_delete)
+                .setOnClickNegativeBtn(QDialog.STANDARD_ONCLICK_BUTTON)
+                .setOnClickPositiveBtn((dialog,which)->{
+                    TagManager.deleteTag(idTag);
+                    dialog.dismiss();
+                });
+        QDialog.make(builder, findViewById(android.R.id.content), QDialog.DIALOG_QUATION).show();
+    }
+
+    private void changeTag(final int idTag){
+        QDialog.Builder builder = QDialog.getBuilder();
+        builder.setCancelable(true)
+                .setTitle(getResources().getString(R.string.eventChangeTag))
+                .setMessage(getResources().getString(R.string.askChangeTag))
+                .setNegativeBtnStr(R.string.app_delete)
+                .setPositiveBtnStr(R.string.app_rename)
+                .setNeutralBtnStr(R.string.dialog_CANCEL)
+                .setOnClickNeutralBtn(QDialog.STANDARD_ONCLICK_BUTTON)
+                .setOnClickNegativeBtn((dialog,which)->{
+                    deleteTag(idTag);
+                    dialog.dismiss();
+                })
+                .setOnClickPositiveBtn((dialog,which)->{
+                    renameTag(idTag);
+                    dialog.dismiss();
+                });
+        QDialog.make(builder, findViewById(android.R.id.content), QDialog.DIALOG_QUATION).show();
+    }
+
+    private void allTag(){
+        String[] strings  = TagManager.getListNameTag().toArray(new String[0]);
+        QDialog.Builder builder = QDialog.getBuilder();
+        builder.setTitle(getResources().getString(R.string.tags))
+               .setCancelable(true)
+                .setItems(strings)
+                .setOnClickItem((dialog, which)->{
+                    int idTag = TagManager.getListIdTag().get(which);
+                   changeTag(idTag);
+                });
+        QDialog.make(builder, findViewById(android.R.id.content), QDialog.DIALOG_LIST).show();
+    }
+
+    private void addTag(){
+        QDialog.SetterGetterDialogEdit dialogSG = new QDialog.SetterGetterDialogEdit();
+        QDialog.Builder builder = QDialog.getBuilder();
+        builder.setTitle(getResources().getString(R.string.eventAddTag))
+                .setCancelable(true)
+                .setSetterGetterDialog(dialogSG)
+                .setOnClickPositiveBtn((dialog, which)->{
+                    if(!dialogSG.getUserInputString().isEmpty()) {
+                        String nameTag = dialogSG.getUserInputString();
+                        TagManager.addTag(nameTag);
+                    }else Toast.makeText(this,R.string.eventEmptyField,Toast.LENGTH_LONG).show();
+                    dialog.dismiss();
+                });
+        AlertDialog.Builder alertDialog = QDialog.make(builder, findViewById(android.R.id.content), QDialog.DIALOG_INPUT_STRING);
+        dialogSG.setLabelString(getResources().getString(R.string.fieldEnterNameUnderTask));
+        alertDialog.show();
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.standart_menu_activity_task, menu);
+        getMenuInflater().inflate(R.menu.standard_menu_activity_task, menu);
         Spinner spinner = (Spinner) menu.findItem(R.id.spinnerTypeTask).getActionView();
         ArrayAdapter adapter =
                 ArrayAdapter.createFromResource(this,R.array.strings_type_task,R.layout.item_spinner_type_task);
@@ -189,14 +263,17 @@ public class MainAppActivity extends AppCompatActivity implements ManagerDB.Hand
 
     @Override
     public void notifyChangeTag(int flag) {
-        if((flag & ManagerDB.DELETE) == ManagerDB.DELETE)
-            TagManager.getTags().clear();
-        TagManager.update();
+        updateDailyList();
+        updateGoalList();
+        updateHabitList();
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        Goal.getBuilder().setParent(null);
+        Daily.getBuilder().setParent(null);
+        Habit.getBuilder().setParent(null);
         dbManager.close();
     }
 

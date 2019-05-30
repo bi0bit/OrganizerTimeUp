@@ -19,7 +19,7 @@
         android:maxLength="50"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/standartPaddingTopBottom">
+        android:layout_marginBottom="@dimen/standardPaddingTopBottom">
     </EditText>
 
     <TextView
@@ -35,13 +35,13 @@
         android:maxLength="100"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/standartPaddingTopBottom">
+        android:layout_marginBottom="@dimen/standardPaddingTopBottom">
     </EditText>
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/standartPaddingTopBottom">
+        android:layout_marginBottom="@dimen/standardPaddingTopBottom">
         <TextView
             android:text="@string/fieldTimeNotify"
             android:layout_width="wrap_content"

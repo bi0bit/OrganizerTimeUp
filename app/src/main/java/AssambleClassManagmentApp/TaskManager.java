@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
 
-import appmanagmenttime.ilagoproject.com.managertimeapplicationtimeup.ManagerDB;
+import by.ilago_project.timeUp_ManagerTime.ManagerDB;
 
 public class TaskManager implements ManagerDB.HandlerUpdateTaskInDb {
 
@@ -57,8 +57,7 @@ public class TaskManager implements ManagerDB.HandlerUpdateTaskInDb {
     }
 
     public AbsTask getById(int id){
-       AbsTask task = tasks.get(id);
-       return task;
+        return tasks.get(id);
     }
 
     public void setHandlerUpdateTaskInDb(ManagerDB.HandlerUpdateTaskInDb handlerUpdateTaskInDb) {
