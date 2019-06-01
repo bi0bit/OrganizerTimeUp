@@ -1,4 +1,4 @@
-package by.ilago_project.timeUp_ManagerTime;
+package by.ilagoproject.timeUp_ManagerTime;
 
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -6,15 +6,10 @@ import android.database.sqlite.SQLiteDatabase;
 import java.util.List;
 
 import AssambleClassManagmentApp.AbsTask;
+import AssambleClassManagmentApp.CheckTask;
+import AssambleClassManagmentApp.NotificationTask;
 
-import static by.ilago_project.timeUp_ManagerTime.DBManagmentTime.TABLENAME_CHECKLISTTASK;
-import static by.ilago_project.timeUp_ManagerTime.DBManagmentTime.TABLENAME_COUNTTASK;
-import static by.ilago_project.timeUp_ManagerTime.DBManagmentTime.TABLENAME_DAILY;
-import static by.ilago_project.timeUp_ManagerTime.DBManagmentTime.TABLENAME_GOAL;
-import static by.ilago_project.timeUp_ManagerTime.DBManagmentTime.TABLENAME_HABIT;
-import static by.ilago_project.timeUp_ManagerTime.DBManagmentTime.TABLENAME_TAG;
-import static by.ilago_project.timeUp_ManagerTime.DBManagmentTime.TABLENAME_TASK;
-import static by.ilago_project.timeUp_ManagerTime.DBManagmentTime.TABLENAME_TASKTAG;
+import static by.ilagoproject.timeUp_ManagerTime.DBManagmentTime.*;
 
 /**
  * <pre>ManagerDB to managment data base, remove, additional, update for table db, so it return cursor
@@ -47,6 +42,11 @@ public final class ManagerDB {
     public static final String GOALSTARTDATE_COLUMNNAME = "StartDate";
     public static final String GOALENDDATE_COLUMNNAME = "EndDate";
     public static final String CHECKLISTTEXT_COLUMNNAME = "UnderTaskText";
+    public static final String CHECKLISTCHECK_COLUMNNAME = "isCheck";
+    public static final String NOTIFYTITLE_COLUMNNAME = "Title";
+    public static final String NOTIFYMESSAGE_COLUMNNAME = "Message";
+    public static final String NOTIFYTIME_COLUMNAME = "Time";
+    public static final String NOTIFYDATE_COLUMNAME = "Date";
 
     /**
      * select all task
@@ -115,7 +115,18 @@ public final class ManagerDB {
      * <pre>command task: 1 ? - id task(int) for where</pre>
      */
     public static final String SEL_STRING_CHECKLISTBYTASK = "SELECT id AS "+ID_COLUMN+", idTask AS "+IDTASK_COLUMN+
-            ", textCheckList AS "+CHECKLISTTEXT_COLUMNNAME+" FROM "+ TABLENAME_CHECKLISTTASK + " WHERE idTask = ?";
+            ", textCheckList AS "+CHECKLISTTEXT_COLUMNNAME+", isCheck AS " + CHECKLISTCHECK_COLUMNNAME + " FROM "+ TABLENAME_CHECKLISTTASK + " WHERE idTask = ?";
+
+    /**
+     * <pre>command task: 1 ? - id task(int) for where</pre>
+     */
+    public static final String SEL_STRING_NOTIFYBYTASK = "SELECT id AS "+ID_COLUMN+
+            ", idTask AS "+IDTASK_COLUMN+
+            ", titleNotify AS " + NOTIFYTITLE_COLUMNNAME +
+            ", messageNotify AS " + NOTIFYMESSAGE_COLUMNNAME +
+            ", timeNotify AS " + NOTIFYTIME_COLUMNAME +
+            ", dateNotify AS "+ NOTIFYDATE_COLUMNAME +
+        " FROM "+ TABLENAME_NOTIFYTASK + " WHERE idTask = ?";
 
     /**
      * <pre>command task: 1 ? - id checkbox() for where</pre>
@@ -137,7 +148,7 @@ public final class ManagerDB {
      * <pre>command task: 1 ? - idTask(int) foreign key references Task
      *                     2 ? - text checkbox (text)</pre>
      */
-    public static final String INSERT_STRING_CHECKLIST = "INSERT INTO "+ TABLENAME_CHECKLISTTASK + "(idTask,textCheckList) VALUES (?,?)";
+    public static final String INSERT_STRING_CHECKLIST = "INSERT INTO "+ TABLENAME_CHECKLISTTASK + "(idTask,textCheckList,isCheck) VALUES (?,?,?)";
 
     /**
      * <pre>command task: 1 ? - name(text)
@@ -164,7 +175,20 @@ public final class ManagerDB {
      *                     3 ? - endDate(text)</pre>
      */
     public static final String INSERT_STRING_GOAL = "INSERT INTO "+ TABLENAME_GOAL + "(idTask,startDate,endDate) VALUES(?,?,?)";
-    public static final String INSERT_STRING_CALLPUSH = "INSERT INTO";
+
+
+    /**
+     * <pre>command insert notify:
+     *                  1 ? - idTask(int) id task that owns this notification
+     *                  2 ? - title (string) title notification
+     *                  3 ? - message (string) message notification
+     *                  4 ? - time (long) time notification
+     *                  5 ? - date (long) date notification
+     * </pre>
+     */
+    public static final String INSERT_STRING_NOTIFY = "INSERT INTO " + TABLENAME_NOTIFYTASK +
+            "(idTask, titleNotify, messageNotify, timeNotify, dateNotify) " +
+            "VALUES(?,?,?,?,?)";
 
     /**
      * <pre>command mask:  1 ? - field name(text)
@@ -219,42 +243,59 @@ public final class ManagerDB {
     /**
      * command mask: 1 ? - idTask(int) key for where
      */
-    public static final String DEL_STRING_CHECKLISTBYTASK = "DELETE FROM "+ TABLENAME_CHECKLISTTASK + " WHERE idTask = ?";
+    public static final String DEL_STRING_CHECKLISTBYTASK = "DELETE FROM  "+ TABLENAME_CHECKLISTTASK + " WHERE idTask = ?";
+
+    /**
+     * command mask: 1 ? - id(int) key for where
+     *               2 ? - idTask(int) key for where
+     */
+    public static final String DEL_STRING_CHECKLIST = "DELETE FROM "+ TABLENAME_CHECKLISTTASK + " WHERE id = ? and idTask = ?";
 
     /**
      * command mask: 1 ? - id(int) key for where
      */
-    public static final String DEL_STRING_CHECKLIST = "DELETE FROM "+ TABLENAME_CHECKLISTTASK + " WHERE id = ?";
+    public static final String DEL_STRING_TASK = "DELETE FROM " + TABLENAME_TASK + " WHERE id =?";
 
     /**
      * command mask: 1 ? - id(int) key for where
      */
-    public static final String DEL_STRING_TASK = "DELETE FROM" + TABLENAME_TASK + " WHERE id =?";
-
-    /**
-     * command mask: 1 ? - id(int) key for where
-     */
-    public static final String DEL_STRING_TAG = "DELETE FROM" + TABLENAME_TAG + " WHERE id = ?";
+    public static final String DEL_STRING_TAG = "DELETE FROM " + TABLENAME_TAG + " WHERE id = ?";
 
     /**
      * <pre>delete row in task_tag by field idTask
      *  command mask: 1 ? - idTask(int) key for where</pre>
      */
-    public static final String DEL_STRING_TASKTAGBYTASK = "DELETE FROM" + TABLENAME_TASKTAG + " WHERE idTask = ?";
+    public static final String DEL_STRING_TASKTAGBYTASK = "DELETE FROM " + TABLENAME_TASKTAG + " WHERE idTask = ?";
 
     /**
      * <pre>delete row in task_tag by field idTag
      *  command mask: 1 ? - idTag(int) key for where</pre>
      */
-    public static final String DEL_STRING_TASKTAGBYTAG = "DELETE FROM" + TABLENAME_TASKTAG + " WHERE idTag = ?";
+    public static final String DEL_STRING_TASKTAGBYTAG = "DELETE FROM " + TABLENAME_TASKTAG + " WHERE idTag = ?";
 
     /**
      * <pre>delete row in task_tag by two field, idTask and idTag
      *      command mask: 1 ? - idTask(int) for where
      *                    2 ? - idTag(int) for where</pre>
      */
-    public static final String DEL_STRING_TASKTAG = "DELETE FROM" + TABLENAME_TASKTAG +
+    public static final String DEL_STRING_TASKTAG = "DELETE FROM " + TABLENAME_TASKTAG +
             "WHERE idTask = ? AND idTag = ?";
+
+    /**
+     * <pre>delete row in Notify_Task by two field, idTask and id(Notify)
+     *      command mask: 1 ? - idTask(int) id task
+     *                    2 ? - id(int) id notification</pre>
+     */
+    public static final String DEL_STRING_NOTIFY = "DELETE FROM " + TABLENAME_NOTIFYTASK +
+            "WHERE idTask = ? AND id = ?";
+
+    /**
+     * <pre>delete row in Notify_Task by fiedl idTask
+     *      command mask: 1 ? - idTask(int) id task</pre>
+     */
+    public static final String DEL_STRING_NOTIFYBYTASK = "DELETE FROM" + TABLENAME_NOTIFYTASK +
+            "WHERE idTask = ?";
+
 
     private ManagerDB(DBManagmentTime managmentDb) {
         dbR = managmentDb.getReadableDatabase();
@@ -269,15 +310,6 @@ public final class ManagerDB {
             }
         }
         return managerDB;
-    }
-
-    public void close(){
-        if(getDbReadable()!=null){
-            dbR.close();
-        }
-        if(getDbWriteble()!=null){
-            dbW.close();
-        }
     }
 
     public SQLiteDatabase getDbReadable() {
@@ -323,6 +355,16 @@ public final class ManagerDB {
 
     public Cursor getCursorTagByTask(int idTask) {
         return dbR.rawQuery(SEL_STRING_GETTAG_TASK,
+                new String[]{String.valueOf(idTask)});
+    }
+
+    public Cursor getCursorCheckListByTask(int idTask) {
+        return dbR.rawQuery(SEL_STRING_CHECKLISTBYTASK,
+                new String[]{String.valueOf(idTask)});
+    }
+
+    public Cursor getCursorNotifyByTask(int idTask) {
+        return dbR.rawQuery(SEL_STRING_NOTIFYBYTASK,
                 new String[]{String.valueOf(idTask)});
     }
 
@@ -411,15 +453,80 @@ public final class ManagerDB {
         }
     }
 
+    public void initCheckList(final AbsTask task){
+        final List<CheckTask> checkList = task.getListUnderTaskChecked();
+        try {
+            dbW.beginTransaction();
+            for(CheckTask check : checkList){
+                dbW.execSQL(INSERT_STRING_CHECKLIST, new String[]{
+                    String.valueOf(task.getId()),
+                        check.getText(),
+                        String.valueOf(check.isCompleteTask()? 1 : 0)});
+            }
+            dbW.setTransactionSuccessful();
+        } finally {
+            dbW.endTransaction();
+        }
+    }
+
+    public void updateCheckList(final AbsTask task){
+        final List<CheckTask> checkList = task.getListUnderTaskChecked();
+        try {
+            dbW.beginTransaction();
+            dbW.execSQL(DEL_STRING_CHECKLISTBYTASK, new String[]{String.valueOf(task.getId())});
+            initCheckList(task);
+            dbW.setTransactionSuccessful();
+        } finally {
+            dbW.endTransaction();
+        }
+    }
+
+
+    public void initNotify(final AbsTask task){
+        final List<NotificationTask> notify = task.getListNotify();
+        try {
+            dbW.beginTransaction();
+            for(NotificationTask notificationTask : notify){
+                dbW.execSQL(INSERT_STRING_NOTIFY, new String[]{
+                        String.valueOf(task.getId()),
+                        notificationTask.getTitle(),
+                        notificationTask.getMessage(),
+                        String.valueOf(notificationTask.getTimeAlarm()),
+                        String.valueOf(notificationTask.getDateAlarm())});
+            }
+            dbW.setTransactionSuccessful();
+        } finally {
+            dbW.endTransaction();
+        }
+    }
+
+
+
+    public void updateNotify(final AbsTask task){
+        final List<NotificationTask> notify = task.getListNotify();
+        try {
+            dbW.beginTransaction();
+            dbW.execSQL(DEL_STRING_NOTIFYBYTASK, new String[]{String.valueOf(task.getId())});
+            initNotify(task);
+            dbW.setTransactionSuccessful();
+        } finally {
+            dbW.endTransaction();
+        }
+    }
+
+
+
     /**
      * <pre>Add new row in Task</pre>
      *
      * @param task Task which add in table
      */
-    public void addTask(AbsTask task) {
+    public void addTask(final AbsTask task) {
         InitialTaskInDb initialTaskInDb = task::initialTaskInDB;
         initialTaskInDb.addTask();
         initTagTaskInDb(task);
+        initCheckList(task);
+        initNotify(task);
         notifyHandler(UPDATE);
     }
 
@@ -430,10 +537,12 @@ public final class ManagerDB {
      *
      * @param task object AbsTask for update
      */
-    public void updateTask(AbsTask task) {
+    public void updateTask(final AbsTask task) {
         UpdateTaskInDb updateTaskInDb = task::updateInDb;
         updateTaskInDb.update();
         updateTagTaskInDb(task);
+        updateCheckList(task);
+        updateNotify(task);
         notifyHandler(UPDATE);
     }
 

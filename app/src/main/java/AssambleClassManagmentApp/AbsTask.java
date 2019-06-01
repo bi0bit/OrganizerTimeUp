@@ -34,13 +34,13 @@ import java.util.Locale;
 import androidx.appcompat.app.AlertDialog;
 import androidx.databinding.BindingAdapter;
 import androidx.databinding.ViewDataBinding;
-import by.ilago_project.timeUp_ManagerTime.AdapterArrayPriorityType;
-import by.ilago_project.timeUp_ManagerTime.CheckListAdapter;
-import by.ilago_project.timeUp_ManagerTime.MainAppActivity;
-import by.ilago_project.timeUp_ManagerTime.ManagerDB;
-import by.ilago_project.timeUp_ManagerTime.NotifyAdapterList;
-import by.ilago_project.timeUp_ManagerTime.QDialog;
-import by.ilago_project.timeUp_ManagerTime.R;
+import by.ilagoproject.timeUp_ManagerTime.AdapterArrayPriorityType;
+import by.ilagoproject.timeUp_ManagerTime.CheckListAdapter;
+import by.ilagoproject.timeUp_ManagerTime.MainAppActivity;
+import by.ilagoproject.timeUp_ManagerTime.ManagerDB;
+import by.ilagoproject.timeUp_ManagerTime.NotifyAdapterList;
+import by.ilagoproject.timeUp_ManagerTime.QDialog;
+import by.ilagoproject.timeUp_ManagerTime.R;
 
 public abstract class AbsTask implements Parcelable {
 
@@ -251,21 +251,19 @@ public abstract class AbsTask implements Parcelable {
 
     public abstract List<Date> getDateTask();
 
-    public View createView() {
+    public View createView(ViewGroup parent) {
         getBuilderView().setObject(this);
-        return getBuilderView().createViewItemTask();
+        return getBuilderView().createViewItemTask(parent);
     }
 
 
 
     public ViewDataBinding createBindingViewerHeader(Activity activity){
         getBuilderView().setObject(this);
-        getBuilderView().setParent(activity.findViewById(android.R.id.content));
         return getBuilderView().getBindingViewerHeader(activity);
     }
     public ViewDataBinding createBindingEditorHeader(Activity activity){
         getBuilderView().setObject(this);
-        getBuilderView().setParent(activity.findViewById(android.R.id.content));
         return getBuilderView().getBindingEditorHeader(activity);
     }
 
@@ -372,12 +370,11 @@ public abstract class AbsTask implements Parcelable {
                 new View.OnClickListener[]{(v2) ->{
                     DatePickerDialog pickerDialog = new DatePickerDialog(view.getContext(),
                             (v3,y,m,d)->{
-                                String mouth  = (m >= 10)? String.valueOf(m) : "0" + m;
-                                String day = (d >= 10)? String.valueOf(d) : "0" + d;
-                                dialogSG.setValueView(3,"setText",new Class[]{CharSequence.class},new Object[]{
-                                        day + "." + mouth + "." + y});
                                 cldDate.set(y,m,d);
-                            }, cldDate.get(Calendar.YEAR), cldDate.get(Calendar.MONDAY), cldDate.get(Calendar.DAY_OF_MONTH));
+                                SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy", Locale.getDefault());
+                                dialogSG.setValueView(3,"setText",new Class[]{CharSequence.class},new Object[]{
+                                        format.format(cldDate.getTime())});
+                            }, cldDate.get(Calendar.YEAR), cldDate.get(Calendar.MONTH), cldDate.get(Calendar.DAY_OF_MONTH));
                     pickerDialog.show();
                 }});
         SimpleDateFormat formatterDate = new SimpleDateFormat("dd.MM.yyyy", Locale.getDefault());
@@ -429,12 +426,10 @@ public abstract class AbsTask implements Parcelable {
 
         private T object;
         private LayoutInflater inflater;
-        private ViewGroup parent;
         private boolean attachToRoot;
-        BuilderView(T object, LayoutInflater inflater, ViewGroup parent){
+        BuilderView(T object, LayoutInflater inflater){
             this.object = object;
             this.inflater = inflater;
-            this.parent = parent;
             this.attachToRoot = false;
         }
 
@@ -455,14 +450,6 @@ public abstract class AbsTask implements Parcelable {
 
         public void setInflater(LayoutInflater inflater) {
             this.inflater = inflater;
-        }
-
-        public ViewGroup getParent() {
-            return parent;
-        }
-
-        public void setParent(ViewGroup parent) {
-            this.parent = parent;
         }
 
         public boolean isAttachToRoot() {
@@ -506,10 +493,10 @@ public abstract class AbsTask implements Parcelable {
         public void setControlItem(View view){
 
         }
-        public abstract View createBasicViewItem();
+        public abstract View createBasicViewItem(ViewGroup parent);
 
-        private View createViewItemTask(){
-            View view = createBasicViewItem();
+        private View createViewItemTask(ViewGroup parent){
+            View view = createBasicViewItem(parent);
             setViewItemTask(view);
             return view;
         }
@@ -518,7 +505,7 @@ public abstract class AbsTask implements Parcelable {
             setControlItem(view);
             setContentItem(view);
             setCountItem(view,object);
-            setTagItem(view, view.getResources().getDimension(R.dimen.textSize_TagItem));
+            setTagItem(view, view.getResources().getDimension(R.dimen.textSize_xsmall));
             setDateItem(view);
         }
 
@@ -529,31 +516,35 @@ public abstract class AbsTask implements Parcelable {
             AbsTask task = getObject();
             TextView countSeries = view.findViewById(R.id.countSeries);
             countSeries.setText(String.valueOf(task.getCountSeries()));
-            if(task.getIntTags().size() < 1){
-                View panelTag = view.findViewById(R.id.panelTag);
-                panelTag.setVisibility(View.GONE);
-            }
-            setTagItem(view, view.getResources().getDimension(R.dimen.textSize_Field));
+
+            View panelTag = view.findViewById(R.id.panelTag);
+            panelTag.setVisibility((task.getIntTags().size() < 1)? View.GONE : View.VISIBLE);
+            setTagItem(view, view.getResources().getDimension(R.dimen.textSize_large));
+
+            View panelCheckList = view.findViewById(R.id.panelControlCheckList);
             if(task.getListUnderTaskChecked().size() > 0){
                 CheckListAdapter adapterCheckList = new CheckListAdapter(view.getContext(),getObject().getListUnderTaskChecked());
                 adapterCheckList.setEditable(false);
                 ListView listViewUnderTask = view.findViewById(R.id.underTaskList);
                 listViewUnderTask.setAdapter(adapterCheckList);
+                MainAppActivity.setListViewHeightBasedOnChildren(listViewUnderTask);
+                panelCheckList.setVisibility(View.VISIBLE);
             }
             else {
-                View v = view.findViewById(R.id.panelControlCheckList);
-                v.setVisibility(View.GONE);
+                panelCheckList.setVisibility(View.GONE);
             }
 
+            View panelNotify = view.findViewById(R.id.panelNotify);
             if(task.getListNotify().size() > 0){
                 NotifyAdapterList adapterListNotification = new NotifyAdapterList(view.getContext(), task.getListNotify());
                 adapterListNotification.setEditable(false);
                 ListView listViewNotify = view.findViewById(R.id.notifyList);
                 listViewNotify.setAdapter(adapterListNotification);
+                MainAppActivity.setListViewHeightBasedOnChildren(listViewNotify);
+                panelNotify.setVisibility(View.VISIBLE);
             }
             else {
-                View v = view.findViewById(R.id.panelNotify);
-                v.setVisibility(View.GONE);
+                panelNotify.setVisibility(View.GONE);
             }
 
         }
@@ -567,10 +558,8 @@ public abstract class AbsTask implements Parcelable {
             TextView countSeries = view.findViewById(R.id.countSeries);
             countSeries.setText(String.valueOf(task.getCountSeries()));
 
-            if(TagManager.getTags().size() < 1){
-                View panelTag = view.findViewById(R.id.panelTag);
-                panelTag.setVisibility(View.GONE);
-            }
+            View panelTag = view.findViewById(R.id.panelTag);
+            panelTag.setVisibility((TagManager.getTags().size() < 1)? View.GONE : View.VISIBLE);
             ArrayAdapter<String> adapterTag =
                     new ArrayAdapter<>(view.getContext(), android.R.layout.simple_list_item_checked, TagManager.getListNameTag());
             ListView tagList = view.findViewById(R.id.tagList);

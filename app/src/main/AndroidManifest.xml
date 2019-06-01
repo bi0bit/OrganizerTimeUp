@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="by.ilago_project.timeUp_ManagerTime">
+    package="by.ilagoproject.timeUp_ManagerTime">
 
     <application
         android:allowBackup="true"
@@ -9,18 +9,18 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/appActivityTheme">
-        <activity android:name="by.ilago_project.timeUp_ManagerTime.MainAppActivity">
+        <activity android:name=".MainAppActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity android:name="by.ilago_project.timeUp_ManagerTime.ActivityViewTask">
+        <activity android:name=".ActivityViewTask">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW"/>
             </intent-filter>
         </activity>
-        <activity android:name="by.ilago_project.timeUp_ManagerTime.ActivityViewEditorTask"
+        <activity android:name=".ActivityViewEditorTask"
             android:theme="@style/appThemeEditorActivity">
             <intent-filter>
                 <action android:name="android.intent.action.EDIT"/>

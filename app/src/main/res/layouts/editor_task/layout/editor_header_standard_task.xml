@@ -22,8 +22,8 @@
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
             android:layout_alignParentLeft="true"
-            android:layout_marginTop="@dimen/marginRowField"
-            android:layout_marginBottom="@dimen/marginRowField"
+            android:layout_marginTop="@dimen/spacing_large"
+            android:layout_marginBottom="@dimen/spacing_xlarge"
             android:layout_toLeftOf="@id/spinnerTypePriority"
             android:maxLength="35"
             android:ellipsize="end"
@@ -35,8 +35,8 @@
             android:id="@+id/spinnerTypePriority"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/marginBetweenField"
-            android:layout_marginTop="@dimen/marginRowField"
+            android:layout_marginLeft="@dimen/spacing_xsmall"
+            android:layout_marginTop="@dimen/spacing_large"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
             app:selectSpin="@{task.getPriority.ordinal}"
@@ -48,6 +48,7 @@
             android:layout_height="wrap_content"
             android:layout_alignStart="@id/viewNameTask"
             android:layout_alignLeft="@id/viewNameTask"
+            android:layout_marginBottom="@dimen/spacing_xxsmall"
             android:text="@string/fieldName" />
 
         <TextView
@@ -63,7 +64,7 @@
             android:layout_height="wrap_content"
             android:layout_above="@id/viewDescriptionTask"
             android:layout_alignLeft="@id/viewNameTask"
-            android:layout_marginBottom="3dp"
+            android:layout_marginBottom="@dimen/spacing_xxsmall"
             android:text="@string/fieldDescription" />
 
         <EditText
@@ -73,7 +74,7 @@
             android:layout_below="@id/viewNameTask"
             android:layout_alignStart="@id/viewNameTask"
             android:layout_alignLeft="@id/viewNameTask"
-            android:layout_marginBottom="@dimen/marginRowField"
+            android:layout_marginBottom="@dimen/spacing_xsmall"
             android:gravity="top|left"
             android:hint="@string/fieldDescription"
             android:inputType="textMultiLine"

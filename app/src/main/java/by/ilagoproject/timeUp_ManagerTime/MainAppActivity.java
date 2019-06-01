@@ -1,4 +1,4 @@
-package by.ilago_project.timeUp_ManagerTime;
+package by.ilagoproject.timeUp_ManagerTime;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -45,7 +45,8 @@ public class MainAppActivity extends AppCompatActivity implements ManagerDB.Hand
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tasks);
-        ManagerDB.getManagerDB(new DBManagmentTime(this));
+        DBManagmentTime db = new DBManagmentTime(this);
+        ManagerDB.getManagerDB(db);
         TagManager.initTags();
         dbManager = ManagerDB.getManagerDB(new DBManagmentTime(this));
         dbManager.setHandlerUpdateTagInDb(this);
@@ -271,10 +272,6 @@ public class MainAppActivity extends AppCompatActivity implements ManagerDB.Hand
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        Goal.getBuilder().setParent(null);
-        Daily.getBuilder().setParent(null);
-        Habit.getBuilder().setParent(null);
-        dbManager.close();
     }
 
     public static void setListViewHeightBasedOnChildren (ListView listView) {

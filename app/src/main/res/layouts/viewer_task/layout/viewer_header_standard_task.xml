@@ -4,7 +4,7 @@
     <data>
         <import type="android.text.TextUtils"/>
         <import type="android.view.View"/>
-        <import type="by.ilago_project.timeUp_ManagerTime.R"/>
+        <import type="by.ilagoproject.timeUp_ManagerTime.R"/>
         <import type="android.content.res.Resources"/>
         <variable
             name="task"
@@ -17,19 +17,19 @@
             android:id="@+id/blk1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            android:layout_marginBottom="32dp"
+            android:layout_marginTop="@dimen/spacing_xsmall"
+            android:layout_marginBottom="@dimen/spacing_xlarge"
             android:orientation="vertical">
             <TextView
                 android:id="@+id/viewNameTask"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="17dp"
-                android:layout_marginLeft="17dp"
+                android:layout_marginRight="@dimen/spacing_normal"
+                android:layout_marginLeft="@dimen/spacing_normal"
                 android:text="@{task.name}"
                 android:textColor="@color/TextApp"
-                android:textSize="@dimen/textSize_large"
-                android:textAlignment="inherit"
+                android:textSize="@dimen/textSize_xxlarge"
+                android:textAlignment="center"
                 android:textStyle="bold"
                 android:layout_gravity="center_horizontal"/>
 
@@ -37,32 +37,33 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
+                android:layout_marginTop="@dimen/spacing_xsmall"
                 android:visibility="@{(task.TYPE.ordinal == 0)? View.GONE : View.VISIBLE}">
                 <ImageView
                     android:id="@+id/imgPriority"
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
+                    android:layout_width="@dimen/spacing_large"
+                    android:layout_height="@dimen/spacing_large"
                     android:layout_toLeftOf="@id/textPriority"
                     android:src="@{task.getPriority.ordinal == 0 ? @drawable/rectengle_priority_common : (task.getPriority.ordinal == 1 ? @drawable/rectengle_priority_impotant : @drawable/rectengle_priority_necessary)}"
-                    android:layout_marginLeft="24pt"
-                    android:layout_marginRight="12dp" />
+                    android:layout_marginLeft="@dimen/spacing_xxlarge"
+                    android:layout_marginRight="@dimen/spacing_xsmall" />
 
                 <TextView
                     android:id="@+id/textPriority"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="28dp"
+                    android:layout_marginRight="@dimen/spacing_large"
                     android:textColor="@color/TextApp"
                     android:layout_centerInParent="true"
                     android:text="@{@stringArray/strings_priority_type_task[task.getPriority.ordinal].toString}"
-                    android:textSize="@dimen/textSize_Field"
+                    android:textSize="@dimen/textSize_normal"
                     android:layout_gravity="center_vertical|center_horizontal" />
             </RelativeLayout>
 
         </LinearLayout>
 
         <TextView
-            android:layout_marginBottom="3dp"
+            android:layout_marginBottom="@dimen/spacing_xxsmall"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_above="@id/viewDescriptionTask"
@@ -71,12 +72,14 @@
             android:visibility="@{TextUtils.isEmpty(task.description)? View.GONE : View.VISIBLE}" />
         <TextView
             android:id="@+id/viewDescriptionTask"
-            android:layout_marginRight="19dp"
-            android:layout_marginBottom="7dp"
+            android:layout_marginRight="@dimen/spacing_normal"
+            android:layout_marginBottom="@dimen/spacing_xsmall"
+            android:layout_marginLeft="@dimen/spacing_xsmall"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignLeft="@id/blk1"
             android:layout_below="@id/blk1"
+            android:textSize="@dimen/textSize_large"
             android:text="@{task.description}"
             android:textColor="@color/TextApp"
             android:visibility="@{TextUtils.isEmpty(task.description)? View.GONE : View.VISIBLE}"/>

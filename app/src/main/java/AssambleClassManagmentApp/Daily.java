@@ -20,16 +20,15 @@ import java.util.List;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.databinding.ViewDataBinding;
-import by.ilago_project.timeUp_ManagerTime.databinding.EditorHeaderDailyBinding;
-import by.ilago_project.timeUp_ManagerTime.databinding.ViewerHeaderDailyBinding;
-import by.ilago_project.timeUp_ManagerTime.ManagerDB;
-import by.ilago_project.timeUp_ManagerTime.R;
+import by.ilagoproject.timeUp_ManagerTime.databinding.EditorHeaderDailyBinding;
+import by.ilagoproject.timeUp_ManagerTime.databinding.ViewerHeaderDailyBinding;
+import by.ilagoproject.timeUp_ManagerTime.ManagerDB;
+import by.ilagoproject.timeUp_ManagerTime.R;
 
 
 public class Daily extends AbsTask {
 
 
-    @SuppressLint("StaticFieldLeak")
     private static BuilderView builderView;
     private List<Date> dates;
     private Type_Daily typeDaily;
@@ -42,7 +41,7 @@ public class Daily extends AbsTask {
     }
 
     static{
-        builderView = new Daily.BuilderView(null,null,null);
+        builderView = new Daily.BuilderView(null,null);
     }
 
     protected Daily(Parcel in) {
@@ -149,8 +148,8 @@ public class Daily extends AbsTask {
      */
     public static class BuilderView extends AbsTask.BuilderView<Daily>{
 
-        BuilderView(@Nullable Daily object, @Nullable LayoutInflater inflater, @Nullable ViewGroup parent) {
-            super(object, inflater, parent);
+        BuilderView(@Nullable Daily object, @Nullable LayoutInflater inflater) {
+            super(object, inflater);
         }
 
         @Override
@@ -164,8 +163,8 @@ public class Daily extends AbsTask {
         }
 
         @Override
-        public View createBasicViewItem() {
-            View view = getInflater().inflate(R.layout.daily_item,getParent(),isAttachToRoot());
+        public View createBasicViewItem(ViewGroup parent) {
+            View view = getInflater().inflate(R.layout.daily_item, parent, isAttachToRoot());
             LinearLayout linearLayout = view.findViewById(R.id.contentItem);
             View content = getInflater().inflate(R.layout.content_task_item, linearLayout, isAttachToRoot());
             linearLayout.addView(content);

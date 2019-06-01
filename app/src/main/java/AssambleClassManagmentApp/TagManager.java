@@ -6,7 +6,7 @@ import android.util.SparseArray;
 import java.util.ArrayList;
 import java.util.List;
 
-import by.ilago_project.timeUp_ManagerTime.ManagerDB;
+import by.ilagoproject.timeUp_ManagerTime.ManagerDB;
 
 public class TagManager {
     private volatile static TagManager object = null;

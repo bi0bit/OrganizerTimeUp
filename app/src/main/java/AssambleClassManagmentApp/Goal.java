@@ -20,15 +20,13 @@ import java.util.Locale;
 
 import androidx.databinding.DataBindingUtil;
 import androidx.databinding.ViewDataBinding;
-import by.ilago_project.timeUp_ManagerTime.databinding.EditorHeaderGoalBinding;
-import by.ilago_project.timeUp_ManagerTime.databinding.ViewerHeaderGoalBinding;
-import by.ilago_project.timeUp_ManagerTime.ManagerDB;
-import by.ilago_project.timeUp_ManagerTime.R;
+import by.ilagoproject.timeUp_ManagerTime.databinding.EditorHeaderGoalBinding;
+import by.ilagoproject.timeUp_ManagerTime.databinding.ViewerHeaderGoalBinding;
+import by.ilagoproject.timeUp_ManagerTime.ManagerDB;
+import by.ilagoproject.timeUp_ManagerTime.R;
 
 public class Goal  extends AbsTask{
 
-
-    @SuppressLint("StaticFieldLeak")
     private static BuilderView builderView;
     private long dateDeadLine;
     private long dateStart;
@@ -39,7 +37,7 @@ public class Goal  extends AbsTask{
     }
 
     static{
-        builderView = new Goal.BuilderView(null,null,null);
+        builderView = new Goal.BuilderView(null,null);
     }
 
 
@@ -195,8 +193,8 @@ public class Goal  extends AbsTask{
     public static class BuilderView extends AbsTask.BuilderView<Goal>{
 
 
-        BuilderView(Goal object, LayoutInflater inflater, ViewGroup parent) {
-            super(object,inflater,parent);
+        BuilderView(Goal object, LayoutInflater inflater) {
+            super(object,inflater);
         }
 
         @Override
@@ -210,8 +208,8 @@ public class Goal  extends AbsTask{
         }
 
         @Override
-        public View createBasicViewItem() {
-            View view = getInflater().inflate(R.layout.task_item,getParent(),isAttachToRoot());
+        public View createBasicViewItem(ViewGroup parent) {
+            View view = getInflater().inflate(R.layout.task_item, parent, isAttachToRoot());
             LinearLayout linearLayout = view.findViewById(R.id.contentItem);
             View content = getInflater().inflate(R.layout.content_task_item, linearLayout, isAttachToRoot());
             linearLayout.addView(content);
@@ -237,7 +235,7 @@ public class Goal  extends AbsTask{
         public void setDateItem(View view) {
             super.setDateItem(view);
             TextView dateView = view.findViewById(R.id.dateDeadLineTask);
-            String date = dateView.getText() + " " + getObject().getEndDate("dd.MM.yyyy");
+            String date = view.getResources().getString(R.string.fieldExecute) + " " + getObject().getEndDate("dd.MM.yyyy");
             dateView.setText(date);
         }
 

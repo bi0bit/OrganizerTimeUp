@@ -1,4 +1,4 @@
-package by.ilago_project.timeUp_ManagerTime;
+package by.ilagoproject.timeUp_ManagerTime;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -19,7 +19,7 @@ import butterknife.ButterKnife;
 
 public class AdapterArrayPriorityType extends ArrayAdapter<String> {
     private final List<String> strings;
-    private LayoutInflater inflater;
+    private final LayoutInflater inflater;
 
     private AdapterArrayPriorityType(Context context, List<String> objects){
         super(context,0,objects);

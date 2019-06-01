@@ -19,11 +19,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:layout_marginBottom="@dimen/marginRowField">
+            android:layout_marginBottom="@dimen/spacing_xsmall">
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="7dp"
+                android:layout_marginRight="@dimen/spacing_xsmall"
                 android:text="@string/fieldStart"/>
             <TextView
                 android:id="@+id/textStartDateDaily"
@@ -34,10 +34,10 @@
                 android:layout_height="wrap_content" />
             <Button
                 android:id="@+id/selectStartDate"
-                android:layout_height="34dp"
+                android:layout_height="@dimen/spacing_xxlarge"
                 android:layout_width="wrap_content"
                 android:text="@string/app_select"
-                android:textSize="@dimen/textSize_Min"
+                android:textSize="@dimen/textSize_small"
                 android:onClick="@{task::onClickSelectStartDate}"/>
         </LinearLayout>
 
@@ -45,12 +45,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:layout_marginBottom="@dimen/marginRowField">
+            android:layout_marginBottom="@dimen/spacing_xsmall">
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/fieldEnd"
-                android:layout_marginRight="7dp"/>
+                android:layout_marginRight="@dimen/spacing_xsmall"/>
             <TextView
                 android:layout_weight="3"
                 android:id="@+id/textEndDateDaily"
@@ -61,9 +61,9 @@
             <Button
                 android:id="@+id/selectEndDate"
                 android:text="@string/app_select"
-                android:layout_height="34dp"
+                android:layout_height="@dimen/spacing_xxlarge"
                 android:layout_width="wrap_content"
-                android:textSize="@dimen/textSize_Min"
+                android:textSize="@dimen/textSize_xsmall"
                 android:onClick="@{task::onClickSelectEndDate}"/>
         </LinearLayout>
 

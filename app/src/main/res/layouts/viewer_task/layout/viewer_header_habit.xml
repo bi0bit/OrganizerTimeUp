@@ -30,13 +30,14 @@
                 android:layout_alignRight="@+id/centerPoint"
                 android:paddingLeft="14dp"
                 android:paddingRight="14dp"
+                android:layout_centerInParent="true"
                 android:visibility="@{task.typeHabitInt &gt;= 0 ? View.VISIBLE : View.GONE}">
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/typeHabitPositivy"
-                    android:textSize="@dimen/textSize_Min"
-                    android:layout_marginBottom="5dp" />
+                    android:textSize="@dimen/textSize_small"
+                    android:layout_marginBottom="@dimen/spacing_xxsmall" />
                 <Button android:id="@+id/possitivyType"
                     android:layout_width="38dp"
                     android:layout_height="38dp"
@@ -46,7 +47,6 @@
             <TextView
                 android:id="@+id/centerPoint"
                 android:text=""
-                android:textSize="@dimen/textSize_Min"
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"
                 android:layout_centerVertical="true"
@@ -55,20 +55,21 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:paddingLeft="14dp"
-                android:paddingRight="14dp"
+                android:paddingLeft="@dimen/spacing_normal"
+                android:paddingRight="@dimen/spacing_normal"
+                android:layout_centerInParent="true"
                 android:layout_alignLeft="@id/centerPoint"
                 android:visibility="@{task.typeHabitInt &lt;= 0 ? View.VISIBLE : View.GONE}">
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/typeHabitNegativy"
-                    android:textSize="@dimen/textSize_Min"
-                    android:layout_marginBottom="5dp"/>
+                    android:textSize="@dimen/textSize_small"
+                    android:layout_marginBottom="@dimen/spacing_xxsmall"/>
                 <Button
                     android:id="@+id/negativyType"
-                    android:layout_width="38dp"
-                    android:layout_height="38dp"
+                    android:layout_width="@dimen/spacing_xxlarge"
+                    android:layout_height="@dimen/spacing_xxlarge"
                     android:layout_gravity="center_horizontal"
                     android:background="@drawable/selector_negativy_button" />
             </LinearLayout>

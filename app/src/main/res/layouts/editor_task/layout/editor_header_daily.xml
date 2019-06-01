@@ -19,15 +19,21 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/spacing_xxsmall"
+                android:text="@string/fieldExecuteDaily"/>
             <Spinner
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/spinnerTypeDaily"
                 android:onItemSelected="@{task::onItemSelectedTypeDaily}"/>
-            <TextView
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/fieldExecuteDaily"/>
+                android:orientation="vertical">
+            </LinearLayout>
         </LinearLayout>
         <TextView
             android:id="@+id/dateDaily"

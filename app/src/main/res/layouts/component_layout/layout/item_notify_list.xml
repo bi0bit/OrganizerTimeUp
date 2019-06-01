@@ -4,15 +4,15 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
-    android:paddingBottom="@dimen/marginBetweenField"
-    android:paddingTop="@dimen/marginBetweenField">
+    android:paddingBottom="@dimen/spacing_xsmall"
+    android:paddingTop="@dimen/spacing_xsmall">
     <ImageView
-        android:layout_width="28dp"
-        android:layout_height="28dp"
+        android:layout_width="@dimen/spacing_xlarge"
+        android:layout_height="@dimen/spacing_xlarge"
         android:src="@drawable/v_clock"
         app:srcCompat="@drawable/v_clock"
-        android:layout_marginLeft="7dp"
-        android:layout_marginRight="7dp"
+        android:layout_marginLeft="@dimen/spacing_xsmall"
+        android:layout_marginRight="@dimen/spacing_xsmall"
         android:layout_gravity="center_vertical"/>
     <LinearLayout
         android:layout_weight="1"
@@ -24,7 +24,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/title"
-            android:textSize="@dimen/textSize_Field"
+            android:textSize="@dimen/textSize_normal"
             android:textColor="@color/TextApp"
             android:textAlignment="inherit"
             android:ellipsize="marquee"
@@ -35,7 +35,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/time"
-            android:textSize="@dimen/textSize_Field"
+            android:textSize="@dimen/textSize_normal"
             android:textColor="@color/TextApp"
             android:textAlignment="inherit"
             android:ellipsize="marquee"
@@ -46,15 +46,15 @@
     <Button
         android:id="@+id/editButton"
         android:background="@drawable/selector_edit_button"
-        android:layout_width="28dp"
-        android:layout_height="28dp"
+        android:layout_width="@dimen/spacing_large"
+        android:layout_height="@dimen/spacing_large"
         android:layout_gravity="center_vertical"
-        android:layout_marginRight="14dp"/>
+        android:layout_marginRight="@dimen/spacing_normal"/>
     <Button
         android:id="@+id/deleteButton"
         android:background="@drawable/selector_delete_button"
-        android:layout_width="28dp"
-        android:layout_height="28dp"
+        android:layout_width="@dimen/spacing_large"
+        android:layout_height="@dimen/spacing_large"
         android:layout_gravity="center_vertical"
-        android:layout_marginRight="7dp"/>
+        android:layout_marginRight="@dimen/spacing_normal"/>
 </LinearLayout>

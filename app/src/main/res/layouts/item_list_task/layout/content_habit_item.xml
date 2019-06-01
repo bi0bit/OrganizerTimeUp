@@ -7,8 +7,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Name_Task"
+        android:textColor="@color/TextApp"
         android:textAlignment="inherit"
-        android:textSize="16sp"
+        android:textSize="@dimen/textSize_large"
         android:maxLines="2"
         android:ellipsize="marquee"
         android:textStyle="bold" />
@@ -21,5 +22,5 @@
         android:maxLines="2"
         android:ellipsize="marquee"
         android:textAlignment="inherit"
-        android:textSize="14sp" />
+        android:textSize="@dimen/textSize_normal" />
 </LinearLayout>

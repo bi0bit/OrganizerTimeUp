@@ -6,6 +6,6 @@
     android:layout_width="match_parent"
     android:layout_height="?attr/dropdownListPreferredItemHeight"
     android:textColor="@color/TextApp"
-    android:textSize="@dimen/textSize_ToolBar_Other"
+    android:textSize="@dimen/textSize_normal"
     android:ellipsize="marquee"
     android:textAlignment="inherit"/>

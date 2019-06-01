@@ -31,34 +31,34 @@
         <item name="android:textColor">@color/TextPrimaryBar</item>
     </style>
     <style name="titleTextToolBar" parent ="Base.TextAppearance.AppCompat.Title">
-        <item name="android:textSize">@dimen/textSize_ToolBar_Title</item>
+        <item name="android:textSize">@dimen/textSize_xlarge</item>
         <item name="android:textColor">@color/TextPrimaryBar</item>
     </style>
     <style name="SpinnerTheme" parent="Base.Widget.AppCompat.Spinner">
         <item name="android:background">@drawable/selector_spinner_app</item>
-        <item name="android:textSize">@dimen/textSize_Field</item>
+        <item name="android:textSize">@dimen/textSize_normal</item>
         <item name="android:textColor">@color/TextApp</item>
         <item name="android:popupBackground">@drawable/selector_popup_app</item>
     </style>
     <style name="TitleTextViewTheme">
         <item name="android:textColor">@color/TitleTextApp</item>
-        <item name="android:textSize">@dimen/textSize_FieldTitle</item>
+        <item name="android:textSize">@dimen/textSize_large</item>
     </style>
     <style name="EditorTextTheme" parent="Base.Widget.AppCompat.EditText">
         <item name="android:background">@drawable/selector_field_edit</item>
         <item name="android:textColor">@color/TextApp</item>
-        <item name="android:textSize">@dimen/textSize_Field</item>
+        <item name="android:textSize">@dimen/textSize_normal</item>
     </style>
     <style name="buttonStyle" parent="Base.Widget.AppCompat.Button.Borderless">
         <item name="android:background">@drawable/selector_button</item>
         <item name="android:textColor">@drawable/selector_text</item>
-        <item name="android:textSize">@dimen/textSize_Min</item>
+        <item name="android:textSize">@dimen/textSize_small</item>
         <item name="android:textStyle">bold</item>
     </style>
     <style name="buttonStyleAlternative" parent="Base.Widget.AppCompat.Button.Borderless">
         <item name="android:background">@drawable/selector_button_alternative</item>
         <item name="android:textColor">@drawable/selector_text_alternative</item>
-        <item name="android:textSize">@dimen/textSize_Min</item>
+        <item name="android:textSize">@dimen/textSize_small</item>
         <item name="android:textStyle">bold</item>
     </style>
 </resources>

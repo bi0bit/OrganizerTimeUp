@@ -1,4 +1,4 @@
-package by.ilago_project.timeUp_ManagerTime;
+package by.ilagoproject.timeUp_ManagerTime;
 
 
 import android.content.DialogInterface;
@@ -18,9 +18,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.Toolbar;
 import androidx.databinding.ViewDataBinding;
-import by.ilago_project.timeUp_ManagerTime.databinding.ViewerHeaderDailyBinding;
-import by.ilago_project.timeUp_ManagerTime.databinding.ViewerHeaderGoalBinding;
-import by.ilago_project.timeUp_ManagerTime.databinding.ViewerHeaderHabitBinding;
+import by.ilagoproject.timeUp_ManagerTime.databinding.ViewerHeaderDailyBinding;
+import by.ilagoproject.timeUp_ManagerTime.databinding.ViewerHeaderGoalBinding;
+import by.ilagoproject.timeUp_ManagerTime.databinding.ViewerHeaderHabitBinding;
 
 
 public class ActivityViewTask extends AppCompatActivity {

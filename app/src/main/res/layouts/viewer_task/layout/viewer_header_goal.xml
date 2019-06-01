@@ -22,8 +22,8 @@
                 android:layout_centerHorizontal="true"
                 android:text='@{task.getStartDate("dd.MM.yyyy")}'
                 android:textColor="@color/TextApp"
-                android:layout_marginTop="7dp"
-                android:layout_marginBottom="5dp"/>
+                android:layout_marginTop="@dimen/spacing_xsmall"
+                android:layout_marginBottom="@dimen/spacing_xsmall"/>
             <TextView
                 android:id="@+id/endDateDaily"
                 android:layout_width="wrap_content"
@@ -32,16 +32,16 @@
                 android:layout_below="@id/startDateDaily"
                 android:text='@{task.getEndDate("dd.MM.yyyy")}'
                 android:textColor="@color/TextApp"
-                android:layout_marginBottom="7dp"/>
+                android:layout_marginBottom="@dimen/spacing_xsmall"/>
             <TextView
                 android:layout_toLeftOf="@id/startDateDaily"
-                android:layout_marginRight="4dp"
+                android:layout_marginRight="@dimen/spacing_xxsmall"
                 android:layout_alignBaseline="@id/startDateDaily"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Начало:"/>
             <TextView
-                android:layout_marginRight="4dp"
+                android:layout_marginRight="@dimen/spacing_xxsmall"
                 android:layout_toLeftOf="@id/endDateDaily"
                 android:layout_alignBaseline="@id/endDateDaily"
                 android:layout_width="wrap_content"

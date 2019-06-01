@@ -1,4 +1,4 @@
-package by.ilago_project.timeUp_ManagerTime;
+package by.ilagoproject.timeUp_ManagerTime;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
@@ -27,8 +27,8 @@ import butterknife.ButterKnife;
 
 public class NotifyAdapterList extends ArrayAdapter<NotificationTask> {
 
-    private List<NotificationTask> objects;
-    private LayoutInflater inflater;
+    private final List<NotificationTask> objects;
+    private final LayoutInflater inflater;
 
 
     private boolean editable = true;

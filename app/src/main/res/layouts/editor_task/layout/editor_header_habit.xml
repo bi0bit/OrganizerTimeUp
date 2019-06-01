@@ -18,7 +18,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Тип превычки"/>
+            android:text="@string/fieldTypeHabit"/>
         <Spinner
             android:id="@+id/spinnerTypeHabit"
             android:layout_width="match_parent"

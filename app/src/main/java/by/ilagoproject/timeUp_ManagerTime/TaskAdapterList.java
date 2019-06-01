@@ -1,4 +1,4 @@
-package by.ilago_project.timeUp_ManagerTime;
+package by.ilagoproject.timeUp_ManagerTime;
 
 
 import android.content.Context;
@@ -15,7 +15,7 @@ import androidx.annotation.Nullable;
 
 public class TaskAdapterList extends ArrayAdapter<AbsTask> {
     private List<AbsTask> tasks;
-    private LayoutInflater inflater;
+    private final LayoutInflater inflater;
 
 
     public TaskAdapterList(Context context, List<AbsTask> objects) {
@@ -37,8 +37,7 @@ public class TaskAdapterList extends ArrayAdapter<AbsTask> {
             builder.setObject(tasks.get(position));
         if(convertView == null) {
             builder.setInflater(inflater);
-            builder.setParent(parent);
-            convertView = tasks.get(position).createView();
+            convertView = tasks.get(position).createView(parent);
         }
         else {
             builder.setViewItemTask(convertView);

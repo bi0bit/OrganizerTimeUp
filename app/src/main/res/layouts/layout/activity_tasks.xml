@@ -21,7 +21,7 @@
             android:layout_weight="12"
             android:background="@drawable/selector_flat_button"
             android:text="@string/app_add"
-            android:textSize="15sp"
+            android:textSize="@dimen/textSize_large"
             android:textColor="#FFF"/>
     </LinearLayout>
 </LinearLayout>

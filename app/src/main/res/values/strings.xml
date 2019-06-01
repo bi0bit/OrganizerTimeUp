@@ -32,7 +32,7 @@
     <string name="fieldTimeNotify">Время</string>
     <string name="fieldDateNotify">Дата</string>
     <string name="fieldExecute">Выполнить до:</string>
-    <string name="fieldExecuteDaily">Выполнить:</string>
+    <string name="fieldExecuteDaily">Выполнять:</string>
     <string name="fieldStart">Начало:</string>
     <string name="fieldEnd">Конец:</string>
     <string name="typeHabitPositivy">Полезная</string>

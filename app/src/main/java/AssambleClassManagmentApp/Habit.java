@@ -22,14 +22,13 @@ import java.util.List;
 import androidx.databinding.BindingAdapter;
 import androidx.databinding.DataBindingUtil;
 import androidx.databinding.ViewDataBinding;
-import by.ilago_project.timeUp_ManagerTime.databinding.EditorHeaderHabitBinding;
-import by.ilago_project.timeUp_ManagerTime.databinding.ViewerHeaderHabitBinding;
-import by.ilago_project.timeUp_ManagerTime.ManagerDB;
-import by.ilago_project.timeUp_ManagerTime.R;
+import by.ilagoproject.timeUp_ManagerTime.databinding.EditorHeaderHabitBinding;
+import by.ilagoproject.timeUp_ManagerTime.databinding.ViewerHeaderHabitBinding;
+import by.ilagoproject.timeUp_ManagerTime.ManagerDB;
+import by.ilagoproject.timeUp_ManagerTime.R;
 
 public class Habit extends AbsTask{
 
-    @SuppressLint("StaticFieldLeak")
     private static BuilderView builderView;
     private EnumSet<Type_Habit> typeHabit;
 
@@ -39,7 +38,7 @@ public class Habit extends AbsTask{
     }
 
     static{
-       builderView = new Habit.BuilderView(null,null,null);
+       builderView = new Habit.BuilderView(null,null);
     }
 
 
@@ -185,8 +184,8 @@ public class Habit extends AbsTask{
      */
     public static class BuilderView extends AbsTask.BuilderView<Habit>{
 
-        BuilderView(Habit object, LayoutInflater inflater, ViewGroup parent) {
-            super(object, inflater, parent);
+        BuilderView(Habit object, LayoutInflater inflater) {
+            super(object, inflater);
         }
 
         @Override
@@ -200,8 +199,8 @@ public class Habit extends AbsTask{
         }
 
         @Override
-        public View createBasicViewItem() {
-            View view = getInflater().inflate(R.layout.habit_item, getParent(),isAttachToRoot());
+        public View createBasicViewItem(ViewGroup parent) {
+            View view = getInflater().inflate(R.layout.habit_item, parent,isAttachToRoot());
             LinearLayout linearLayout = view.findViewById(R.id.contentItem);
             View content = getInflater().inflate(R.layout.content_habit_item, linearLayout, isAttachToRoot());
             linearLayout.addView(content);
@@ -264,6 +263,8 @@ public class Habit extends AbsTask{
             strArrAdapter.setDropDownViewResource(R.layout.item_spinner_dropdown_simple_string);
             Spinner typeHabitSpinner = view.findViewById(R.id.spinnerTypeHabit);
             typeHabitSpinner.setAdapter(strArrAdapter);
+            View checkPanel = view.findViewById(R.id.panelControlCheckList);
+            checkPanel.setVisibility(View.GONE);
         }
     }
 }

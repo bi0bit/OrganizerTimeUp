@@ -6,7 +6,9 @@ import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
 
-import by.ilago_project.timeUp_ManagerTime.ManagerDB;
+import javax.crypto.AEADBadTagException;
+
+import by.ilagoproject.timeUp_ManagerTime.ManagerDB;
 
 public class TaskManager implements ManagerDB.HandlerUpdateTaskInDb {
 
@@ -29,11 +31,40 @@ public class TaskManager implements ManagerDB.HandlerUpdateTaskInDb {
         initGoal();
     }
 
+    public void initCheckListByTask(final AbsTask task){
+        Cursor c = ManagerDB.getManagerDB(null).getCursorCheckListByTask(task.getId());
+        final List<CheckTask> listCheck = task.getListUnderTaskChecked();
+        while(c.moveToNext()){
+            int id = c.getInt(c.getColumnIndex(ManagerDB.ID_COLUMN));
+            String name = c.getString(c.getColumnIndex(ManagerDB.CHECKLISTTEXT_COLUMNNAME));
+            boolean check =
+                    c.getInt(c.getColumnIndex(ManagerDB.CHECKLISTTEXT_COLUMNNAME)) == 1;
+            CheckTask checkTask = new CheckTask(id, name, check);
+            listCheck.add(checkTask);
+        }
+    }
+
+    public void initNotifyListByTask(final AbsTask task){
+        Cursor c = ManagerDB.getManagerDB(null).getCursorNotifyByTask(task.getId());
+        final List<NotificationTask> listNotify = task.getListNotify();
+        while(c.moveToNext()){
+            int id = c.getInt(c.getColumnIndex(ManagerDB.ID_COLUMN));
+            String title = c.getString(c.getColumnIndex(ManagerDB.NOTIFYTITLE_COLUMNNAME));
+            String message = c.getString(c.getColumnIndex(ManagerDB.NOTIFYMESSAGE_COLUMNNAME));
+            long time = c.getLong(c.getColumnIndex(ManagerDB.NOTIFYTIME_COLUMNAME));
+            long date = c.getLong(c.getColumnIndex(ManagerDB.NOTIFYDATE_COLUMNAME));
+            NotificationTask notifyTask = new NotificationTask(id, title, message, time, date);
+            listNotify.add(notifyTask);
+        }
+    }
+
     public void initDaily(){
         Cursor c = dbM.getCursorDaily();
         while(c.moveToNext()){
             Daily daily = (Daily) Daily.initTaskByCursor(c);
             TagManager.initTagByTask(daily);
+            initCheckListByTask(daily);
+            initNotifyListByTask(daily);
             tasks.put(daily.getId(),daily);
         }
     }
@@ -43,6 +74,8 @@ public class TaskManager implements ManagerDB.HandlerUpdateTaskInDb {
         while(c.moveToNext()){
             Habit habit = (Habit) Habit.initTaskByCursor(c);
             TagManager.initTagByTask(habit);
+            initCheckListByTask(habit);
+            initNotifyListByTask(habit);
             tasks.put(habit.getId(),habit);
         }
     }
@@ -52,6 +85,8 @@ public class TaskManager implements ManagerDB.HandlerUpdateTaskInDb {
         while(c.moveToNext()){
             Goal goal = (Goal) Goal.initTaskByCursor(c);
             TagManager.initTagByTask(goal);
+            initCheckListByTask(goal);
+            initNotifyListByTask(goal);
             tasks.put(goal.getId(),goal);
         }
     }
@@ -91,6 +126,7 @@ public class TaskManager implements ManagerDB.HandlerUpdateTaskInDb {
         }
         return goals;
     }
+
 
     @Override
     public void notifyChange(int flag) {

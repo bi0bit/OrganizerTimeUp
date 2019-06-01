@@ -17,10 +17,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:paddingLeft="@dimen/standardPaddingLeftRight"
-                android:paddingRight="@dimen/standardPaddingLeftRight"
-                android:paddingTop="@dimen/standardPaddingTopBottom"
-                android:paddingBottom="@dimen/standardPaddingTopBottom"
+                android:paddingLeft="@dimen/spacing_xsmall"
+                android:paddingRight="@dimen/spacing_xsmall"
+                android:paddingTop="@dimen/spacing_xsmall"
+                android:paddingBottom="@dimen/spacing_normal"
                 />
 
             <include layout="@layout/viewer_content_standard_task" />

@@ -5,21 +5,22 @@
     android:orientation="vertical"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:padding="10dp">
+    android:padding="@dimen/spacing_xsmall">
     <TextView
         android:text="@string/fieldTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:layout_marginBottom="12dp"/>
+        android:layout_marginBottom="@dimen/spacing_xsmall"/>
     <EditText
         style="@style/EditorTextTheme"
         android:id="@+id/title_notify"
         android:maxLines="1"
         android:maxLength="50"
+        android:textSize="@dimen/textSize_normal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/standardPaddingTopBottom">
+        android:layout_marginBottom="@dimen/spacing_xsmall">
     </EditText>
 
     <TextView
@@ -27,40 +28,42 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:layout_marginBottom="12dp"/>
+        android:layout_marginBottom="@dimen/spacing_xsmall"/>
     <EditText
         style="@style/EditorTextTheme"
         android:id="@+id/message_notify"
         android:maxLines="2"
         android:maxLength="100"
+        android:textSize="@dimen/textSize_normal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/standardPaddingTopBottom">
+        android:layout_marginBottom="@dimen/spacing_xsmall">
     </EditText>
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/standardPaddingTopBottom">
+        android:layout_marginBottom="@dimen/spacing_xsmall">
         <TextView
             android:text="@string/fieldTimeNotify"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginRight="9dp"/>
+            android:layout_marginRight="@dimen/spacing_xsmall"/>
         <TextView
             android:id="@+id/time"
             android:text="time1"
             android:layout_weight="2"
             android:textColor="@color/TextApp"
             android:textStyle="bold"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"/>
         <Button
             android:id="@+id/buttonSelectTime"
             style="@style/buttonStyle"
             android:text="@string/app_select"
+            android:textSize="@dimen/textSize_xsmall"
             android:layout_width="wrap_content"
-            android:layout_height="34dp" />
+            android:layout_height="@dimen/spacing_large" />
     </LinearLayout>
     <LinearLayout
         android:orientation="horizontal"
@@ -70,20 +73,21 @@
             android:text="@string/fieldDateNotify"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginRight="9dp"/>
+            android:layout_marginRight="@dimen/spacing_xsmall"/>
         <TextView
             android:id="@+id/date"
             android:text="date1"
             android:layout_weight="2"
             android:textColor="@color/TextApp"
             android:textStyle="bold"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"/>
         <Button
             android:id="@+id/buttonSelectDate"
             style="@style/buttonStyle"
             android:text="@string/app_select"
+            android:textSize="@dimen/textSize_xsmall"
             android:layout_width="wrap_content"
-            android:layout_height="34dp" />
+            android:layout_height="@dimen/spacing_large" />
     </LinearLayout>
 </LinearLayout>

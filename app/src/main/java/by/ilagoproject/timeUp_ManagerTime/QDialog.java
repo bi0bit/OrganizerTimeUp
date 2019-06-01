@@ -1,4 +1,4 @@
-package by.ilago_project.timeUp_ManagerTime;
+package by.ilagoproject.timeUp_ManagerTime;
 
 import android.graphics.drawable.Drawable;
 import android.text.SpannableStringBuilder;

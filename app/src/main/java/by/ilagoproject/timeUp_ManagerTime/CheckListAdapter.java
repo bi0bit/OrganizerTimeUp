@@ -1,4 +1,4 @@
-package by.ilago_project.timeUp_ManagerTime;
+package by.ilagoproject.timeUp_ManagerTime;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -21,8 +21,8 @@ import butterknife.ButterKnife;
 
 public class CheckListAdapter extends ArrayAdapter<CheckTask> {
 
-    private List<CheckTask> tasks;
-    private LayoutInflater inflater;
+    private final List<CheckTask> tasks;
+    private final LayoutInflater inflater;
 
     private boolean editable = true;
 

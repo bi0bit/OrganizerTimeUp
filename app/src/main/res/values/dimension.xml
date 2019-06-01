@@ -1,15 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="textSize_large">20sp</dimen>
-    <dimen name="textSize_ToolBar_Title">17sp</dimen>
-    <dimen name="textSize_ToolBar_Other">14sp</dimen>
-    <dimen name="textSize_FieldTitle">14sp</dimen>
-    <dimen name="textSize_Field">15sp</dimen>
-    <dimen name="textSize_Min">12sp</dimen>
-    <dimen name="textSize_TagItem">11sp</dimen>
-    <dimen name="standardPaddingLeftRight">11dp</dimen>
-    <dimen name="standardPaddingTopBottom">9dp</dimen>
-    <dimen name="marginBetweenField">6dp</dimen>
-    <dimen name="marginRowField">24dp</dimen>
-    <dimen name="borderWeight">2.3dp</dimen>
+    <dimen name="textSize_xxlarge">20sp</dimen>
+    <dimen name="textSize_xlarge">18sp</dimen>
+    <dimen name="textSize_large">16sp</dimen>
+    <dimen name="textSize_normal">14sp</dimen>
+    <dimen name="textSize_small">12sp</dimen>
+    <dimen name="textSize_xsmall">11sp</dimen>
+    <dimen name="spacing_xxxlarge">48dp</dimen>
+    <dimen name="spacing_xxlarge">40dp</dimen>
+    <dimen name="spacing_xlarge">32dp</dimen>
+    <dimen name="spacing_large">24dp</dimen>
+    <dimen name="spacing_normal">16dp</dimen>
+    <dimen name="spacing_xsmall">8dp</dimen>
+    <dimen name="spacing_xxsmall">4dp</dimen>
+    <dimen name="spacing_xxxsmall">2dp</dimen>
+    <dimen name="divider_weight">1dp</dimen>
+    <dimen name="border_weight">2dp</dimen>
 </resources>

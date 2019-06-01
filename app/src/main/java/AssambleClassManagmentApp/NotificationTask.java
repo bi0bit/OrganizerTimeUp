@@ -20,6 +20,14 @@ public class NotificationTask implements Serializable {
         this.message = "";
     }
 
+    public NotificationTask(int id, String title, String message ,long dateAlarm, long time){
+        this.id = id;
+        this.title = title;
+        this.message = message;
+        this.timeAlarm = time;
+        this.dateAlarm = dateAlarm;
+    }
+
     public void setTitle(String title) {
         this.title = title;
     }

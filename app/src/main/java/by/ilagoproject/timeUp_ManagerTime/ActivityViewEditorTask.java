@@ -1,4 +1,4 @@
-package by.ilago_project.timeUp_ManagerTime;
+package by.ilagoproject.timeUp_ManagerTime;
 
 import android.os.Bundle;
 import android.view.Menu;
@@ -22,6 +22,7 @@ public class ActivityViewEditorTask extends AppCompatActivity {
 
     boolean update;
     AbsTask object;
+    ViewDataBinding binding;
     @BindView(R.id.viewNameTask) EditText editName;
     @BindView(R.id.viewDescriptionTask) EditText editDesc;
     @BindView(R.id.spinnerTypePriority) Spinner spnPriority;
@@ -41,13 +42,19 @@ public class ActivityViewEditorTask extends AppCompatActivity {
         ButterKnife.bind(this);
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        binding.invalidateAll();
+        object.setEditorTask(findViewById(android.R.id.content));
+    }
 
     protected void initViewActivity(AbsTask object){
-        ViewDataBinding binding = object.createBindingEditorHeader(this);
+        binding = object.createBindingEditorHeader(this);
         setContentView(R.layout.activity_editor_task);
         LinearLayout l = findViewById(R.id.HeaderViewTask);
         l.addView(binding.getRoot());
-        object.setEditorTask(l.getRootView());
+        object.setEditorTask(findViewById(android.R.id.content));
         Toolbar toolbar = findViewById(R.id.appBar);
         setSupportActionBar(toolbar);
     }

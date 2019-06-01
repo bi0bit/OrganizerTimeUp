@@ -7,8 +7,8 @@
     app:flexWrap="wrap"
     app:layout_flexGrow="2"
     app:alignItems="flex_start"
-    android:paddingBottom="2dp"
-    android:paddingLeft="7dp"
-    android:paddingTop="2dp"
-    android:paddingRight="7dp">
+    android:paddingBottom="@dimen/spacing_xxxsmall"
+    android:paddingLeft="@dimen/spacing_xsmall"
+    android:paddingTop="@dimen/spacing_xxxsmall"
+    android:paddingRight="@dimen/spacing_xsmall">
 </com.google.android.flexbox.FlexboxLayout>

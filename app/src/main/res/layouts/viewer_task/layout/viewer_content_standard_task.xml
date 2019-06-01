@@ -3,15 +3,15 @@
     xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:paddingLeft="@dimen/standardPaddingLeftRight"
-    android:paddingRight="@dimen/standardPaddingLeftRight"
-    android:paddingBottom="@dimen/standardPaddingTopBottom">
+    android:paddingLeft="@dimen/spacing_xsmall"
+    android:paddingRight="@dimen/spacing_xsmall"
+    android:paddingBottom="@dimen/spacing_xsmall">
 
     <LinearLayout
         android:id="@+id/panelControlCheckList"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/marginBetweenField"
+        android:layout_marginBottom="@dimen/spacing_xsmall"
         android:orientation="vertical">
         <TextView
             android:layout_width="match_parent"
@@ -19,7 +19,7 @@
             android:text="@string/fieldCheckList" />
         <ListView
             android:divider="@color/FocusFieldApp"
-            android:dividerHeight="1dp"
+            android:dividerHeight="@dimen/divider_weight"
             android:id="@+id/underTaskList"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
@@ -29,7 +29,7 @@
         android:id="@+id/panelCounter"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/marginBetweenField"
+        android:layout_marginBottom="@dimen/spacing_xsmall"
         android:orientation="vertical">
         <TextView
             android:layout_width="match_parent"
@@ -45,7 +45,7 @@
         android:id="@+id/panelNotify"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/marginBetweenField"
+        android:layout_marginBottom="@dimen/spacing_xsmall"
         android:orientation="vertical">
         <TextView
             android:layout_width="match_parent"
@@ -54,7 +54,7 @@
         <ListView
             android:id="@+id/notifyList"
             android:divider="@color/FocusFieldApp"
-            android:dividerHeight="1dp"
+            android:dividerHeight="@dimen/divider_weight"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
     </LinearLayout>
@@ -62,7 +62,7 @@
         android:id="@+id/panelTag"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/marginBetweenField"
+        android:layout_marginBottom="@dimen/spacing_xsmall"
         android:orientation="vertical">
         <TextView
             android:layout_width="match_parent"
