@@ -14,7 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 public class TaskAdapterList extends ArrayAdapter<AbsTask> {
-    private List<AbsTask> tasks;
+    private final List<AbsTask> tasks;
     private final LayoutInflater inflater;
 
 

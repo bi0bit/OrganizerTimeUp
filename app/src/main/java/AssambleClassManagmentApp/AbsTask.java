@@ -278,131 +278,7 @@ public abstract class AbsTask implements Parcelable {
         spin.setSelection(pos);
     }
 
-    private void addCheck(View view, ListView listView, CheckListAdapter checkListAdapter){
-        QDialog.SetterGetterDialogEdit dialogSG = new QDialog.SetterGetterDialogEdit();
-        QDialog.Builder builder = QDialog.getBuilder();
-        builder.setTitle(view.getResources().getString(R.string.eventAddNewUnderTask))
-                .setCancelable(true)
-                .setSetterGetterDialog(dialogSG)
-                .setOnClickPositiveBtn((dialog, which)->{
-                    if(!dialogSG.getUserInputString().isEmpty()) {
-                        getListUnderTaskChecked().add(new CheckTask(dialogSG.getUserInputString()));
-                        checkListAdapter.notifyDataSetChanged();
-                        MainAppActivity.setListViewHeightBasedOnChildren(listView);
-                    }else Toast.makeText(view.getContext(),R.string.eventEmptyField,Toast.LENGTH_LONG).show();
-                    dialog.dismiss();
-                });
-        AlertDialog.Builder alertDialog = builder.buildDialog(view,QDialog.DIALOG_INPUT_STRING);
-        dialogSG.setLabelString(view.getResources().getString(R.string.fieldEnterNameUnderTask));
-        alertDialog.show();
-    }
 
-    private void clearCheck(View view, ListView listView, CheckListAdapter checkListAdapter){
-        QDialog.Builder builder = QDialog.getBuilder();
-        builder.setTitle(view.getResources().getString(R.string.eventClearUnderTask))
-                .setMessage(view.getResources().getString(R.string.askClearUnderTask))
-                .setCancelable(true)
-                .setOnClickPositiveBtn(((dialog, which) -> {
-                    getListUnderTaskChecked().clear();
-                    checkListAdapter.notifyDataSetChanged();
-                    MainAppActivity.setListViewHeightBasedOnChildren(listView);
-                }));
-        AlertDialog.Builder alertDialog = QDialog.make(builder, view, QDialog.DIALOG_QUATION);
-        alertDialog.show();
-    }
-
-    private void  addNotify(View view, ListView listView, NotifyAdapterList notifyAdapterList){
-        Calendar cldDate = Calendar.getInstance();
-
-        QDialog.Builder builder = QDialog.getBuilder();
-        QDialog.SetterGetterDialogCustom dialogSG = new QDialog.SetterGetterDialogCustom();
-        dialogSG.setValuesId(new int[]{
-                R.id.title_notify,
-                R.id.message_notify,
-                R.id.time,
-                R.id.date,
-                R.id.buttonSelectTime,
-                R.id.buttonSelectDate});
-        builder.setTitle(view.getResources().getString(R.string.eventAddNewNotification))
-                .setSetterGetterDialog(dialogSG)
-                .setIdView(R.layout.dialog_notify_view)
-                .setCancelable(true)
-                .setOnClickPositiveBtn((dialog, which)->{
-                    Object result = dialogSG.getValueView(0,"getText",null,null);
-                    String title = (result!=null)? result.toString() : "";
-
-                    result = dialogSG.getValueView(1, "getText",null,null);
-                    String message = (result!=null)? result.toString() : "";
-
-                    if(title.isEmpty()){
-                        Toast.makeText(view.getContext(), R.string.eventEmptyField, Toast.LENGTH_LONG).show();
-                        return;
-                    }
-
-                    long date = cldDate.getTimeInMillis();
-                    NotificationTask notificationTask = new NotificationTask( date, date);
-                    notificationTask.setTitle(title);
-                    notificationTask.setMessage(message);
-                    getListNotify().add(notificationTask);
-                    notifyAdapterList.notifyDataSetChanged();
-                    MainAppActivity.setListViewHeightBasedOnChildren(listView);
-                    dialog.dismiss();
-                });
-        AlertDialog.Builder dialog = QDialog.make(builder, view, QDialog.DIALOG_CUSTOM);
-        dialogSG.setValueView(4,"setOnClickListener",
-                new Class[]{View.OnClickListener.class},
-                new View.OnClickListener[]{(v2) ->{
-                    TimePickerDialog pickerDialog = new TimePickerDialog(view.getContext(),
-                            (v3,h,m)->{
-                                String hours = (h >= 10)? String.valueOf(h) : "0" + h;
-                                String min = (m >= 10)? String.valueOf(m) : "0" + m;
-                                dialogSG.setValueView(2,"setText",new Class[]{CharSequence.class},new Object[]{
-                                        hours + ":" + min});
-                                cldDate.set(Calendar.HOUR_OF_DAY,h);
-                                cldDate.set(Calendar.MINUTE,m);
-                            }, cldDate.get(Calendar.HOUR_OF_DAY), cldDate.get(Calendar.MINUTE),true);
-
-                    pickerDialog.show();
-
-                }});
-        dialogSG.setValueView(5,"setOnClickListener",
-                new Class[]{View.OnClickListener.class},
-                new View.OnClickListener[]{(v2) ->{
-                    DatePickerDialog pickerDialog = new DatePickerDialog(view.getContext(),
-                            (v3,y,m,d)->{
-                                cldDate.set(y,m,d);
-                                SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy", Locale.getDefault());
-                                dialogSG.setValueView(3,"setText",new Class[]{CharSequence.class},new Object[]{
-                                        format.format(cldDate.getTime())});
-                            }, cldDate.get(Calendar.YEAR), cldDate.get(Calendar.MONTH), cldDate.get(Calendar.DAY_OF_MONTH));
-                    pickerDialog.show();
-                }});
-        SimpleDateFormat formatterDate = new SimpleDateFormat("dd.MM.yyyy", Locale.getDefault());
-        SimpleDateFormat formatterTime = new SimpleDateFormat("HH:mm", Locale.getDefault());
-
-        dialogSG.setValueView(2,"setText", new Class[]{CharSequence.class},
-                new Object[]{
-                        formatterTime.format(cldDate.getTime())});
-        dialogSG.setValueView(3,"setText", new Class[]{CharSequence.class},
-                new Object[]{
-                        formatterDate.format(cldDate.getTime())});
-        dialog.show();
-    }
-
-
-    private void clearNotify(View view, ListView listView, NotifyAdapterList notifyAdapterList){
-        QDialog.Builder builder = QDialog.getBuilder();
-        builder.setTitle(view.getResources().getString(R.string.eventClearNotification))
-                .setMessage(view.getResources().getString(R.string.askClearNotification))
-                .setCancelable(true)
-                .setOnClickPositiveBtn(((dialog, which) -> {
-                    getListNotify().clear();
-                    notifyAdapterList.notifyDataSetChanged();
-                    MainAppActivity.setListViewHeightBasedOnChildren(listView);
-                }));
-        AlertDialog.Builder alertDialog = QDialog.make(builder, view, QDialog.DIALOG_QUATION);
-        alertDialog.show();
-    }
 
     public enum Type_Task {
         HABIT,
@@ -421,7 +297,6 @@ public abstract class AbsTask implements Parcelable {
      * This class build view for ListItem, ViewEditorTask, ViewViewerTask
      * @param <T> extend by AbsTask, pick object for storage and build
      */
-    @SuppressWarnings("unchecked")
     public abstract static class BuilderView<T extends AbsTask>{
 
         private T object;
@@ -512,6 +387,267 @@ public abstract class AbsTask implements Parcelable {
         public abstract ViewDataBinding getBindingViewerHeader(Activity activity);
         public abstract ViewDataBinding getBindingEditorHeader(Activity activity);
 
+        protected void addCheck(View view, ListView listView, CheckListAdapter checkListAdapter, AbsTask task){
+            QDialog.SetterGetterDialogEdit dialogSG = new QDialog.SetterGetterDialogEdit();
+            QDialog.Builder builder = QDialog.getBuilder();
+            builder.setTitle(view.getResources().getString(R.string.eventAddNewUnderTask))
+                    .setCancelable(true)
+                    .setSetterGetterDialog(dialogSG)
+                    .setOnClickPositiveBtn((dialog, which)->{
+                        if(!dialogSG.getUserInputString().isEmpty()) {
+                            task.getListUnderTaskChecked().add(new CheckTask(dialogSG.getUserInputString()));
+                            checkListAdapter.notifyDataSetChanged();
+                            MainAppActivity.setListViewHeightBasedOnChildren(listView);
+                        }else Toast.makeText(view.getContext(),R.string.eventEmptyField,Toast.LENGTH_LONG).show();
+                        dialog.dismiss();
+                    });
+            AlertDialog.Builder alertDialog = builder.buildDialog(view,QDialog.DIALOG_INPUT_STRING);
+            dialogSG.setLabelString(view.getResources().getString(R.string.fieldEnterNameUnderTask));
+            alertDialog.show();
+        }
+
+        protected void clearCheck(View view, ListView listView, CheckListAdapter checkListAdapter, AbsTask task){
+            QDialog.Builder builder = QDialog.getBuilder();
+            builder.setTitle(view.getResources().getString(R.string.eventClearUnderTask))
+                    .setMessage(view.getResources().getString(R.string.askClearUnderTask))
+                    .setCancelable(true)
+                    .setOnClickPositiveBtn(((dialog, which) -> {
+                        task.getListUnderTaskChecked().clear();
+                        checkListAdapter.notifyDataSetChanged();
+                        MainAppActivity.setListViewHeightBasedOnChildren(listView);
+                    }));
+            AlertDialog.Builder alertDialog = QDialog.make(builder, view, QDialog.DIALOG_QUATION);
+            alertDialog.show();
+        }
+
+        protected void  addNotify(View view, ListView listView, NotifyAdapterList notifyAdapterList, AbsTask task){
+            Calendar cldDate = Calendar.getInstance();
+
+            QDialog.Builder builder = QDialog.getBuilder();
+            QDialog.SetterGetterDialogCustom dialogSG = new QDialog.SetterGetterDialogCustom();
+            dialogSG.setValuesId(new int[]{
+                    R.id.title_notify,
+                    R.id.message_notify,
+                    R.id.time,
+                    R.id.date,
+                    R.id.buttonSelectTime,
+                    R.id.buttonSelectDate,
+                    R.id.panelTime,
+                    R.id.panelDate});
+            builder.setTitle(view.getResources().getString(R.string.eventAddNewNotification))
+                    .setSetterGetterDialog(dialogSG)
+                    .setIdView(R.layout.dialog_notify_view)
+                    .setCancelable(true)
+                    .setOnClickPositiveBtn((dialog, which)->{
+                        Object result = dialogSG.getValueView(0,"getText",null,null);
+                        String title = (result!=null)? result.toString() : "";
+
+                        result = dialogSG.getValueView(1, "getText",null,null);
+                        String message = (result!=null)? result.toString() : "";
+
+                        if(title.isEmpty()){
+                            Toast.makeText(view.getContext(), R.string.eventEmptyField, Toast.LENGTH_LONG).show();
+                            return;
+                        }
+
+                        long date = cldDate.getTimeInMillis();
+                        NotificationTask notificationTask = new NotificationTask( date, date);
+                        notificationTask.setTitle(title);
+                        notificationTask.setMessage(message);
+                        task.getListNotify().add(notificationTask);
+                        notifyAdapterList.notifyDataSetChanged();
+                        MainAppActivity.setListViewHeightBasedOnChildren(listView);
+                        dialog.dismiss();
+                    });
+            AlertDialog.Builder dialog = QDialog.make(builder, view, QDialog.DIALOG_CUSTOM);
+            dialogSG.setValueView(4,"setOnClickListener",
+                    new Class[]{View.OnClickListener.class},
+                    new View.OnClickListener[]{(v2) ->{
+                        TimePickerDialog pickerDialog = new TimePickerDialog(view.getContext(),
+                                (v3,h,m)->{
+                                    cldDate.set(Calendar.HOUR_OF_DAY,h);
+                                    cldDate.set(Calendar.MINUTE,m);
+                                    SimpleDateFormat formater = new SimpleDateFormat("HH:mm", Locale.getDefault());
+                                    String time = formater.format(cldDate.getTime());
+                                    dialogSG.setValueView(2,"setText",new Class[]{CharSequence.class},new Object[]{
+                                            time});
+                                }, cldDate.get(Calendar.HOUR_OF_DAY), cldDate.get(Calendar.MINUTE),true);
+
+                        pickerDialog.show();
+
+                    }});
+            dialogSG.setValueView(5,"setOnClickListener",
+                    new Class[]{View.OnClickListener.class},
+                    new View.OnClickListener[]{(v2) ->{
+                        DatePickerDialog pickerDialog = new DatePickerDialog(view.getContext(),
+                                (v3,y,m,d)->{
+                                    cldDate.set(y,m,d);
+                                    SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy", Locale.getDefault());
+                                    dialogSG.setValueView(3,"setText",new Class[]{CharSequence.class},new Object[]{
+                                            format.format(cldDate.getTime())});
+                                }, cldDate.get(Calendar.YEAR), cldDate.get(Calendar.MONTH), cldDate.get(Calendar.DAY_OF_MONTH));
+                        pickerDialog.show();
+                    }});
+            SimpleDateFormat formatterDate = new SimpleDateFormat("dd.MM.yyyy", Locale.getDefault());
+            SimpleDateFormat formatterTime = new SimpleDateFormat("HH:mm", Locale.getDefault());
+
+            dialogSG.setValueView(2,"setText", new Class[]{CharSequence.class},
+                    new Object[]{
+                            formatterTime.format(cldDate.getTime())});
+            dialogSG.setValueView(3,"setText", new Class[]{CharSequence.class},
+                    new Object[]{
+                            formatterDate.format(cldDate.getTime())});
+            dialog.show();
+        }
+
+
+        protected void clearNotify(View view, ListView listView, NotifyAdapterList notifyAdapterList, AbsTask task){
+            QDialog.Builder builder = QDialog.getBuilder();
+            builder.setTitle(view.getResources().getString(R.string.eventClearNotification))
+                    .setMessage(view.getResources().getString(R.string.askClearNotification))
+                    .setCancelable(true)
+                    .setOnClickPositiveBtn(((dialog, which) -> {
+                        task.getListNotify().clear();
+                        notifyAdapterList.notifyDataSetChanged();
+                        MainAppActivity.setListViewHeightBasedOnChildren(listView);
+                    }));
+            AlertDialog.Builder alertDialog = QDialog.make(builder, view, QDialog.DIALOG_QUATION);
+            alertDialog.show();
+        }
+
+        public void onClickItemNotifyEditButton(View view, ViewGroup parent, NotificationTask editNotify, NotifyAdapterList adapterList){
+            Calendar cldDate = Calendar.getInstance();
+            cldDate.setTimeInMillis(editNotify.getDateAlarm());
+
+            Calendar cldTime= Calendar.getInstance();
+            cldTime.setTimeInMillis(editNotify.getTimeAlarm());
+
+            QDialog.Builder builder = QDialog.getBuilder();
+            QDialog.SetterGetterDialogCustom dialogSG = new QDialog.SetterGetterDialogCustom();
+            dialogSG.setValuesId(new int[]{
+                    R.id.title_notify,
+                    R.id.message_notify,
+                    R.id.time,
+                    R.id.date,
+                    R.id.buttonSelectTime,
+                    R.id.buttonSelectDate});
+            builder.setTitle(view.getResources().getString(R.string.eventEditNotification))
+                    .setSetterGetterDialog(dialogSG)
+                    .setIdView(R.layout.dialog_notify_view)
+                    .setCancelable(true)
+                    .setOnClickPositiveBtn((dialog, which)->{
+                        Object result = dialogSG.getValueView(0,"getText",null,null);
+                        assert result != null;
+                        String title = result.toString();
+
+                        result = dialogSG.getValueView(1, "getText",null,null);
+                        assert result != null;
+                        String message = result.toString();
+
+                        if (title.isEmpty()){
+                            Toast.makeText(view.getContext(), R.string.eventEmptyField, Toast.LENGTH_LONG).show();
+                            return;
+                        }
+
+                        editNotify.setTitle(title);
+                        editNotify.setMessage(message);
+                        editNotify.setDateAlarm(cldDate.getTimeInMillis());
+                        editNotify.setTimeAlarm(cldTime.getTimeInMillis());
+                        adapterList.notifyDataSetChanged();
+                        dialog.dismiss();
+                    });
+            AlertDialog.Builder dialog = QDialog.make(builder, view, QDialog.DIALOG_CUSTOM);
+            dialogSG.setValueView(4,"setOnClickListener",
+                    new Class[]{View.OnClickListener.class},
+                    new View.OnClickListener[]{(v2) ->{
+                        TimePickerDialog pickerDialog = new TimePickerDialog(view.getContext(),
+                                (v3,h,m)->{
+                                    cldTime.set(Calendar.HOUR_OF_DAY, h);
+                                    cldTime.set(Calendar.MINUTE, m);
+                                    SimpleDateFormat formater = new SimpleDateFormat("HH:mm", Locale.getDefault());
+                                    String time = formater.format(cldTime.getTime());
+                                    dialogSG.setValueView(2,"setText",new Class[]{CharSequence.class},new Object[]{
+                                            time});
+                                },cldTime.get(Calendar.HOUR_OF_DAY), cldTime.get(Calendar.MINUTE),true);
+
+                        pickerDialog.show();
+
+                    }});
+            dialogSG.setValueView(5,"setOnClickListener",
+                    new Class[]{View.OnClickListener.class},
+                    new View.OnClickListener[]{(v2) ->{
+                        DatePickerDialog pickerDialog = new DatePickerDialog(view.getContext(),
+                                (v3,y,m,d)->{
+                                    cldDate.set(y, m, d);
+                                    SimpleDateFormat formatterDate = new SimpleDateFormat("dd.MM.yyyy", Locale.getDefault());
+                                    String date = formatterDate.format(cldDate.getTime());
+                                    dialogSG.setValueView(3,"setText",
+                                            new Class[]{CharSequence.class},
+                                            new Object[]{date});
+                                },cldDate.get(Calendar.YEAR), cldDate.get(Calendar.MONTH),cldDate.get(Calendar.DAY_OF_MONTH));
+                        pickerDialog.show();
+                    }});
+
+
+            dialogSG.setValueView(0,"setText", new Class[]{CharSequence.class},
+                    new Object[]{editNotify.getTitle()});
+            dialogSG.setValueView(1,"setText", new Class[]{CharSequence.class},
+                    new Object[]{editNotify.getMessage()});
+            dialogSG.setValueView(2,"setText", new Class[]{CharSequence.class},
+                    new Object[]{new SimpleDateFormat("HH:mm", Locale.getDefault()).format(cldTime.getTime())} );
+            dialogSG.setValueView(3,"setText", new Class[]{CharSequence.class},
+                    new Object[]{new SimpleDateFormat("dd.MM.yyyy",Locale.getDefault()).format(cldDate.getTime())} );
+            dialog.show();
+        }
+
+        public void onClickItemNotifyDeleteButton(View view, ViewGroup parent, NotificationTask deleteNotify, NotifyAdapterList adapterList){
+            QDialog.Builder builder = QDialog.getBuilder();
+            builder.setTitle(view.getResources().getString(R.string.eventDeleteNotification))
+                    .setMessage(view.getResources().getString(R.string.askDeleteNotification))
+                    .setCancelable(true)
+                    .setOnClickPositiveBtn(((dialog, which) -> {
+                        adapterList.remove(deleteNotify);
+                        adapterList.notifyDataSetChanged();
+                        MainAppActivity.setListViewHeightBasedOnChildren((ListView) parent);
+                    }));
+            AlertDialog.Builder alertDialog = builder.buildDialog(view,QDialog.DIALOG_QUATION);
+            alertDialog.show();
+        }
+
+        public void onClickItemCheckEditButton(View view, ViewGroup parent, CheckTask checkTask, CheckListAdapter listAdapter){
+            QDialog.SetterGetterDialogEdit dialogSG = new QDialog.SetterGetterDialogEdit();
+            QDialog.Builder builder = QDialog.getBuilder();
+            builder.setTitle(view.getResources().getString(R.string.eventEditUnderTask))
+                    .setCancelable(true)
+                    .setSetterGetterDialog(dialogSG)
+                    .setOnClickPositiveBtn((dialog, which)->{
+                        if(!dialogSG.getUserInputString().isEmpty()) {
+                            checkTask.setText(dialogSG.getUserInputString());
+                            listAdapter.notifyDataSetChanged();
+                        }else Toast.makeText(view.getContext(),R.string.eventEmptyField,Toast.LENGTH_LONG).show();
+                        dialog.dismiss();
+                    });
+            AlertDialog.Builder alertDialog = QDialog.make(builder,view,QDialog.DIALOG_INPUT_STRING);
+            dialogSG.setLabelString(view.getResources().getString(R.string.fieldEnterNameUnderTask));
+            dialogSG.setUserInputString(checkTask.getText());
+            alertDialog.show();
+        }
+
+        public void onClickItemCheckDeleteCheck(View view, ViewGroup parent, CheckTask checkTask, CheckListAdapter listAdapter){
+            QDialog.Builder builder = QDialog.getBuilder();
+            builder.setTitle(view.getResources().getString(R.string.eventDeleteUnderTask))
+                    .setMessage(view.getResources().getString(R.string.askDeleteUnderTask))
+                    .setCancelable(true)
+                    .setOnClickPositiveBtn((dialog, which) -> {
+                        listAdapter.remove(checkTask);
+                        listAdapter.notifyDataSetChanged();
+                        MainAppActivity.setListViewHeightBasedOnChildren((ListView) parent);
+                    });
+            AlertDialog.Builder alertDialog = QDialog.make(builder, view, QDialog.DIALOG_QUATION);
+            alertDialog.show();
+        }
+
+
         public void setViewerTask(View view){
             AbsTask task = getObject();
             TextView countSeries = view.findViewById(R.id.countSeries);
@@ -523,7 +659,7 @@ public abstract class AbsTask implements Parcelable {
 
             View panelCheckList = view.findViewById(R.id.panelControlCheckList);
             if(task.getListUnderTaskChecked().size() > 0){
-                CheckListAdapter adapterCheckList = new CheckListAdapter(view.getContext(),getObject().getListUnderTaskChecked());
+                CheckListAdapter adapterCheckList = new CheckListAdapter(view.getContext(),getObject().getListUnderTaskChecked(), null, null);
                 adapterCheckList.setEditable(false);
                 ListView listViewUnderTask = view.findViewById(R.id.underTaskList);
                 listViewUnderTask.setAdapter(adapterCheckList);
@@ -536,7 +672,7 @@ public abstract class AbsTask implements Parcelable {
 
             View panelNotify = view.findViewById(R.id.panelNotify);
             if(task.getListNotify().size() > 0){
-                NotifyAdapterList adapterListNotification = new NotifyAdapterList(view.getContext(), task.getListNotify());
+                NotifyAdapterList adapterListNotification = new NotifyAdapterList(view.getContext(), task.getListNotify(), null, null);
                 adapterListNotification.setEditable(false);
                 ListView listViewNotify = view.findViewById(R.id.notifyList);
                 listViewNotify.setAdapter(adapterListNotification);
@@ -589,14 +725,16 @@ public abstract class AbsTask implements Parcelable {
             ArrayAdapter<String> adapter = new AdapterArrayPriorityType(view.getContext());
             spinner.setAdapter(adapter);
 
-            CheckListAdapter adapterCheckList = new CheckListAdapter(view.getContext(),getObject().getListUnderTaskChecked());
+            CheckListAdapter adapterCheckList =
+                    new CheckListAdapter(view.getContext(), task.getListUnderTaskChecked(), this::onClickItemCheckEditButton, this::onClickItemCheckDeleteCheck);
             ListView listViewUnderTask = view.findViewById(R.id.underTaskList);
             listViewUnderTask.setAdapter(adapterCheckList);
+            MainAppActivity.setListViewHeightBasedOnChildren(listViewUnderTask);
 
             Button buttonAddCheckBox = view.findViewById(R.id.addCheckTask);
-            buttonAddCheckBox.setOnClickListener((v)-> task.addCheck(view,listViewUnderTask,adapterCheckList));
+            buttonAddCheckBox.setOnClickListener((v)-> addCheck(view, listViewUnderTask, adapterCheckList, task));
             Button buttonClearCheckBox = view.findViewById(R.id.clearCheckTask);
-            buttonClearCheckBox.setOnClickListener((v)-> task.clearCheck(view,listViewUnderTask,adapterCheckList));
+            buttonClearCheckBox.setOnClickListener((v)-> clearCheck(view, listViewUnderTask, adapterCheckList, task));
 
             Button buttonAddCount = view.findViewById(R.id.addCounterButton);
             buttonAddCount.setOnClickListener(v ->{
@@ -611,13 +749,15 @@ public abstract class AbsTask implements Parcelable {
             });
 
             ListView listViewNotify = view.findViewById(R.id.notifyList);
-            NotifyAdapterList adapterListNotification = new NotifyAdapterList(view.getContext(), task.getListNotify());
+            NotifyAdapterList adapterListNotification =
+                    new NotifyAdapterList(view.getContext(), task.getListNotify(), this::onClickItemNotifyEditButton, this::onClickItemNotifyDeleteButton);
             listViewNotify.setAdapter(adapterListNotification);
+            MainAppActivity.setListViewHeightBasedOnChildren(listViewNotify);
 
             Button buttonAddNotify = view.findViewById(R.id.addNotify);
-            buttonAddNotify.setOnClickListener((v)->task.addNotify(view,listViewNotify,adapterListNotification));
+            buttonAddNotify.setOnClickListener((v)->addNotify(view, listViewNotify, adapterListNotification, task));
             Button buttonClearNotify = view.findViewById(R.id.clearNotify);
-            buttonClearNotify.setOnClickListener((v)->task.clearNotify(view,listViewNotify,adapterListNotification));
+            buttonClearNotify.setOnClickListener((v)->clearNotify(view, listViewNotify,adapterListNotification, task));
         }
     }
 

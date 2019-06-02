@@ -7,15 +7,10 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.ListView;
-import android.widget.Toast;
-
 import java.util.List;
-
 import AssambleClassManagmentApp.CheckTask;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -23,13 +18,17 @@ public class CheckListAdapter extends ArrayAdapter<CheckTask> {
 
     private final List<CheckTask> tasks;
     private final LayoutInflater inflater;
+    private final ClickItemButton onClickEditCheck;
+    private final ClickItemButton onClickDelCheck;
 
     private boolean editable = true;
 
-    public CheckListAdapter(@NonNull Context context, @NonNull List<CheckTask> objects) {
+    public CheckListAdapter(@NonNull Context context, @NonNull List<CheckTask> objects, ClickItemButton editButton, ClickItemButton delButton) {
         super(context, 0, objects);
         tasks = objects;
         inflater = LayoutInflater.from(context);
+        onClickEditCheck = editButton;
+        onClickDelCheck = delButton;
     }
 
     @NonNull
@@ -38,43 +37,13 @@ public class CheckListAdapter extends ArrayAdapter<CheckTask> {
         return tasks.get(position);
     }
 
+    @Override
+    public void remove(@Nullable CheckTask object) {
+        tasks.remove(object);
+    }
+
     public void setEditable(boolean editable) {
         this.editable = editable;
-    }
-
-
-    private void onClickEditCheck(View view, ViewGroup parent, CheckTask checkTask){
-        QDialog.SetterGetterDialogEdit dialogSG = new QDialog.SetterGetterDialogEdit();
-        QDialog.Builder builder = QDialog.getBuilder();
-        builder.setTitle(view.getResources().getString(R.string.eventEditUnderTask))
-                .setCancelable(true)
-                .setSetterGetterDialog(dialogSG)
-                .setOnClickPositiveBtn((dialog, which)->{
-                    if(!dialogSG.getUserInputString().isEmpty()) {
-                        checkTask.setText(dialogSG.getUserInputString());
-                        this.notifyDataSetChanged();
-                        MainAppActivity.setListViewHeightBasedOnChildren((ListView) parent);
-                    }else Toast.makeText(view.getContext(),R.string.eventEmptyField,Toast.LENGTH_LONG).show();
-                    dialog.dismiss();
-                });
-        AlertDialog.Builder alertDialog = QDialog.make(builder,view,QDialog.DIALOG_INPUT_STRING);
-        dialogSG.setLabelString(view.getResources().getString(R.string.fieldEnterNameUnderTask));
-        dialogSG.setUserInputString(checkTask.getText());
-        alertDialog.show();
-    }
-
-    private void onClickDeleteCheck(View view, ViewGroup parent, CheckTask checkTask){
-        QDialog.Builder builder = QDialog.getBuilder();
-        builder.setTitle(view.getResources().getString(R.string.eventDeleteUnderTask))
-                .setMessage(view.getResources().getString(R.string.askDeleteUnderTask))
-                .setCancelable(true)
-                .setOnClickPositiveBtn((dialog, which) -> {
-                    tasks.remove(checkTask);
-                    this.notifyDataSetChanged();
-                    MainAppActivity.setListViewHeightBasedOnChildren((ListView) parent);
-                });
-        AlertDialog.Builder alertDialog = QDialog.make(builder, view, QDialog.DIALOG_QUATION);
-        alertDialog.show();
     }
 
     @NonNull
@@ -94,8 +63,8 @@ public class CheckListAdapter extends ArrayAdapter<CheckTask> {
         holder.checkBox.setText(checkTask.getText());
         holder.checkBox.setOnCheckedChangeListener((v,c)->{});
         View finalConvertView = convertView;
-        holder.editButton.setOnClickListener((v)-> onClickEditCheck(finalConvertView, parent, checkTask));
-        holder.deleteButton.setOnClickListener((v)-> onClickDeleteCheck(finalConvertView, parent, checkTask));
+        holder.editButton.setOnClickListener((v)-> onClickEditCheck.click(finalConvertView, parent, checkTask, this));
+        holder.deleteButton.setOnClickListener((v)-> onClickDelCheck.click(finalConvertView, parent, checkTask, this));
         if(!editable){
             holder.editButton.setVisibility(View.GONE);
             holder.deleteButton.setVisibility(View.GONE);
@@ -112,5 +81,9 @@ public class CheckListAdapter extends ArrayAdapter<CheckTask> {
         private ViewHolder(View view) {
             ButterKnife.bind(this, view);
         }
+    }
+
+    public interface ClickItemButton{
+        void click(View view, ViewGroup parent, CheckTask checkTask, CheckListAdapter adapterList);
     }
 }

@@ -10,6 +10,7 @@
         android:text="@string/fieldTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textSize="@dimen/textSize_normal"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:layout_marginBottom="@dimen/spacing_xsmall"/>
     <EditText
@@ -27,6 +28,7 @@
         android:text="@string/fieldMessage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textSize="@dimen/textSize_normal"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:layout_marginBottom="@dimen/spacing_xsmall"/>
     <EditText
@@ -40,6 +42,7 @@
         android:layout_marginBottom="@dimen/spacing_xsmall">
     </EditText>
     <LinearLayout
+        android:id="@+id/panelTime"
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -61,12 +64,14 @@
             android:id="@+id/buttonSelectTime"
             style="@style/buttonStyle"
             android:text="@string/app_select"
-            android:textSize="@dimen/textSize_xsmall"
+            android:textSize="@dimen/textSize_normal"
             android:layout_width="wrap_content"
-            android:layout_height="@dimen/spacing_large" />
+            android:layout_height="@dimen/spacing_xlarge" />
     </LinearLayout>
     <LinearLayout
+        android:id="@+id/panelDate"
         android:orientation="horizontal"
+        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <TextView
@@ -86,8 +91,8 @@
             android:id="@+id/buttonSelectDate"
             style="@style/buttonStyle"
             android:text="@string/app_select"
-            android:textSize="@dimen/textSize_xsmall"
+            android:textSize="@dimen/textSize_normal"
             android:layout_width="wrap_content"
-            android:layout_height="@dimen/spacing_large" />
+            android:layout_height="@dimen/spacing_xlarge" />
     </LinearLayout>
 </LinearLayout>

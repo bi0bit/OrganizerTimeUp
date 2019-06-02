@@ -1,6 +1,5 @@
 package AssambleClassManagmentApp;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;

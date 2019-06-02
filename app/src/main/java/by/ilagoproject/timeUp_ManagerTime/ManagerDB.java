@@ -23,8 +23,8 @@ public final class ManagerDB {
     private HandlerUpdateTaskInDb handlerUpdateTaskInDb;
     private HandlerUpdateTagInDb handlerUpdateTagInDb;
 
-    private SQLiteDatabase dbR;
-    private SQLiteDatabase dbW;
+    private final SQLiteDatabase dbR;
+    private final SQLiteDatabase dbW;
 
     public static final int DELETE = 0b01;
     public static final int UPDATE = 0b10;
@@ -470,7 +470,6 @@ public final class ManagerDB {
     }
 
     public void updateCheckList(final AbsTask task){
-        final List<CheckTask> checkList = task.getListUnderTaskChecked();
         try {
             dbW.beginTransaction();
             dbW.execSQL(DEL_STRING_CHECKLISTBYTASK, new String[]{String.valueOf(task.getId())});
@@ -503,7 +502,6 @@ public final class ManagerDB {
 
 
     public void updateNotify(final AbsTask task){
-        final List<NotificationTask> notify = task.getListNotify();
         try {
             dbW.beginTransaction();
             dbW.execSQL(DEL_STRING_NOTIFYBYTASK, new String[]{String.valueOf(task.getId())});

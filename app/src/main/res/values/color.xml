@@ -1,19 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="PrimaryBar">#6cea8e</color>
-    <color name="TextPrimaryBar">#f1fff2</color>
+    <color name="PrimaryBar">#00c853</color>
+    <color name="PrimaryDarkBar">#009624</color>
+    <color name="TextPrimaryBar">#e8f5e9</color>
     <color name="TitleTextApp">#949090</color>
     <color name="TextApp">#272525</color>
-    <color name="GreenTextApp">#3FA85C</color>
-    <color name="LGreenTextApp">#3CF568</color>
-    <color name="FieldApp">#3FA85C</color>
-    <color name="FocusFieldApp">#3CF568</color>
-    <color name="BackgroundLight">#F1F3FD</color>
-    <color name="TypePriority_Easy">#4CAF50</color>
-    <color name="TypePriority_Normal">#CFD82D</color>
-    <color name="TypePriority_Necessary">#F01818</color>
-    <color name="RedComponent">#E04552</color>
-    <color name="RedComponentPressed">#EE0D21</color>
-    <color name="GreenComponent">#3FA85C</color>
-    <color name="GreenComponentPressed">#11C941</color>
+    <color name="GreenTextApp">#009624</color>
+    <color name="LGreenTextApp">#00c853</color>
+    <color name="FieldApp">#009624</color>
+    <color name="FocusFieldApp">#00c853</color>
+    <color name="BackgroundLight">#e8f5e9</color>
+    <color name="TypePriority_Easy">#1e88e5</color>
+    <color name="TypePriority_Normal">#f9a825</color>
+    <color name="TypePriority_Necessary">#ff3d00</color>
+    <color name="RedComponent">#c62828</color>
+    <color name="RedComponentPressed">#f44336</color>
+    <color name="GreenComponent">#00c853</color>
+    <color name="GreenComponentPressed">#00e676</color>
 </resources>

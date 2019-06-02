@@ -1,6 +1,5 @@
 package AssambleClassManagmentApp;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.database.Cursor;
@@ -186,6 +185,8 @@ public class Goal  extends AbsTask{
                 cldEnd.get(Calendar.DAY_OF_MONTH));
         pickerDialog.show();
     }
+
+
 
     /**
      * Build view goal for listItem, ViewViewerTask, ViewEditorTask

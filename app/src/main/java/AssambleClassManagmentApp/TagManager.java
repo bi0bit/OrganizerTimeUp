@@ -11,7 +11,7 @@ import by.ilagoproject.timeUp_ManagerTime.ManagerDB;
 public class TagManager {
     private volatile static TagManager object = null;
 
-    private SparseArray<String> tags;
+    private final SparseArray<String> tags;
 
 
     public static SparseArray<String> getTags(){

@@ -6,14 +6,13 @@ import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
 
-import javax.crypto.AEADBadTagException;
 
 import by.ilagoproject.timeUp_ManagerTime.ManagerDB;
 
 public class TaskManager implements ManagerDB.HandlerUpdateTaskInDb {
 
-    private Hashtable<Integer,AbsTask> tasks = new Hashtable<>();
-    private ManagerDB dbM;
+    private final Hashtable<Integer,AbsTask> tasks = new Hashtable<>();
+    private final ManagerDB dbM;
 
 
     private ManagerDB.HandlerUpdateTaskInDb handlerUpdateTaskInDb;
@@ -53,7 +52,7 @@ public class TaskManager implements ManagerDB.HandlerUpdateTaskInDb {
             String message = c.getString(c.getColumnIndex(ManagerDB.NOTIFYMESSAGE_COLUMNNAME));
             long time = c.getLong(c.getColumnIndex(ManagerDB.NOTIFYTIME_COLUMNAME));
             long date = c.getLong(c.getColumnIndex(ManagerDB.NOTIFYDATE_COLUMNAME));
-            NotificationTask notifyTask = new NotificationTask(id, title, message, time, date);
+            NotificationTask notifyTask = new NotificationTask(id, title, message, date, time);
             listNotify.add(notifyTask);
         }
     }
@@ -74,7 +73,7 @@ public class TaskManager implements ManagerDB.HandlerUpdateTaskInDb {
         while(c.moveToNext()){
             Habit habit = (Habit) Habit.initTaskByCursor(c);
             TagManager.initTagByTask(habit);
-            initCheckListByTask(habit);
+//            initCheckListByTask(habit);
             initNotifyListByTask(habit);
             tasks.put(habit.getId(),habit);
         }

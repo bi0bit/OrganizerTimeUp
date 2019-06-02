@@ -4,6 +4,7 @@
         <item name="editTextStyle">@style/EditorTextTheme</item>
         <item name="spinnerStyle">@style/SpinnerTheme</item>
         <item name="checkboxStyle">@style/AppCheckBoxStyle</item>
+        <item name="colorPrimaryDark">@color/PrimaryDarkBar</item>
         <item name="android:checkboxStyle">@style/AppCheckBoxStyle</item>
     </style>
 
