@@ -85,6 +85,10 @@ public class MainAppActivity extends AppCompatActivity implements ManagerDB.Hand
             case R.id.tags:
                  allTag();
                 break;
+            case R.id.sortBy:
+                break;
+            case R.id.filter:
+                break;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -103,7 +107,7 @@ public class MainAppActivity extends AppCompatActivity implements ManagerDB.Hand
                     }else Toast.makeText(this,R.string.eventEmptyField,Toast.LENGTH_LONG).show();
                     dialog.dismiss();
                 });
-        AlertDialog.Builder alertDialog = QDialog.make(builder, findViewById(android.R.id.content), QDialog.DIALOG_INPUT_STRING);
+        AlertDialog alertDialog = QDialog.make(builder, findViewById(android.R.id.content), QDialog.DIALOG_INPUT_STRING);
         dialogSG.setLabelString(getResources().getString(R.string.fieldNameTag));
         dialogSG.setUserInputString(name);
         alertDialog.show();
@@ -170,7 +174,7 @@ public class MainAppActivity extends AppCompatActivity implements ManagerDB.Hand
                     }else Toast.makeText(this,R.string.eventEmptyField,Toast.LENGTH_LONG).show();
                     dialog.dismiss();
                 });
-        AlertDialog.Builder alertDialog = QDialog.make(builder, findViewById(android.R.id.content), QDialog.DIALOG_INPUT_STRING);
+        AlertDialog alertDialog = QDialog.make(builder, findViewById(android.R.id.content), QDialog.DIALOG_INPUT_STRING);
         dialogSG.setLabelString(getResources().getString(R.string.fieldEnterNameUnderTask));
         alertDialog.show();
     }

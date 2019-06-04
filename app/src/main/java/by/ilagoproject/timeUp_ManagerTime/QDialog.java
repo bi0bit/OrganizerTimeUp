@@ -1,5 +1,6 @@
 package by.ilagoproject.timeUp_ManagerTime;
 
+import android.app.ActionBar;
 import android.graphics.drawable.Drawable;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
@@ -7,6 +8,7 @@ import android.text.style.ForegroundColorSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -45,12 +47,23 @@ public final class QDialog {
     }
 
     @NonNull
-    public static AlertDialog.Builder make(@NonNull Builder builder, View view, @DialogType int dialogType) {
-        return builder.buildDialog(view, dialogType);
+    public static AlertDialog make(@NonNull Builder builder, View view, @DialogType int dialogType) {
+        AlertDialog dialog = builder.buildDialog(view, dialogType).create();
+        if(!builder.isFixSize()) {
+            WindowManager.LayoutParams prm = new WindowManager.LayoutParams();
+            prm.copyFrom(dialog.getWindow().getAttributes());
+            prm.width = WindowManager.LayoutParams.MATCH_PARENT;
+            prm.height = WindowManager.LayoutParams.WRAP_CONTENT;
+            dialog.show();
+            dialog.getWindow().setAttributes(prm);
+            dialog.hide();
+        }
+        return dialog;
     }
 
     public static class Builder{
         private boolean cancelable = false;
+        private boolean fixSize = false;
         private String message;
         private String title;
          @StringRes
@@ -59,6 +72,10 @@ public final class QDialog {
         private int idView;
          @StyleRes
         private int styleDialog;
+
+        private int width;
+        private int height;
+
         private String[] items;
 
 
@@ -87,6 +104,8 @@ public final class QDialog {
             onClickPositiveBtn = null;
             onClickNeutralBtn = null;
             onClickItem = null;
+            width = ViewGroup.LayoutParams.WRAP_CONTENT;
+            height = ViewGroup.LayoutParams.WRAP_CONTENT;
             neutralBtnStr = R.string.dialog_CANCEL;
             positiveBtnStr = R.string.dialog_OK;
             negativeBtnStr = R.string.dialog_BACK;
@@ -122,6 +141,34 @@ public final class QDialog {
         public String getMessage() {
             return message;
         }
+
+        public boolean isFixSize() {
+            return fixSize;
+        }
+
+        public Builder setFixSize(boolean fixSize) {
+            this.fixSize = fixSize;
+            return this;
+        }
+
+        public int getWidth() {
+            return width;
+        }
+
+        public Builder setWidth(int width) {
+            this.width = width;
+            return this;
+        }
+
+        public int getHeight() {
+            return height;
+        }
+
+        public Builder setHeight(int height) {
+            this.height = height;
+            return this;
+        }
+
 
         public Builder setMessage(String message) {
             this.message = message;
@@ -262,7 +309,7 @@ public final class QDialog {
 
         @NonNull
         public View getValuesView(int pos) {
-            if (pos<0 || pos > getLengthValues() - 1) throw new NullPointerException();
+            if (pos<0 || pos > getLengthValues()) throw new NullPointerException();
             return valuesView[pos];
         }
 

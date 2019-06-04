@@ -1,4 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent">
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/root"
@@ -71,7 +74,6 @@
     <LinearLayout
         android:id="@+id/panelDate"
         android:orientation="horizontal"
-        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <TextView
@@ -96,3 +98,4 @@
             android:layout_height="@dimen/spacing_xlarge" />
     </LinearLayout>
 </LinearLayout>
+</ScrollView>

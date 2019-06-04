@@ -63,7 +63,7 @@
                 android:text="@string/app_select"
                 android:layout_height="@dimen/spacing_xxlarge"
                 android:layout_width="wrap_content"
-                android:textSize="@dimen/textSize_xsmall"
+                android:textSize="@dimen/textSize_small"
                 android:onClick="@{task::onClickSelectEndDate}"/>
         </LinearLayout>
 

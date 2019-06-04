@@ -8,6 +8,18 @@
           android:id="@+id/spinnerTypeTask" />
 
     <item
+        android:id="@+id/sortBy"
+        android:icon="@drawable/v_sort"
+        app:showAsAction="ifRoom"
+        android:title="@string/sortingBy"/>
+
+    <item
+        android:id="@+id/filter"
+        android:icon="@drawable/v_filter"
+        app:showAsAction="ifRoom"
+        android:title="@string/filter"/>
+
+    <item
         android:id="@+id/addTag"
         app:showAsAction="never"
         android:title="@string/createTag"/>
@@ -19,9 +31,6 @@
     <item
         app:showAsAction="never"
         android:title="@string/setting"/>
-    <item
-        app:showAsAction="ifRoom"
-        android:title="@string/sortingBy"/>
     <item
         android:id="@+id/tags"
         app:showAsAction="never"

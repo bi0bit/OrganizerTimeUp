@@ -62,6 +62,7 @@
     <string name="actualTask">Только действительные</string>
     <string name="setting">Настройки</string>
     <string name="sortingBy">Сортировать по…</string>
+    <string name="filter">Фильтр…</string>
     <string name="tags">Тэги</string>
     <string name="shortMode">Сокращенный режим</string>
     <string-array name="strings_type_task">

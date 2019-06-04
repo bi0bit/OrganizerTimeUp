@@ -3,12 +3,17 @@ package AssambleClassManagmentApp;
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.content.res.Resources;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.TypedValue;
+import android.view.Display;
 import android.view.LayoutInflater;
+import android.view.Surface;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
@@ -31,6 +36,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+import androidx.annotation.ColorRes;
 import androidx.appcompat.app.AlertDialog;
 import androidx.databinding.BindingAdapter;
 import androidx.databinding.ViewDataBinding;
@@ -308,6 +314,19 @@ public abstract class AbsTask implements Parcelable {
             this.attachToRoot = false;
         }
 
+        public static Drawable getColorPriority(Resources resources, Priority_Task priority){
+            final Drawable drawable;
+            if(priority == Priority_Task.MIN){
+              drawable = new ColorDrawable(resources.getColor(R.color.TypePriority_Easy));
+            }
+            else if(priority == Priority_Task.NORMAL){
+              drawable = new ColorDrawable(resources.getColor(R.color.TypePriority_Normal));
+            }
+            else drawable = new ColorDrawable(resources.getColor(R.color.TypePriority_Necessary));
+
+            return drawable;
+        }
+
         public abstract int getIdLayoutViewerHeader();
         public abstract int getIdLayoutEditorHeader();
 
@@ -366,8 +385,11 @@ public abstract class AbsTask implements Parcelable {
             textCount.setText(String.valueOf(task.getCountSeries()));
         }
         public void setControlItem(View view){
-
+            View panelControl = view.findViewById(R.id.controlItem);
+            Drawable color = getColorPriority(view.getResources(), getObject().getPriority());
+            panelControl.setBackground(color);
         }
+
         public abstract View createBasicViewItem(ViewGroup parent);
 
         private View createViewItemTask(ViewGroup parent){
@@ -388,8 +410,8 @@ public abstract class AbsTask implements Parcelable {
         public abstract ViewDataBinding getBindingEditorHeader(Activity activity);
 
         protected void addCheck(View view, ListView listView, CheckListAdapter checkListAdapter, AbsTask task){
-            QDialog.SetterGetterDialogEdit dialogSG = new QDialog.SetterGetterDialogEdit();
-            QDialog.Builder builder = QDialog.getBuilder();
+            final QDialog.SetterGetterDialogEdit dialogSG = new QDialog.SetterGetterDialogEdit();
+            final QDialog.Builder builder = QDialog.getBuilder();
             builder.setTitle(view.getResources().getString(R.string.eventAddNewUnderTask))
                     .setCancelable(true)
                     .setSetterGetterDialog(dialogSG)
@@ -416,7 +438,7 @@ public abstract class AbsTask implements Parcelable {
                         checkListAdapter.notifyDataSetChanged();
                         MainAppActivity.setListViewHeightBasedOnChildren(listView);
                     }));
-            AlertDialog.Builder alertDialog = QDialog.make(builder, view, QDialog.DIALOG_QUATION);
+            AlertDialog alertDialog = QDialog.make(builder, view, QDialog.DIALOG_QUATION);
             alertDialog.show();
         }
 
@@ -429,11 +451,8 @@ public abstract class AbsTask implements Parcelable {
                     R.id.title_notify,
                     R.id.message_notify,
                     R.id.time,
-                    R.id.date,
-                    R.id.buttonSelectTime,
-                    R.id.buttonSelectDate,
-                    R.id.panelTime,
-                    R.id.panelDate});
+                    R.id.panelDate,
+                    R.id.buttonSelectTime});
             builder.setTitle(view.getResources().getString(R.string.eventAddNewNotification))
                     .setSetterGetterDialog(dialogSG)
                     .setIdView(R.layout.dialog_notify_view)
@@ -459,7 +478,14 @@ public abstract class AbsTask implements Parcelable {
                         MainAppActivity.setListViewHeightBasedOnChildren(listView);
                         dialog.dismiss();
                     });
-            AlertDialog.Builder dialog = QDialog.make(builder, view, QDialog.DIALOG_CUSTOM);
+            int rotation = view.getDisplay().getRotation();
+            if(rotation == Surface.ROTATION_90 || rotation == Surface.ROTATION_270) {
+                builder.setFixSize(false)
+                        .setHeight(ViewGroup.LayoutParams.WRAP_CONTENT)
+                        .setWidth(ViewGroup.LayoutParams.MATCH_PARENT);
+            }
+            AlertDialog dialog = QDialog.make(builder, view, QDialog.DIALOG_CUSTOM);
+
             dialogSG.setValueView(4,"setOnClickListener",
                     new Class[]{View.OnClickListener.class},
                     new View.OnClickListener[]{(v2) ->{
@@ -474,29 +500,15 @@ public abstract class AbsTask implements Parcelable {
                                 }, cldDate.get(Calendar.HOUR_OF_DAY), cldDate.get(Calendar.MINUTE),true);
 
                         pickerDialog.show();
+                    }});
 
-                    }});
-            dialogSG.setValueView(5,"setOnClickListener",
-                    new Class[]{View.OnClickListener.class},
-                    new View.OnClickListener[]{(v2) ->{
-                        DatePickerDialog pickerDialog = new DatePickerDialog(view.getContext(),
-                                (v3,y,m,d)->{
-                                    cldDate.set(y,m,d);
-                                    SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy", Locale.getDefault());
-                                    dialogSG.setValueView(3,"setText",new Class[]{CharSequence.class},new Object[]{
-                                            format.format(cldDate.getTime())});
-                                }, cldDate.get(Calendar.YEAR), cldDate.get(Calendar.MONTH), cldDate.get(Calendar.DAY_OF_MONTH));
-                        pickerDialog.show();
-                    }});
-            SimpleDateFormat formatterDate = new SimpleDateFormat("dd.MM.yyyy", Locale.getDefault());
             SimpleDateFormat formatterTime = new SimpleDateFormat("HH:mm", Locale.getDefault());
 
             dialogSG.setValueView(2,"setText", new Class[]{CharSequence.class},
                     new Object[]{
                             formatterTime.format(cldDate.getTime())});
-            dialogSG.setValueView(3,"setText", new Class[]{CharSequence.class},
-                    new Object[]{
-                            formatterDate.format(cldDate.getTime())});
+            View panelDate = dialogSG.getValuesView(3);
+            panelDate.setVisibility(View.GONE);
             dialog.show();
         }
 
@@ -511,13 +523,11 @@ public abstract class AbsTask implements Parcelable {
                         notifyAdapterList.notifyDataSetChanged();
                         MainAppActivity.setListViewHeightBasedOnChildren(listView);
                     }));
-            AlertDialog.Builder alertDialog = QDialog.make(builder, view, QDialog.DIALOG_QUATION);
+            AlertDialog alertDialog = QDialog.make(builder, view, QDialog.DIALOG_QUATION);
             alertDialog.show();
         }
 
-        public void onClickItemNotifyEditButton(View view, ViewGroup parent, NotificationTask editNotify, NotifyAdapterList adapterList){
-            Calendar cldDate = Calendar.getInstance();
-            cldDate.setTimeInMillis(editNotify.getDateAlarm());
+        protected void onClickItemNotifyEditButton(View view, ViewGroup parent, NotificationTask editNotify, NotifyAdapterList adapterList){
 
             Calendar cldTime= Calendar.getInstance();
             cldTime.setTimeInMillis(editNotify.getTimeAlarm());
@@ -528,9 +538,8 @@ public abstract class AbsTask implements Parcelable {
                     R.id.title_notify,
                     R.id.message_notify,
                     R.id.time,
-                    R.id.date,
-                    R.id.buttonSelectTime,
-                    R.id.buttonSelectDate});
+                    R.id.panelDate,
+                    R.id.buttonSelectTime});
             builder.setTitle(view.getResources().getString(R.string.eventEditNotification))
                     .setSetterGetterDialog(dialogSG)
                     .setIdView(R.layout.dialog_notify_view)
@@ -551,12 +560,20 @@ public abstract class AbsTask implements Parcelable {
 
                         editNotify.setTitle(title);
                         editNotify.setMessage(message);
-                        editNotify.setDateAlarm(cldDate.getTimeInMillis());
                         editNotify.setTimeAlarm(cldTime.getTimeInMillis());
                         adapterList.notifyDataSetChanged();
                         dialog.dismiss();
                     });
-            AlertDialog.Builder dialog = QDialog.make(builder, view, QDialog.DIALOG_CUSTOM);
+
+            int rotation = view.getDisplay().getRotation();
+            if(rotation == Surface.ROTATION_90 || rotation == Surface.ROTATION_270) {
+                builder.setFixSize(false)
+                        .setHeight(ViewGroup.LayoutParams.WRAP_CONTENT)
+                        .setWidth(ViewGroup.LayoutParams.MATCH_PARENT);
+            }
+
+            AlertDialog dialog = QDialog.make(builder, view, QDialog.DIALOG_CUSTOM);
+
             dialogSG.setValueView(4,"setOnClickListener",
                     new Class[]{View.OnClickListener.class},
                     new View.OnClickListener[]{(v2) ->{
@@ -573,21 +590,6 @@ public abstract class AbsTask implements Parcelable {
                         pickerDialog.show();
 
                     }});
-            dialogSG.setValueView(5,"setOnClickListener",
-                    new Class[]{View.OnClickListener.class},
-                    new View.OnClickListener[]{(v2) ->{
-                        DatePickerDialog pickerDialog = new DatePickerDialog(view.getContext(),
-                                (v3,y,m,d)->{
-                                    cldDate.set(y, m, d);
-                                    SimpleDateFormat formatterDate = new SimpleDateFormat("dd.MM.yyyy", Locale.getDefault());
-                                    String date = formatterDate.format(cldDate.getTime());
-                                    dialogSG.setValueView(3,"setText",
-                                            new Class[]{CharSequence.class},
-                                            new Object[]{date});
-                                },cldDate.get(Calendar.YEAR), cldDate.get(Calendar.MONTH),cldDate.get(Calendar.DAY_OF_MONTH));
-                        pickerDialog.show();
-                    }});
-
 
             dialogSG.setValueView(0,"setText", new Class[]{CharSequence.class},
                     new Object[]{editNotify.getTitle()});
@@ -595,12 +597,14 @@ public abstract class AbsTask implements Parcelable {
                     new Object[]{editNotify.getMessage()});
             dialogSG.setValueView(2,"setText", new Class[]{CharSequence.class},
                     new Object[]{new SimpleDateFormat("HH:mm", Locale.getDefault()).format(cldTime.getTime())} );
-            dialogSG.setValueView(3,"setText", new Class[]{CharSequence.class},
-                    new Object[]{new SimpleDateFormat("dd.MM.yyyy",Locale.getDefault()).format(cldDate.getTime())} );
+
+            View panelDate = dialogSG.getValuesView(3);
+            panelDate.setVisibility(View.GONE);
+
             dialog.show();
         }
 
-        public void onClickItemNotifyDeleteButton(View view, ViewGroup parent, NotificationTask deleteNotify, NotifyAdapterList adapterList){
+        protected void onClickItemNotifyDeleteButton(View view, ViewGroup parent, NotificationTask deleteNotify, NotifyAdapterList adapterList){
             QDialog.Builder builder = QDialog.getBuilder();
             builder.setTitle(view.getResources().getString(R.string.eventDeleteNotification))
                     .setMessage(view.getResources().getString(R.string.askDeleteNotification))
@@ -614,7 +618,7 @@ public abstract class AbsTask implements Parcelable {
             alertDialog.show();
         }
 
-        public void onClickItemCheckEditButton(View view, ViewGroup parent, CheckTask checkTask, CheckListAdapter listAdapter){
+        protected void onClickItemCheckEditButton(View view, ViewGroup parent, CheckTask checkTask, CheckListAdapter listAdapter){
             QDialog.SetterGetterDialogEdit dialogSG = new QDialog.SetterGetterDialogEdit();
             QDialog.Builder builder = QDialog.getBuilder();
             builder.setTitle(view.getResources().getString(R.string.eventEditUnderTask))
@@ -627,13 +631,13 @@ public abstract class AbsTask implements Parcelable {
                         }else Toast.makeText(view.getContext(),R.string.eventEmptyField,Toast.LENGTH_LONG).show();
                         dialog.dismiss();
                     });
-            AlertDialog.Builder alertDialog = QDialog.make(builder,view,QDialog.DIALOG_INPUT_STRING);
+            AlertDialog alertDialog = QDialog.make(builder,view,QDialog.DIALOG_INPUT_STRING);
             dialogSG.setLabelString(view.getResources().getString(R.string.fieldEnterNameUnderTask));
             dialogSG.setUserInputString(checkTask.getText());
             alertDialog.show();
         }
 
-        public void onClickItemCheckDeleteCheck(View view, ViewGroup parent, CheckTask checkTask, CheckListAdapter listAdapter){
+        protected void onClickItemCheckDeleteCheck(View view, ViewGroup parent, CheckTask checkTask, CheckListAdapter listAdapter){
             QDialog.Builder builder = QDialog.getBuilder();
             builder.setTitle(view.getResources().getString(R.string.eventDeleteUnderTask))
                     .setMessage(view.getResources().getString(R.string.askDeleteUnderTask))
@@ -643,7 +647,7 @@ public abstract class AbsTask implements Parcelable {
                         listAdapter.notifyDataSetChanged();
                         MainAppActivity.setListViewHeightBasedOnChildren((ListView) parent);
                     });
-            AlertDialog.Builder alertDialog = QDialog.make(builder, view, QDialog.DIALOG_QUATION);
+            AlertDialog alertDialog = QDialog.make(builder, view, QDialog.DIALOG_QUATION);
             alertDialog.show();
         }
 

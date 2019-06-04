@@ -12,6 +12,7 @@ import android.widget.TextView;
 import java.util.Arrays;
 import java.util.List;
 
+import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import butterknife.BindView;
@@ -42,10 +43,13 @@ public class AdapterArrayPriorityType extends ArrayAdapter<String> {
         CheckedTextView textview = view.findViewById(R.id.textDropdownPriority);
         textview.setText(getItem(position));
         ImageView imageView = view.findViewById(R.id.imageDropdownPriority);
-        imageView.setImageResource(
-                ((position == 0)? R.drawable.rectengle_priority_common : (position==1)? R.drawable.rectengle_priority_impotant : R.drawable.rectengle_priority_necessary)
-        );
+        imageView.setImageResource(getIdImageResourceByPriority(position));
         return view;
+    }
+
+    @DrawableRes
+    private int getIdImageResourceByPriority(int position){
+         return ((position == 0)? R.drawable.rectengle_priority_common : (position==1)? R.drawable.rectengle_priority_impotant : R.drawable.rectengle_priority_necessary);
     }
 
     @NonNull
