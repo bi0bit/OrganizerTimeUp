@@ -94,6 +94,16 @@ public class Goal  extends AbsTask{
         return dateFormat.format(date);
     }
 
+    @Override
+    public boolean isActual() {
+        return false;
+    }
+
+    @Override
+    public boolean isComplete() {
+        return false;
+    }
+
     public void setStartDate(long dateStart) {
         this.dateStart = dateStart;
     }
@@ -238,6 +248,8 @@ public class Goal  extends AbsTask{
             ((EditorHeaderGoalBinding)binding).setTask(getObject());
             return binding;
         }
+
+
 
 
         @Override

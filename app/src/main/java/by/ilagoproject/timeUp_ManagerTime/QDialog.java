@@ -1,6 +1,7 @@
 package by.ilagoproject.timeUp_ManagerTime;
 
 import android.app.ActionBar;
+import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
@@ -18,6 +19,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 import androidx.annotation.ColorRes;
+import androidx.annotation.IdRes;
 import androidx.annotation.IntDef;
 import androidx.annotation.LayoutRes;
 import androidx.annotation.NonNull;
@@ -63,7 +65,7 @@ public final class QDialog {
 
     public static class Builder{
         private boolean cancelable = false;
-        private boolean fixSize = false;
+        private boolean fixSize = true;
         private String message;
         private String title;
          @StringRes
@@ -323,6 +325,15 @@ public final class QDialog {
             for(int i = 0; i < valuesId.length; i++){
                 valuesView[i] = rootView.findViewById(valuesId[i]);
             }
+        }
+
+        public int getPosViewById(@IdRes int id){
+            int i = 0;
+            for(View v : valuesView){
+                if(v.getId() == id) return i;
+                i++;
+            }
+            return -1;
         }
 
         public void setValueView(int pos, String mutatorName, @NonNull Class<?>[] paramTypes, @NonNull Object[] objectSet){

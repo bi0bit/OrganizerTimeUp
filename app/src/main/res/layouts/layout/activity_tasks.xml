@@ -8,8 +8,10 @@
     <LinearLayout android:layout_width ="match_parent"
         android:layout_height ="match_parent"
         android:orientation="vertical">
-    <ListView
+        <ListView
             android:id="@+id/listTask"
+            android:dividerHeight="@dimen/divider_weight"
+            android:divider="@color/FocusFieldApp"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"

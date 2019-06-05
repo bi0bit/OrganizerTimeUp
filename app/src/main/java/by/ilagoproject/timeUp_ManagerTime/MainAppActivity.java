@@ -1,23 +1,40 @@
 package by.ilagoproject.timeUp_ManagerTime;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckedTextView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.Spinner;
+import android.widget.Switch;
 import android.widget.Toast;
+
+import com.github.aakira.expandablelayout.ExpandableLinearLayout;
+
+import java.util.ArrayList;
+import java.util.EnumSet;
+import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import AssambleClassManagmentApp.AbsTask;
 import AssambleClassManagmentApp.Daily;
+import AssambleClassManagmentApp.Filtering.BuilderFilter;
+import AssambleClassManagmentApp.Filtering.FilterSetting;
 import AssambleClassManagmentApp.Goal;
 import AssambleClassManagmentApp.Habit;
+import AssambleClassManagmentApp.Sorting.SortByIdTask;
+import AssambleClassManagmentApp.Sorting.SortByName;
+import AssambleClassManagmentApp.Sorting.SortByPriority;
+import AssambleClassManagmentApp.Sorting.Sorter;
 import AssambleClassManagmentApp.TagManager;
 import AssambleClassManagmentApp.TaskManager;
 import androidx.appcompat.app.AlertDialog;
@@ -34,7 +51,7 @@ public class MainAppActivity extends AppCompatActivity implements ManagerDB.Hand
     TaskAdapterList dailyList;
     TaskAdapterList goalList;
     TaskAdapterList habitList;
-
+    FilterSetting filterSetting;
 
     static{
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
@@ -57,9 +74,11 @@ public class MainAppActivity extends AppCompatActivity implements ManagerDB.Hand
         taskManager.setHandlerUpdateTaskInDb(this);
         taskManager.initTask();
         listView = findViewById(R.id.listTask);
-        dailyList = new TaskAdapterList(this,taskManager.getDaily());
-        goalList = new TaskAdapterList(this,taskManager.getGoal());
-        habitList = new TaskAdapterList(this,taskManager.getHabit());
+        filterSetting = new FilterSetting(null,null,false,false);
+        dailyList = new TaskAdapterList(this,taskManager.getTaskByType(AbsTask.Type_Task.DAILY));
+        goalList = new TaskAdapterList(this,taskManager.getTaskByType(AbsTask.Type_Task.GOAL));
+        habitList = new TaskAdapterList(this,taskManager.getTaskByType(AbsTask.Type_Task.HABIT));
+        taskManager.setFilter(BuilderFilter.buildFilter(filterSetting));
         setSelectTypeTask(AbsTask.Type_Task.HABIT);
         Button btn = findViewById(R.id.btnAddTask);
         btn.setOnClickListener((v) ->
@@ -80,17 +99,146 @@ public class MainAppActivity extends AppCompatActivity implements ManagerDB.Hand
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
             case R.id.addTag:
-                 addTag();
+                 addTagShow();
                 break;
             case R.id.tags:
-                 allTag();
+                 allTagShow();
                 break;
             case R.id.sortBy:
+                sortByShow();
                 break;
             case R.id.filter:
+                filterShow();
                 break;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void sortByShow(){
+        QDialog.Builder builder = QDialog.getBuilder();
+        String[] sortType = getResources().getStringArray(R.array.sortingBy);
+        builder.setCancelable(true)
+                .setItems(sortType)
+                .setOnClickItem((dialog, which) -> {
+                    Sorter sort = (which == 0)? new SortByIdTask() :
+                            (which == 1) ? new SortByName() : new SortByPriority();
+                    taskManager.setSorter(sort);
+                    dialog.dismiss();
+                });
+        QDialog.make(builder, findViewById(android.R.id.content), QDialog.DIALOG_LIST).show();
+    }
+
+    private void filterShow(){
+        AtomicBoolean isActual = new AtomicBoolean(filterSetting.actual);
+        AtomicBoolean isNoCompleted = new AtomicBoolean(filterSetting.nonComplete);
+        EnumSet<AbsTask.Priority_Task> prioritySet =
+                (filterSetting.priority_tasks != null)? filterSetting.priority_tasks : EnumSet.noneOf(AbsTask.Priority_Task.class);
+        List<Integer> intTags = (filterSetting.tags!=null)? filterSetting.tags : new ArrayList<>();
+
+        QDialog.Builder builder = QDialog.getBuilder();
+        QDialog.SetterGetterDialogCustom dialogSG = new QDialog.SetterGetterDialogCustom();
+        dialogSG.setValuesId(new int[]{
+                R.id.switchActual,
+                R.id.switchNoComplete,
+                R.id.switchPriority,
+                R.id.expandablePriority,
+                R.id.listPriority,
+                R.id.switchTags,
+                R.id.expandableTags,
+                R.id.listTags
+        });
+        builder.setIdView(R.layout.dialog_filter)
+                .setCancelable(true)
+                .setSetterGetterDialog(dialogSG)
+                .setNeutralBtnStr(R.string.app_clear)
+                .setOnClickNeutralBtn((dialog, which)->{
+                    filterSetting.actual = false;
+                    filterSetting.nonComplete = false;
+                    filterSetting.priority_tasks = null;
+                    filterSetting.tags = null;
+                    taskManager.setFilter(BuilderFilter.buildFilter(filterSetting));
+                    dialog.cancel();
+                })
+                .setOnClickPositiveBtn((dialog,which)->{
+                    filterSetting.actual = isActual.get();
+                    filterSetting.nonComplete = isActual.get() && isNoCompleted.get();
+                    filterSetting.priority_tasks = (!prioritySet.isEmpty())? prioritySet : null;
+                    filterSetting.tags = (!intTags.isEmpty())? intTags : null;
+                    taskManager.setFilter(BuilderFilter.buildFilter(filterSetting));
+                    dialog.dismiss();
+                });
+
+        AlertDialog dialog = QDialog.make(builder, findViewById(android.R.id.content), QDialog.DIALOG_CUSTOM);
+
+        ListView listPrior = (ListView) dialogSG.valuesView[dialogSG.getPosViewById(R.id.listPriority)];
+        listPrior.setAdapter(new ArrayAdapter<>(MainAppActivity.this, android.R.layout.simple_list_item_checked,getResources().getStringArray(R.array.strings_priority_type_task)));
+        listPrior.setChoiceMode(AbsListView.CHOICE_MODE_MULTIPLE);
+        listPrior.setOnItemClickListener((parent, view, position, id) -> {
+            CheckedTextView chkView = (CheckedTextView) view;
+            if(chkView.isChecked()) prioritySet.add(AbsTask.Priority_Task.values()[position]);
+            else prioritySet.remove(AbsTask.Priority_Task.values()[position]);
+        });
+        setListViewHeightBasedOnChildren(listPrior);
+
+        List<String> tags = TagManager.getListNameTag();
+        ListView listTag = (ListView) dialogSG.valuesView[dialogSG.getPosViewById(R.id.listTags)];
+        listTag.setAdapter( new ArrayAdapter<>(MainAppActivity.this, android.R.layout.simple_list_item_checked, tags));
+        listTag.setChoiceMode(AbsListView.CHOICE_MODE_MULTIPLE);
+        listTag.setOnItemClickListener(((parent, view, position, id) -> {
+            CheckedTextView chkView = (CheckedTextView) view;
+            if(chkView.isChecked()) intTags.add(TagManager.getListIdTag().get(position));
+            else intTags.remove(TagManager.getListIdTag().get(position));
+        }));
+        setListViewHeightBasedOnChildren(listTag);
+
+
+        ExpandableLinearLayout expandablePriority = (ExpandableLinearLayout) dialogSG.valuesView[dialogSG.getPosViewById(R.id.expandablePriority)];
+        ExpandableLinearLayout expandableTags = (ExpandableLinearLayout) dialogSG.valuesView[dialogSG.getPosViewById(R.id.expandableTags)];
+
+        Switch swNoComplete = (Switch) dialogSG.valuesView[dialogSG.getPosViewById(R.id.switchNoComplete)];
+        swNoComplete.setOnCheckedChangeListener((button, checked) -> isNoCompleted.set(checked));
+        Switch swActual = (Switch) dialogSG.valuesView[dialogSG.getPosViewById(R.id.switchActual)];
+        swActual.setOnCheckedChangeListener((button, checked) -> {
+            isActual.set(checked);
+            swNoComplete.setEnabled(checked);
+        });
+
+        Switch swPriority = (Switch) dialogSG.valuesView[dialogSG.getPosViewById(R.id.switchPriority)];
+        swPriority.setOnCheckedChangeListener((button, checked)->{
+            if(checked){
+                expandablePriority.expand();
+            }
+            else expandablePriority.collapse();
+        });
+        Switch swTag = (Switch) dialogSG.valuesView[dialogSG.getPosViewById(R.id.switchTags)];
+        swTag.setOnCheckedChangeListener((button, checked)->{
+            if(checked){
+                expandableTags.expand();
+            }
+            else expandableTags.collapse();
+        });
+
+        swActual.setChecked(filterSetting.actual);
+        swNoComplete.setChecked(filterSetting.nonComplete);
+        swNoComplete.setEnabled(swActual.isChecked());
+        dialog.setOnShowListener(dialog1 -> {
+            if(filterSetting.priority_tasks != null && !filterSetting.priority_tasks.isEmpty()){
+                swPriority.toggle();
+                expandablePriority.expand();
+                for(int i = 0; i < AbsTask.Priority_Task.values().length; i++){
+                    listPrior.setItemChecked(i, prioritySet.contains(AbsTask.Priority_Task.values()[i]));
+                }
+            }
+            if(filterSetting.tags != null && !filterSetting.tags.isEmpty()){
+                swTag.toggle();
+                expandableTags.expand();
+                List<Integer> keyTags = TagManager.getListIdTag();
+                for(int i=0; i < keyTags.size(); i++){
+                    listTag.setItemChecked(i, intTags.contains(keyTags.get(i)));
+                }
+            }
+        });
+        dialog.show();
     }
 
     private void renameTag(final int idTag){
@@ -148,7 +296,7 @@ public class MainAppActivity extends AppCompatActivity implements ManagerDB.Hand
         QDialog.make(builder, findViewById(android.R.id.content), QDialog.DIALOG_QUATION).show();
     }
 
-    private void allTag(){
+    private void allTagShow(){
         String[] strings  = TagManager.getListNameTag().toArray(new String[0]);
         QDialog.Builder builder = QDialog.getBuilder();
         builder.setTitle(getResources().getString(R.string.tags))
@@ -161,7 +309,7 @@ public class MainAppActivity extends AppCompatActivity implements ManagerDB.Hand
         QDialog.make(builder, findViewById(android.R.id.content), QDialog.DIALOG_LIST).show();
     }
 
-    private void addTag(){
+    private void addTagShow(){
         QDialog.SetterGetterDialogEdit dialogSG = new QDialog.SetterGetterDialogEdit();
         QDialog.Builder builder = QDialog.getBuilder();
         builder.setTitle(getResources().getString(R.string.eventAddTag))
@@ -213,7 +361,7 @@ public class MainAppActivity extends AppCompatActivity implements ManagerDB.Hand
     }
 
     public void setSelectTypeTask(AbsTask.Type_Task selectTypeTask) {
-        this.selectTypeTask = selectTypeTask;//?
+        this.selectTypeTask = selectTypeTask;
         switch (this.selectTypeTask) {
             case GOAL:
                 listView.setAdapter(goalList);
@@ -245,17 +393,17 @@ public class MainAppActivity extends AppCompatActivity implements ManagerDB.Hand
 
     public void updateDailyList(){
         dailyList.clear();
-        dailyList.addAll(taskManager.getDaily());
+        dailyList.addAll(taskManager.getTaskByType(AbsTask.Type_Task.DAILY));
         dailyList.notifyDataSetChanged();
     }
     public void updateGoalList(){
         goalList.clear();
-        goalList.addAll(taskManager.getGoal());
+        goalList.addAll(taskManager.getTaskByType(AbsTask.Type_Task.GOAL));
         goalList.notifyDataSetChanged();
     }
     public void updateHabitList(){
         habitList.clear();
-        habitList.addAll(taskManager.getHabit());
+        habitList.addAll(taskManager.getTaskByType(AbsTask.Type_Task.HABIT));
         habitList.notifyDataSetChanged();
     }
 

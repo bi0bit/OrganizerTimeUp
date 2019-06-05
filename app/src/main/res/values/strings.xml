@@ -65,6 +65,10 @@
     <string name="filter">Фильтр…</string>
     <string name="tags">Тэги</string>
     <string name="shortMode">Сокращенный режим</string>
+    <string name="filterActual">Актуальные задачи</string>
+    <string name="filterNonComplete">Только не выполненные</string>
+    <string name="filterPriority">По приоритету</string>
+    <string name="filterTag">Тэги</string>
     <string-array name="strings_type_task">
         <item>Привычки</item>
         <item>Ежедневные дела</item>
@@ -85,5 +89,10 @@
         <item>Еженедельно</item>
         <item>Ежемесячно</item>
         <item>Ежегодно</item>
+    </string-array>
+    <string-array name="sortingBy">
+        <item>Без сортировки</item>
+        <item>Отсортировать по имени</item>
+        <item>Отсортировать по приоритету</item>
     </string-array>
 </resources>

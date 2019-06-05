@@ -12,6 +12,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -92,6 +93,16 @@ public class Habit extends AbsTask{
     @Override
     public void setBuilderView(AbsTask.BuilderView<? extends AbsTask> builder) {
         builderView = (BuilderView) builder;
+    }
+
+    @Override
+    public boolean isActual() {
+        return true;
+    }
+
+    @Override
+    public boolean isComplete() {
+        return false;
     }
 
     @Override
@@ -220,6 +231,13 @@ public class Habit extends AbsTask{
             return binding;
         }
 
+        @Override
+        public void setContentItem(View view) {
+            TextView textName =  view.findViewById(R.id.nameTask);
+            textName.setText(getObject().getName());
+            TextView textDescription =  view.findViewById(R.id.desriptionTask);
+            textDescription.setText(getObject().getDescription());
+        }
 
         @Override
         public void setControlItem(View view){

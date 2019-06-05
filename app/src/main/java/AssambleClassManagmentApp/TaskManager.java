@@ -7,6 +7,11 @@ import java.util.Hashtable;
 import java.util.List;
 
 
+import AssambleClassManagmentApp.Filtering.BuilderFilter;
+import AssambleClassManagmentApp.Filtering.Filter;
+import AssambleClassManagmentApp.Filtering.FilterSetting;
+import AssambleClassManagmentApp.Sorting.SortByIdTask;
+import AssambleClassManagmentApp.Sorting.Sorter;
 import by.ilagoproject.timeUp_ManagerTime.ManagerDB;
 
 public class TaskManager implements ManagerDB.HandlerUpdateTaskInDb {
@@ -16,7 +21,8 @@ public class TaskManager implements ManagerDB.HandlerUpdateTaskInDb {
 
 
     private ManagerDB.HandlerUpdateTaskInDb handlerUpdateTaskInDb;
-    FilterTask filter;
+    private Filter filter = BuilderFilter.buildFilter(new FilterSetting(null,null, false, false));
+    private Sorter sorter = new SortByIdTask();
 
 
     public TaskManager(){
@@ -98,32 +104,15 @@ public class TaskManager implements ManagerDB.HandlerUpdateTaskInDb {
         this.handlerUpdateTaskInDb = handlerUpdateTaskInDb;
     }
 
-    public List<AbsTask> getHabit(){
-        List<AbsTask> habits = new ArrayList<>();
-        for(AbsTask task : tasks.values()){
-            if(task.TYPE == AbsTask.Type_Task.HABIT)
-                habits.add(task);
+    public List<AbsTask> getTaskByType(AbsTask.Type_Task type){
+        List<AbsTask> tasks = new ArrayList<>();
+        for(AbsTask task : this.tasks.values()){
+            if(task.TYPE == type)
+                tasks.add(task);
         }
-        return habits;
-    }
-
-    public List<AbsTask> getDaily(){
-        List<AbsTask> dailies = new ArrayList<>();
-        for(AbsTask task : tasks.values()){
-            if(task.TYPE == AbsTask.Type_Task.DAILY)
-                dailies.add(task);
-        }
-
-        return dailies;
-    }
-
-    public List<AbsTask> getGoal(){
-        List<AbsTask> goals = new ArrayList<>();
-        for(AbsTask task : tasks.values()){
-            if(task.TYPE == AbsTask.Type_Task.GOAL)
-                goals.add(task);
-        }
-        return goals;
+        filter.filter(tasks);
+        sorter.sort(tasks);
+        return tasks;
     }
 
 
@@ -138,5 +127,23 @@ public class TaskManager implements ManagerDB.HandlerUpdateTaskInDb {
 
     public void notifyHandler(int flag){
         handlerUpdateTaskInDb.notifyChange(flag);
+    }
+
+    public Filter getFilter() {
+        return filter;
+    }
+
+    public Sorter getSorter() {
+        return sorter;
+    }
+
+    public void setFilter(Filter filter) {
+        this.filter = filter;
+        notifyHandler(ManagerDB.UPDATE);
+    }
+
+    public void setSorter(Sorter sorter) {
+        this.sorter = sorter;
+        notifyHandler(ManagerDB.UPDATE);
     }
 }

@@ -72,6 +72,16 @@ public class Daily extends AbsTask {
     }
 
     @Override
+    public boolean isActual() {
+        return false;
+    }
+
+    @Override
+    public boolean isComplete() {
+        return false;
+    }
+
+    @Override
     public AbsTask.BuilderView getBuilderView() {
         return builderView;
     }

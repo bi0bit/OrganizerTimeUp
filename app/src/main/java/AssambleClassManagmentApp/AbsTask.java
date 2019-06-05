@@ -1,7 +1,6 @@
 package AssambleClassManagmentApp;
 
 import android.app.Activity;
-import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.res.Resources;
 import android.database.Cursor;
@@ -11,7 +10,6 @@ import android.graphics.drawable.Drawable;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.TypedValue;
-import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.Surface;
 import android.view.View;
@@ -36,7 +34,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-import androidx.annotation.ColorRes;
 import androidx.appcompat.app.AlertDialog;
 import androidx.databinding.BindingAdapter;
 import androidx.databinding.ViewDataBinding;
@@ -65,7 +62,6 @@ public abstract class AbsTask implements Parcelable {
     private boolean NonLinkedWithDBId=true;
     private boolean TaskNoInitInDB=true;
 
-    //@SuppressLint("UseSparseArrays")
     public AbsTask(int id, Type_Task type) {
         this.id = id;
         this.TYPE = type;
@@ -255,6 +251,10 @@ public abstract class AbsTask implements Parcelable {
         c.close();
     }
 
+    public abstract boolean isActual();
+
+    public abstract boolean isComplete();
+
     public abstract List<Date> getDateTask();
 
     public View createView(ViewGroup parent) {
@@ -356,22 +356,26 @@ public abstract class AbsTask implements Parcelable {
 
         private void setTagItem(View view, float tagSize){
             FlexboxLayout flexboxLayout = view.findViewById(R.id.tagPanel);
-            float dp = view.getResources().getDisplayMetrics().density;
-            FlexboxLayout.LayoutParams layout =
-                    new FlexboxLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,LinearLayout.LayoutParams.WRAP_CONTENT);
-            float margin = 8;
-            margin = dp * margin;
-            layout.setMargins((int) margin,0,0,0);
-            flexboxLayout.removeAllViews();
-            for(Integer tagId : object.getIntTags()){
-                TextView textView = new TextView(flexboxLayout.getContext());
-                textView.setText(TagManager.getStringTag(tagId));
-                textView.setLayoutParams(layout);
-                textView.setPadding(0,0,0,0);
-                textView.setSingleLine(true);
-                textView.setTextSize(TypedValue.COMPLEX_UNIT_PX, tagSize);
-                flexboxLayout.addView(textView);
+            if(object.getIntTags().size() > 0) {
+                flexboxLayout.setVisibility(View.VISIBLE);
+                float dp = view.getResources().getDisplayMetrics().density;
+                final FlexboxLayout.LayoutParams layout =
+                        new FlexboxLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                float margin = 8;
+                margin = dp * margin;
+                layout.setMargins((int) margin, 0, 0, 0);
+                flexboxLayout.removeAllViews();
+                for (Integer tagId : object.getIntTags()) {
+                    TextView textView = new TextView(flexboxLayout.getContext());
+                    textView.setText(TagManager.getStringTag(tagId));
+                    textView.setLayoutParams(layout);
+                    textView.setPadding(0, 0, 0, 0);
+                    textView.setSingleLine(true);
+                    textView.setTextSize(TypedValue.COMPLEX_UNIT_PX, tagSize);
+                    flexboxLayout.addView(textView);
+                }
             }
+            else flexboxLayout.setVisibility(View.GONE);
         }
         public void setDateItem(View view){}
         public void setContentItem(View view){
@@ -379,6 +383,11 @@ public abstract class AbsTask implements Parcelable {
             textName.setText(getObject().getName());
             TextView textDescription =  view.findViewById(R.id.desriptionTask);
             textDescription.setText(getObject().getDescription());
+            CheckListAdapter adapterCheckList = new CheckListAdapter(view.getContext(),getObject().getListUnderTaskChecked(), null, null);
+            adapterCheckList.setEditable(false);
+            ListView checklistView = view.findViewById(R.id.checkListTask);
+            checklistView.setAdapter(adapterCheckList);
+            MainAppActivity.setListViewHeightBasedOnChildren(checklistView);
         }
         public void setCountItem(View view,AbsTask task){
             TextView textCount = view.findViewById(R.id.countSeries);
@@ -678,6 +687,7 @@ public abstract class AbsTask implements Parcelable {
             if(task.getListNotify().size() > 0){
                 NotifyAdapterList adapterListNotification = new NotifyAdapterList(view.getContext(), task.getListNotify(), null, null);
                 adapterListNotification.setEditable(false);
+                if(task.TYPE == Type_Task.GOAL)adapterListNotification.setShowDate(true);
                 ListView listViewNotify = view.findViewById(R.id.notifyList);
                 listViewNotify.setAdapter(adapterListNotification);
                 MainAppActivity.setListViewHeightBasedOnChildren(listViewNotify);
@@ -755,6 +765,7 @@ public abstract class AbsTask implements Parcelable {
             ListView listViewNotify = view.findViewById(R.id.notifyList);
             NotifyAdapterList adapterListNotification =
                     new NotifyAdapterList(view.getContext(), task.getListNotify(), this::onClickItemNotifyEditButton, this::onClickItemNotifyDeleteButton);
+            if(task.TYPE == Type_Task.GOAL)adapterListNotification.setShowDate(true);
             listViewNotify.setAdapter(adapterListNotification);
             MainAppActivity.setListViewHeightBasedOnChildren(listViewNotify);
 

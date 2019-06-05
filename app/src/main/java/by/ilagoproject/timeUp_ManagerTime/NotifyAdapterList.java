@@ -33,6 +33,7 @@ public class NotifyAdapterList extends ArrayAdapter<NotificationTask> {
     private final ClickItemButton onClickEditButton;
     private final ClickItemButton onClickDeleteButton;
 
+    private boolean showDate = false;
     private boolean editable = true;
 
     public NotifyAdapterList(@NonNull  Context context, @NonNull List<NotificationTask> objects, ClickItemButton editButton, ClickItemButton delButton){
@@ -44,6 +45,9 @@ public class NotifyAdapterList extends ArrayAdapter<NotificationTask> {
     }
 
 
+    public void setShowDate(boolean showDate) {
+        this.showDate = showDate;
+    }
 
 
 
@@ -78,7 +82,7 @@ public class NotifyAdapterList extends ArrayAdapter<NotificationTask> {
             holder = (ViewHolder) convertView.getTag();
         }
         String time = new SimpleDateFormat("HH:mm", Locale.getDefault()).format(new Date(notificationTask.getTimeAlarm()));
-        String date = new SimpleDateFormat("dd.MM.yyyy", Locale.getDefault()).format(new Date(notificationTask.getDateAlarm()));
+        String date = (showDate)? new SimpleDateFormat("dd.MM.yyyy", Locale.getDefault()).format(new Date(notificationTask.getDateAlarm())) : "";
         date = time + " " + date;
         holder.title.setText(notificationTask.getTitle());
         holder.time.setText(date);
