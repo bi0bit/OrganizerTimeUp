@@ -1,4 +1,4 @@
-package AssambleClassManagmentApp;
+package AssambleClassManagmentTime;
 
 import android.database.Cursor;
 import android.util.SparseArray;

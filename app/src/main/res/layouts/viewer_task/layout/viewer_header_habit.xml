@@ -7,7 +7,7 @@
         <import type="android.view.View" />
         <variable
             name="task"
-            type="AssambleClassManagmentApp.Habit"/>
+            type="AssambleClassManagmentTime.Habit"/>
     </data>
     <LinearLayout
         android:layout_width="match_parent"
@@ -18,7 +18,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Тип превычки"/>
+            android:text="@string/fieldTypeHabit"/>
         <RelativeLayout android:id="@+id/typeHabit"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">

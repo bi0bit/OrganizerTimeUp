@@ -1,9 +1,9 @@
-package AssambleClassManagmentApp.Filtering;
+package AssambleClassManagmentTime.Filtering;
 
 import java.util.EnumSet;
 import java.util.List;
 
-import AssambleClassManagmentApp.AbsTask;
+import AssambleClassManagmentTime.AbsTask;
 
 public class FilterSetting{
     public List<Integer> tags = null;

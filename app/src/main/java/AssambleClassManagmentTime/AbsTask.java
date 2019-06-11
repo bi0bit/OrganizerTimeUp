@@ -1,10 +1,12 @@
-package AssambleClassManagmentApp;
+package AssambleClassManagmentTime;
 
 import android.app.Activity;
 import android.app.TimePickerDialog;
 import android.content.res.Resources;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffColorFilter;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Parcel;
@@ -18,6 +20,7 @@ import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.CheckedTextView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -30,11 +33,11 @@ import com.google.android.flexbox.FlexboxLayout;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
 import androidx.appcompat.app.AlertDialog;
+import androidx.core.content.ContextCompat;
 import androidx.databinding.BindingAdapter;
 import androidx.databinding.ViewDataBinding;
 import by.ilagoproject.timeUp_ManagerTime.AdapterArrayPriorityType;
@@ -255,10 +258,9 @@ public abstract class AbsTask implements Parcelable {
 
     public abstract boolean isComplete();
 
-    public abstract List<Date> getDateTask();
+    public abstract List<?> getDateTask();
 
     public View createView(ViewGroup parent) {
-        getBuilderView().setObject(this);
         return getBuilderView().createViewItemTask(parent);
     }
 
@@ -276,6 +278,13 @@ public abstract class AbsTask implements Parcelable {
     public void onItemSelectedPriority(AdapterView<?> parent, View view, int position, long id){
         Priority_Task priority = Priority_Task.values()[position];
         setPriority(priority);
+    }
+
+    static void resetTime(Calendar date){
+        date.set(Calendar.HOUR_OF_DAY, 0);
+        date.set(Calendar.MINUTE, 0);
+        date.set(Calendar.SECOND, 0);
+        date.set(Calendar.MILLISECOND, 0);
     }
 
 
@@ -296,6 +305,11 @@ public abstract class AbsTask implements Parcelable {
         MIN,
         NORMAL,
         MAX
+    }
+
+    public enum Type_Complete{
+        NO_COMPLETE,
+        COMPLETE
     }
 
 
@@ -397,6 +411,31 @@ public abstract class AbsTask implements Parcelable {
             View panelControl = view.findViewById(R.id.controlItem);
             Drawable color = getColorPriority(view.getResources(), getObject().getPriority());
             panelControl.setBackground(color);
+            AbsTask task = getObject();
+            CheckBox checkBox = (CheckBox) ((LinearLayout)panelControl).getChildAt(0);
+            ManagerDB mdb = ManagerDB.getManagerDB(null);
+            checkBox.setOnCheckedChangeListener(null);
+            checkBox.setChecked(task.isComplete());
+            // check complete task
+            checkBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
+                if(task.isActual()) {
+                    Calendar calendar = Calendar.getInstance();
+                    resetTime(calendar);
+                    long date = calendar.getTimeInMillis();
+                    if (isChecked) {
+                        ManagerDB.getManagerDB(null).incrementTaskCountSeriesDb(task.getId(), 1);
+                        mdb.completeTask(task.getId(), task.getCountSeries() + 1, date, Type_Complete.COMPLETE);
+                    }
+                    else {
+                        int increment = (task.getCountSeries() == 0) ? 0 : -1;
+                        ManagerDB.getManagerDB(null).incrementTaskCountSeriesDb(task.getId(), increment);
+                        if(task.TYPE == Type_Task.GOAL) mdb.uncompleteTask(task.getId());
+                        else mdb.uncompleteTask(task.getId(), date);
+                    }
+
+                } else checkBox.setChecked(task.isComplete());
+            });
+
         }
 
         public abstract View createBasicViewItem(ViewGroup parent);
@@ -413,6 +452,11 @@ public abstract class AbsTask implements Parcelable {
             setCountItem(view,object);
             setTagItem(view, view.getResources().getDimension(R.dimen.textSize_xsmall));
             setDateItem(view);
+            if(!getObject().isActual()){
+                PorterDuffColorFilter filterColor = new PorterDuffColorFilter(ContextCompat.getColor(view.getContext(), R.color.MaskItemNoActualTask), PorterDuff.Mode.MULTIPLY);
+                view.getBackground().setColorFilter(filterColor);
+            }
+            else view.getBackground().clearColorFilter();
         }
 
         public abstract ViewDataBinding getBindingViewerHeader(Activity activity);

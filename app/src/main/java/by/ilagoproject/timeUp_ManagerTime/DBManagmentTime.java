@@ -6,7 +6,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 public class DBManagmentTime extends SQLiteOpenHelper {
 
-    public static final String DB_NAME = "DBManagmentTime";
+    public static final String DB_NAME = "DBManagmentTime.db";
     public static final int DB_VERSION = 1;
 
     public static final String TABLENAME_TASK = "`Task`";
@@ -83,9 +83,11 @@ public class DBManagmentTime extends SQLiteOpenHelper {
             "foreign key(idTask) references "+ TABLENAME_TASK + "(id))";
 
     public static final String CREATE_TABLE_HISTORYCOMPLETETASK = "CREATE TABLE IF NOT EXISTS " + TABLENAME_HISTORYCOMPLETE + "(" +
+            "id integer primary key autoincrement," +
             "idTask integer," +
             "TypeComplete integer,"+
             "DateComplete real,"+
+            "countTask integer," +
             "foreign key(idTask) references " + TABLENAME_TASK + "(id))";
 
     public static final String CREATE_TRIGGER_INITTASK = "CREATE TRIGGER IF NOT EXISTS InitTask " +

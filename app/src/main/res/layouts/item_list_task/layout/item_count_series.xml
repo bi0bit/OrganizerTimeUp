@@ -17,7 +17,6 @@
             <ImageView
                 android:id="@+id/imgSerias"
                 app:srcCompat="@drawable/v_counter_icon"
-                android:src="@drawable/v_counter_icon"
                 android:layout_width="@dimen/spacing_normal"
                 android:layout_height="@dimen/spacing_normal"/>
 

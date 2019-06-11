@@ -8,7 +8,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import java.util.List;
-import AssambleClassManagmentApp.CheckTask;
+import AssambleClassManagmentTime.CheckTask;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import butterknife.BindView;

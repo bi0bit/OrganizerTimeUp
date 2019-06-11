@@ -1,28 +1,21 @@
 package by.ilagoproject.timeUp_ManagerTime;
 
-import android.app.DatePickerDialog;
-import android.app.TimePickerDialog;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-import AssambleClassManagmentApp.AbsTask;
-import AssambleClassManagmentApp.NotificationTask;
+import AssambleClassManagmentTime.NotificationTask;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 

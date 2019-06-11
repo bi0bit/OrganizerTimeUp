@@ -7,7 +7,7 @@
         <import type="android.view.View"/>
         <variable
             name="task"
-            type="AssambleClassManagmentApp.Habit"/>
+            type="AssambleClassManagmentTime.Habit"/>
     </data>
     <LinearLayout
         android:layout_width="match_parent"

@@ -4,9 +4,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:ignore="ContentDescription">
     <data>
+        <import type="android.view.View" alias="v"/>
+        <import type="AssambleClassManagmentTime.Daily.Type_Daily"/>
         <variable
             name="task"
-            type="AssambleClassManagmentApp.Daily"/>
+            type="AssambleClassManagmentTime.Daily"/>
     </data>
     <LinearLayout
         android:layout_width="match_parent"
@@ -25,7 +27,19 @@
             <TextView
                 android:id="@+id/typeDaily"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:textColor="@color/TextApp"
+                android:text='@{@stringArray/strings_type_daily[task.typeDaily.ordinal]}'/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <include layout="@layout/viewer_daily_week"
+                android:visibility="@{task.typeDaily == Type_Daily.EVERWEEK ? v.VISIBLE : v.GONE}"
+                app:task="@{task}"/>
+            <include layout="@layout/viewer_daily_other"
+                android:visibility="@{task.typeDaily != Type_Daily.EVERWEEK ? v.VISIBLE : v.GONE}"
+                app:task="@{task}"/>
         </LinearLayout>
         <TextView
             android:id="@+id/dateDaily"

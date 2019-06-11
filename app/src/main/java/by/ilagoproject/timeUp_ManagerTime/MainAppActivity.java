@@ -1,6 +1,5 @@
 package by.ilagoproject.timeUp_ManagerTime;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -25,22 +24,23 @@ import java.util.EnumSet;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import AssambleClassManagmentApp.AbsTask;
-import AssambleClassManagmentApp.Daily;
-import AssambleClassManagmentApp.Filtering.BuilderFilter;
-import AssambleClassManagmentApp.Filtering.FilterSetting;
-import AssambleClassManagmentApp.Goal;
-import AssambleClassManagmentApp.Habit;
-import AssambleClassManagmentApp.Sorting.SortByIdTask;
-import AssambleClassManagmentApp.Sorting.SortByName;
-import AssambleClassManagmentApp.Sorting.SortByPriority;
-import AssambleClassManagmentApp.Sorting.Sorter;
-import AssambleClassManagmentApp.TagManager;
-import AssambleClassManagmentApp.TaskManager;
+import AssambleClassManagmentTime.AbsTask;
+import AssambleClassManagmentTime.Daily;
+import AssambleClassManagmentTime.Filtering.BuilderFilter;
+import AssambleClassManagmentTime.Filtering.FilterSetting;
+import AssambleClassManagmentTime.Goal;
+import AssambleClassManagmentTime.Habit;
+import AssambleClassManagmentTime.Sorting.SortByIdTask;
+import AssambleClassManagmentTime.Sorting.SortByName;
+import AssambleClassManagmentTime.Sorting.SortByPriority;
+import AssambleClassManagmentTime.Sorting.Sorter;
+import AssambleClassManagmentTime.TagManager;
+import AssambleClassManagmentTime.TaskManager;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.Toolbar;
+import by.ilagoproject.timeUp_ManagerTime.service.RemindService;
 
 public class MainAppActivity extends AppCompatActivity implements ManagerDB.HandlerUpdateTaskInDb, ManagerDB.HandlerUpdateTagInDb{
 
@@ -69,10 +69,10 @@ public class MainAppActivity extends AppCompatActivity implements ManagerDB.Hand
         dbManager.setHandlerUpdateTagInDb(this);
         TagManager.initTags();
         TagManager.update();
-        taskManager = new TaskManager();
+        taskManager = TaskManager.getInstance(this);
+        taskManager.initTask();
         dbManager.setHandlerUpdateTaskInDb(taskManager);
         taskManager.setHandlerUpdateTaskInDb(this);
-        taskManager.initTask();
         listView = findViewById(R.id.listTask);
         filterSetting = new FilterSetting(null,null,false,false);
         dailyList = new TaskAdapterList(this,taskManager.getTaskByType(AbsTask.Type_Task.DAILY));
@@ -82,11 +82,13 @@ public class MainAppActivity extends AppCompatActivity implements ManagerDB.Hand
         setSelectTypeTask(AbsTask.Type_Task.HABIT);
         Button btn = findViewById(R.id.btnAddTask);
         btn.setOnClickListener((v) ->
-        startViewActivity(createNewTask(), ActivityViewEditorTask.class));
+            startViewActivity(createNewTask(), ActivityViewEditorTask.class));
         listView.setOnItemClickListener((parent, view, position, id) ->
-        startViewActivity((AbsTask) listView.getAdapter().getItem(position), ActivityViewTask.class));
+            startViewActivity((AbsTask) listView.getAdapter().getItem(position), ActivityViewTask.class));
         Toolbar toolbar = findViewById(R.id.appBar);
         setSupportActionBar(toolbar);
+        Intent intent = new Intent(this, RemindService.class);
+        startService(intent);
     }
 
     protected void startViewActivity(AbsTask obj, Class cls){

@@ -6,7 +6,7 @@
     <data>
         <variable
             name="task"
-            type="AssambleClassManagmentApp.Daily"/>
+            type="AssambleClassManagmentTime.Daily"/>
     </data>
     <LinearLayout
         android:layout_width="match_parent"
@@ -27,13 +27,18 @@
             <Spinner
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/spacing_xxsmall"
                 android:id="@+id/spinnerTypeDaily"
+                app:selectSpin="@{task.getTypeDaily.ordinal}"
                 android:onItemSelected="@{task::onItemSelectedTypeDaily}"/>
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-            </LinearLayout>
+            <include layout="@layout/editor_daily_every_day"
+                app:task="@{task}"/>
+            <include layout="@layout/editor_daily_every_weak"
+                app:task="@{task}"/>
+            <include layout="@layout/editor_daily_every_month"
+                app:task="@{task}"/>
+            <include layout="@layout/editor_daily_every_year"
+                app:task="@{task}"/>
         </LinearLayout>
         <TextView
             android:id="@+id/dateDaily"

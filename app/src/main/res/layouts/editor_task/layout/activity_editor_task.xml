@@ -22,7 +22,6 @@
                 android:paddingLeft="@dimen/spacing_xsmall"
                 android:paddingRight="@dimen/spacing_xsmall"
                 android:paddingTop="@dimen/spacing_xsmall"
-                android:paddingBottom="@dimen/spacing_xsmall"
                 />
 
             <include layout="@layout/editor_content_standard_task" />

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+    <data>
+        <variable
+            name="task"
+            type="AssambleClassManagmentTime.Daily"/>
+    </data>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <TextView
+            android:id="@+id/textWeeklyDay"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAlignment="inherit"
+            android:textColor="@color/TextApp"
+            android:text="@{task.getStringDatesWeekly()}"/>
+    </LinearLayout>
+</layout>

@@ -1,11 +1,12 @@
-package AssambleClassManagmentApp.Filtering;
+package AssambleClassManagmentTime.Filtering;
 
-import java.util.ArrayList;
+import android.util.Log;
+
 import java.util.EnumSet;
 import java.util.Iterator;
 import java.util.List;
 
-import AssambleClassManagmentApp.AbsTask;
+import AssambleClassManagmentTime.AbsTask;
 
 public interface Filter {
     void filter(List<AbsTask> tasks);
@@ -21,19 +22,21 @@ class NonFilter implements Filter {
 class ActualTaskFilter implements Filter {
 
     final Filter filter;
-    final boolean nonComlete;
+    final boolean nonComplete;
 
-    public ActualTaskFilter(Filter filter, boolean comlete){
+    public ActualTaskFilter(Filter filter, boolean complete){
         this.filter = filter;
-        this.nonComlete = comlete;
+        this.nonComplete = complete;
     }
 
     @Override
     public void filter(List<AbsTask> tasks) {
         if(filter != null) filter.filter(tasks);
-        for(AbsTask task : tasks){
-            if(!task.isActual() && (!nonComlete || !task.isComplete())){
-                tasks.remove(task);
+        Iterator itr = tasks.iterator();
+        while(itr.hasNext()){
+            AbsTask task = (AbsTask) itr.next();
+            if((nonComplete && (!task.isActual() || task.isComplete())) || (!nonComplete && !task.isActual())){
+                itr.remove();
             }
         }
     }

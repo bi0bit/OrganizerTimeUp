@@ -13,6 +13,11 @@
     <string name="dialog_NO">Нет</string>
     <string name="dialog_CONFIRM">Принять</string>
     <string name="activityTasks_title">Задачи</string>
+    <string name="fieldEvery">Каждый</string>
+    <string name="fieldYear">год</string>
+    <string name="fieldMonth">месяц</string>
+    <string name="fieldWeak">неделя</string>
+    <string name="fieldDay">день</string>
     <string name="fieldName">Название</string>
     <string name="fieldPriority">Приоритет</string>
     <string name="fieldDescription">Описание</string>
@@ -47,7 +52,7 @@
     <string name="eventAddTag">Добавление нового тега</string>
     <string name="eventChangeTag">Изменение тега</string>
     <string name="eventDeleteTag">Удаление тега</string>
-    <string name="eventRenameTag">Изменение названия тэга</string>
+    <string name="eventRenameTag">Изменение названия тега</string>
     <string name="eventAddNewUnderTask">Добавление новой подзадачи</string>
     <string name="eventAddNewNotification">Добавление нового уведомления</string>
     <string name="eventDeleteTask">Удаление задачи</string>
@@ -63,16 +68,16 @@
     <string name="setting">Настройки</string>
     <string name="sortingBy">Сортировать по…</string>
     <string name="filter">Фильтр…</string>
-    <string name="tags">Тэги</string>
+    <string name="tags">Теги</string>
     <string name="shortMode">Сокращенный режим</string>
     <string name="filterActual">Актуальные задачи</string>
     <string name="filterNonComplete">Только не выполненные</string>
     <string name="filterPriority">По приоритету</string>
-    <string name="filterTag">Тэги</string>
+    <string name="filterTag">Теги</string>
     <string-array name="strings_type_task">
         <item>Привычки</item>
         <item>Ежедневные дела</item>
-        <item>Задачи</item>
+        <item>Цели</item>
     </string-array>
     <string-array name="strings_priority_type_task">
         <item>Нормально</item>

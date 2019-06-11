@@ -1,8 +1,8 @@
-package AssambleClassManagmentApp.Sorting;
+package AssambleClassManagmentTime.Sorting;
 
 import java.util.List;
 
-import AssambleClassManagmentApp.AbsTask;
+import AssambleClassManagmentTime.AbsTask;
 
 public class SortByNon implements Sorter{
     @Override

@@ -9,7 +9,7 @@
     <import type="android.widget.EditText"/>
     <variable
         name="task"
-        type="AssambleClassManagmentApp.AbsTask" />
+        type="AssambleClassManagmentTime.AbsTask" />
 </data>
 
     <RelativeLayout

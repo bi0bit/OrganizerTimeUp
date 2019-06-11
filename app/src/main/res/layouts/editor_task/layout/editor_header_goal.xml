@@ -6,7 +6,7 @@
     <data>
         <variable
             name="task"
-            type="AssambleClassManagmentApp.Goal"/>
+            type="AssambleClassManagmentTime.Goal"/>
     </data>
     <LinearLayout
         android:layout_width="match_parent"
@@ -54,7 +54,7 @@
             <TextView
                 android:layout_weight="3"
                 android:id="@+id/textEndDateDaily"
-                android:text='@{task.getStartDate("dd.MM.yyyy")}'
+                android:text='@{task.getEndDate("dd.MM.yyyy")}'
                 android:layout_width="wrap_content"
                 android:textColor="@color/TextApp"
                 android:layout_height="wrap_content" />

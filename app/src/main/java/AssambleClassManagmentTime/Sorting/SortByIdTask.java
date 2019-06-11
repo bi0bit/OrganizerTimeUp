@@ -1,9 +1,9 @@
-package AssambleClassManagmentApp.Sorting;
+package AssambleClassManagmentTime.Sorting;
 
 import java.util.Collections;
 import java.util.List;
 
-import AssambleClassManagmentApp.AbsTask;
+import AssambleClassManagmentTime.AbsTask;
 
 public class SortByIdTask implements Sorter{
     @Override

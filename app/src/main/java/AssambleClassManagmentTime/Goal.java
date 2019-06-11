@@ -1,10 +1,12 @@
-package AssambleClassManagmentApp;
+package AssambleClassManagmentTime;
 
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Parcel;
 import android.view.LayoutInflater;
 import android.view.Surface;
@@ -39,8 +41,10 @@ public class Goal  extends AbsTask{
     private long dateStart;
     public Goal(int id) {
         super(id, Type_Task.GOAL);
-        dateStart = System.currentTimeMillis();
-        dateDeadLine = System.currentTimeMillis();
+        Calendar calendar = Calendar.getInstance();
+        resetTime(calendar);
+        dateStart = calendar.getTimeInMillis();
+        dateDeadLine = calendar.getTimeInMillis();
     }
 
     static{
@@ -96,12 +100,20 @@ public class Goal  extends AbsTask{
 
     @Override
     public boolean isActual() {
-        return false;
+        boolean nonActualAfterEndDate = false;//TODO: Realization in setting choice parametr nonActualAfterEndDate
+        Calendar dateNow = Calendar.getInstance();
+        resetTime(dateNow);
+        Calendar startDate = Calendar.getInstance();
+        startDate.setTimeInMillis(this.getStartDate());
+        Calendar endDate = Calendar.getInstance();
+        endDate.setTimeInMillis(this.getEndDate());
+        return !(dateNow.compareTo(endDate) > 0 && isComplete()) && dateNow.compareTo(startDate) >= 0; //TODO:realization separate by nonActualAfterEndDate: (!nonActualAfterEndDate || dateNow.compareTo(endDate) <= 0);
     }
 
     @Override
     public boolean isComplete() {
-        return false;
+        Cursor c = ManagerDB.getManagerDB(null).getCursorOnHistoryCompleteByIdTask(getId());
+        return c.getCount() > 0;
     }
 
     public void setStartDate(long dateStart) {
@@ -110,7 +122,7 @@ public class Goal  extends AbsTask{
 
     public static AbsTask initTaskByCursor(Cursor cur){
         Goal goal = new Goal(0);
-        AbsTask.initTaskByCursor(cur,goal);
+        initTaskByCursor(cur,goal);
         long startDate = cur.getLong(cur.getColumnIndex(ManagerDB.GOALSTARTDATE_COLUMNNAME));
         goal.setStartDate(startDate);
         long endDate = cur.getLong(cur.getColumnIndex(ManagerDB.GOALENDDATE_COLUMNNAME));
@@ -135,7 +147,7 @@ public class Goal  extends AbsTask{
     }
 
     @Override
-    public List<Date> getDateTask() {
+    public List<?> getDateTask() {
         return null;
     }
 
@@ -178,6 +190,7 @@ public class Goal  extends AbsTask{
                     TextView textView = rootView.findViewById(R.id.textStartDateDaily);
                     SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy", Locale.getDefault());
                     textView.setText(format.format(cldStart.getTime()));
+                    resetTime(cldStart);
                     setStartDate(cldStart.getTimeInMillis());
                 },
                 cldStart.get(Calendar.YEAR),
@@ -196,6 +209,7 @@ public class Goal  extends AbsTask{
                     TextView textView = rootView.findViewById(R.id.textEndDateDaily);
                     SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy", Locale.getDefault());
                     textView.setText(format.format(cldEnd.getTime()));
+                    resetTime(cldEnd);
                     setEndDate(cldEnd.getTimeInMillis());
                 },
                 cldEnd.get(Calendar.YEAR),
@@ -258,6 +272,20 @@ public class Goal  extends AbsTask{
             TextView dateView = view.findViewById(R.id.dateDeadLineTask);
             String date = view.getResources().getString(R.string.fieldExecute) + " " + getObject().getEndDate("dd.MM.yyyy");
             dateView.setText(date);
+            Calendar calendar = Calendar.getInstance();
+            resetTime(calendar);
+            if(calendar.getTimeInMillis() > getObject().dateDeadLine && !getObject().isComplete()){
+                Drawable color = new ColorDrawable(view.getResources().getColor(R.color.MarkLateDate));
+                dateView.setBackground(color);
+            }
+            else if(getObject().isComplete()){
+                Drawable color = new ColorDrawable(view.getResources().getColor(R.color.MarkNormalDate));
+                dateView.setBackground(color);
+            }
+            else{
+                Drawable color = new ColorDrawable(view.getResources().getColor(R.color.BackgroundLight));
+                dateView.setBackground(color);
+            }
         }
 
         @Override

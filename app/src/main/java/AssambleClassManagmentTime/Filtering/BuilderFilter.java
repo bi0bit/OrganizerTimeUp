@@ -1,4 +1,4 @@
-package AssambleClassManagmentApp.Filtering;
+package AssambleClassManagmentTime.Filtering;
 
 public class BuilderFilter{
 

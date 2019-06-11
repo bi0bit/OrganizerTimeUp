@@ -1,4 +1,4 @@
-package AssambleClassManagmentApp;
+package AssambleClassManagmentTime;
 
 import android.app.Activity;
 import android.database.Cursor;
@@ -15,7 +15,6 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.EnumSet;
 import java.util.List;
 
@@ -106,7 +105,7 @@ public class Habit extends AbsTask{
     }
 
     @Override
-    public List<Date> getDateTask() {
+    public List<?> getDateTask() {
         return null;
     }
 

@@ -10,11 +10,14 @@
     <color name="FieldApp">#009624</color>
     <color name="FocusFieldApp">#00c853</color>
     <color name="BackgroundLight">#e8f5e9</color>
-    <color name="TypePriority_Easy">#1e88e5</color>
-    <color name="TypePriority_Normal">#f9a825</color>
+    <color name="TypePriority_Easy">#3686C5</color>
+    <color name="TypePriority_Normal">#F09D1C</color>
     <color name="TypePriority_Necessary">#ff3d00</color>
     <color name="RedComponent">#c62828</color>
     <color name="RedComponentPressed">#f44336</color>
     <color name="GreenComponent">#00c853</color>
     <color name="GreenComponentPressed">#00e676</color>
+    <color name="MaskItemNoActualTask">#E4E4DF</color>
+    <color name="MarkLateDate">#FDCDCD</color>
+    <color name="MarkNormalDate">#DCFFDA</color>
 </resources>

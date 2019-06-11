@@ -5,9 +5,10 @@ import android.database.sqlite.SQLiteDatabase;
 
 import java.util.List;
 
-import AssambleClassManagmentApp.AbsTask;
-import AssambleClassManagmentApp.CheckTask;
-import AssambleClassManagmentApp.NotificationTask;
+import AssambleClassManagmentTime.AbsTask;
+import AssambleClassManagmentTime.CheckTask;
+import AssambleClassManagmentTime.NotificationTask;
+import androidx.annotation.NonNull;
 
 import static by.ilagoproject.timeUp_ManagerTime.DBManagmentTime.*;
 
@@ -39,6 +40,8 @@ public final class ManagerDB {
     public static final String TASKPRIORITY_COLUMNNAME = "Priority";
     public static final String HABITTYPE_COLUMNNAME = "Type_Habit";
     public static final String DAILYTYPE_COLUMNNAME = "Type_Daily";
+    public static final String DAILYDATE_COLUMNNAME = "Date_Daily";
+    public static final String DAILYEVERY_COLUMNNAME = "Every";
     public static final String GOALSTARTDATE_COLUMNNAME = "StartDate";
     public static final String GOALENDDATE_COLUMNNAME = "EndDate";
     public static final String CHECKLISTTEXT_COLUMNNAME = "UnderTaskText";
@@ -47,6 +50,9 @@ public final class ManagerDB {
     public static final String NOTIFYMESSAGE_COLUMNNAME = "Message";
     public static final String NOTIFYTIME_COLUMNAME = "Time";
     public static final String NOTIFYDATE_COLUMNAME = "Date";
+    public static final String HISTORYCOMPLETE_TYPE_COLUMNAME = "typeComplete";
+    public static final String HISTORYCOMPLETE_DATE_COLUMNAME = "dateComplete";
+    public static final String HISTORYCOMPLETE_COUNT_COLUMNAME = "countTask";
 
     /**
      * select all task
@@ -117,6 +123,10 @@ public final class ManagerDB {
     public static final String SEL_STRING_CHECKLISTBYTASK = "SELECT id AS "+ID_COLUMN+", idTask AS "+IDTASK_COLUMN+
             ", textCheckList AS "+CHECKLISTTEXT_COLUMNNAME+", isCheck AS " + CHECKLISTCHECK_COLUMNNAME + " FROM "+ TABLENAME_CHECKLISTTASK + " WHERE idTask = ?";
 
+    public static final String SEL_STRING_DATEDAILYBYTASK = "SELECT Date AS " + DAILYDATE_COLUMNNAME +
+            ", every AS " + DAILYEVERY_COLUMNNAME +
+            " FROM " + TABLENAME_DATEDAILY +" WHERE idTask = ?";
+
     /**
      * <pre>command task: 1 ? - id task(int) for where</pre>
      */
@@ -127,6 +137,20 @@ public final class ManagerDB {
             ", timeNotify AS " + NOTIFYTIME_COLUMNAME +
             ", dateNotify AS "+ NOTIFYDATE_COLUMNAME +
         " FROM "+ TABLENAME_NOTIFYTASK + " WHERE idTask = ?";
+
+    public static final String SEL_STRING_HISTORYCOMPLETE_BY_IDTASK ="SELECT id AS "+ ID_COLUMN +
+            ", idTask AS " + IDTASK_COLUMN +
+            ", TypeComplete AS " + HISTORYCOMPLETE_TYPE_COLUMNAME +
+            ", DateComplete AS " + HISTORYCOMPLETE_DATE_COLUMNAME +
+            ", countTask AS " + HISTORYCOMPLETE_COUNT_COLUMNAME +
+            " FROM " + TABLENAME_HISTORYCOMPLETE + " WHERE idTask = ?";
+
+    public static final String SEL_STRING_HISTORYCOMPLETE_BY_DATECOMPLETE = "SELECT id AS "+ ID_COLUMN +
+            ", idTask AS " + IDTASK_COLUMN +
+            ", TypeComplete AS " + HISTORYCOMPLETE_TYPE_COLUMNAME +
+            ", DateComplete AS " + HISTORYCOMPLETE_DATE_COLUMNAME +
+            ", countTask AS " + HISTORYCOMPLETE_COUNT_COLUMNAME +
+            " FROM " + TABLENAME_HISTORYCOMPLETE + " WHERE idTask = ? AND DateComplete = ?";
 
     /**
      * <pre>command task: 1 ? - id checkbox() for where</pre>
@@ -171,6 +195,13 @@ public final class ManagerDB {
 
     /**
      * <pre>command task: 1 ? - idTask(int)
+     *                     2 ? - Date(long)
+     *                     2 ? - every day replay(int)
+     */
+    public static final String INSERT_STRING_DATEDAILY = "INSERT INTO "+ TABLENAME_DATEDAILY + "(idTask,Date,every)" + " VALUES(?,?,?)";
+
+    /**
+     * <pre>command task: 1 ? - idTask(int)
      *                     2 ? - startDate(text)
      *                     3 ? - endDate(text)</pre>
      */
@@ -189,6 +220,9 @@ public final class ManagerDB {
     public static final String INSERT_STRING_NOTIFY = "INSERT INTO " + TABLENAME_NOTIFYTASK +
             "(idTask, titleNotify, messageNotify, timeNotify, dateNotify) " +
             "VALUES(?,?,?,?,?)";
+
+    public static final String INSERT_STRING_HISTORYCOMPLETE = "INSERT INTO " + TABLENAME_HISTORYCOMPLETE +
+            "(idTask, TypeComplete, DateComplete, countTask) VALUES(?,?,?,?)";
 
     /**
      * <pre>command mask:  1 ? - field name(text)
@@ -239,6 +273,15 @@ public final class ManagerDB {
      *                2 ? - id(int) key for where</pre>
      */
     public static final String UPDATE_STRING_CHECKLIST = "UPDATE "+ TABLENAME_CHECKLISTTASK + " SET name = ? WHERE id = ?";
+
+
+    /**
+     * <pre>command mask: 1 ? - type complete(int)
+     *                2 ? - count task(int)
+     *                3 ? - idTask(int) for where
+     *                4 ? - date complete(long) for where</pre>
+     */
+    public static final String UPDATE_STRING_HISTORYCOMPLETE_BY_DATE_IDTASK = "UPDATE " + TABLENAME_HISTORYCOMPLETE + " SET TypeComplete = ?, countTask = ? WHERE idTask = ? AND DateComplete = ?";
 
     /**
      * command mask: 1 ? - idTask(int) key for where
@@ -294,6 +337,15 @@ public final class ManagerDB {
      *      command mask: 1 ? - idTask(int) id task</pre>
      */
     public static final String DEL_STRING_NOTIFYBYTASK = "DELETE FROM" + TABLENAME_NOTIFYTASK +
+            "WHERE idTask = ?";
+
+    public static final String DEL_STRING_DATEDAILYBYID = "DELETE FROM" + TABLENAME_DATEDAILY +
+            "WHERE idTask = ?";
+
+    public static final String DEL_STRING_HISTORYCOMPLETE_BY_DATE_IDTASK = "DELETE FROM" + TABLENAME_HISTORYCOMPLETE +
+            "WHERE idTask = ? AND DateComplete = ?";
+
+    public static final String DEL_STRING_HISTORYCOMPLETE_BY_IDTASK = "DELETE FROM" + TABLENAME_HISTORYCOMPLETE +
             "WHERE idTask = ?";
 
 
@@ -513,6 +565,78 @@ public final class ManagerDB {
     }
 
 
+    public void completeTask(final int idTask, int countTask, final long dateComplete, @NonNull AbsTask.Type_Complete type_complete){
+        Cursor c = null;
+        try{
+            try {
+                c = dbR.rawQuery(SEL_STRING_HISTORYCOMPLETE_BY_DATECOMPLETE,
+                        new String[]{String.valueOf(idTask), String.valueOf(dateComplete)});
+                dbW.beginTransaction();
+                if(c.getCount()>0){
+                    dbW.execSQL(UPDATE_STRING_HISTORYCOMPLETE_BY_DATE_IDTASK, new String[]{
+                            String.valueOf(type_complete.ordinal()), String.valueOf(countTask), String.valueOf(idTask), String.valueOf(dateComplete)
+                    });
+                }
+                else
+                    dbW.execSQL(INSERT_STRING_HISTORYCOMPLETE, new String[]{
+                        String.valueOf(idTask), String.valueOf(type_complete.ordinal()), String.valueOf(dateComplete), String.valueOf(countTask)
+                    });
+                dbW.setTransactionSuccessful();
+            } finally {
+                if(c != null) c.close();
+                dbW.endTransaction();
+            }
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        notifyHandler(UPDATE);
+    }
+
+    public void uncompleteTask(final int idTask, final long dateComplete){
+        try{
+            try {
+
+                dbW.beginTransaction();
+                dbW.execSQL(DEL_STRING_HISTORYCOMPLETE_BY_DATE_IDTASK, new String[]{
+                        String.valueOf(idTask), String.valueOf(dateComplete)});
+                dbW.setTransactionSuccessful();
+            } finally {
+                dbW.endTransaction();
+            }
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        notifyHandler(UPDATE);
+    }
+
+    public void uncompleteTask(final int idTask){
+        try{
+            try {
+
+                dbW.beginTransaction();
+                dbW.execSQL(DEL_STRING_HISTORYCOMPLETE_BY_IDTASK, new String[]{
+                        String.valueOf(idTask)});
+                dbW.setTransactionSuccessful();
+            } finally {
+                dbW.endTransaction();
+            }
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        notifyHandler(UPDATE);
+    }
+
+
+    public Cursor getCursorOnHistoryCompleteByDate(final int idTask, final long dateComplete){
+        return dbR.rawQuery(SEL_STRING_HISTORYCOMPLETE_BY_DATECOMPLETE, new String[]{
+                String.valueOf(idTask), String.valueOf(dateComplete)
+                });
+    }
+
+    public Cursor getCursorOnHistoryCompleteByIdTask(final int idTask){
+        return dbR.rawQuery(SEL_STRING_HISTORYCOMPLETE_BY_IDTASK, new String[]{ String.valueOf(idTask)});
+    }
+
 
     /**
      * <pre>Add new row in Task</pre>
@@ -545,10 +669,12 @@ public final class ManagerDB {
     }
 
     private void notifyHandler(int flag){
-        handlerUpdateTaskInDb.notifyChange(flag);
+        if(handlerUpdateTaskInDb != null)handlerUpdateTaskInDb.notifyChange(flag);
     }
 
-    private void notifyTagHandler(int flag){ handlerUpdateTagInDb.notifyChangeTag(flag);}
+    private void notifyTagHandler(int flag){
+        if(handlerUpdateTagInDb != null)handlerUpdateTagInDb.notifyChangeTag(flag);
+    }
 
     public void incrementTaskCountSeriesDb(final int idTask, final int increment){
         Cursor c = dbR.rawQuery(SEL_STRING_GETTASKBYID,new String[]{String.valueOf(idTask)});

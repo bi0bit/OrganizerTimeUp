@@ -1,5 +1,6 @@
-package AssambleClassManagmentApp;
+package AssambleClassManagmentTime;
 
+import android.content.Context;
 import android.database.Cursor;
 
 import java.util.ArrayList;
@@ -7,11 +8,12 @@ import java.util.Hashtable;
 import java.util.List;
 
 
-import AssambleClassManagmentApp.Filtering.BuilderFilter;
-import AssambleClassManagmentApp.Filtering.Filter;
-import AssambleClassManagmentApp.Filtering.FilterSetting;
-import AssambleClassManagmentApp.Sorting.SortByIdTask;
-import AssambleClassManagmentApp.Sorting.Sorter;
+import AssambleClassManagmentTime.Filtering.BuilderFilter;
+import AssambleClassManagmentTime.Filtering.Filter;
+import AssambleClassManagmentTime.Filtering.FilterSetting;
+import AssambleClassManagmentTime.Sorting.SortByIdTask;
+import AssambleClassManagmentTime.Sorting.Sorter;
+import by.ilagoproject.timeUp_ManagerTime.DBManagmentTime;
 import by.ilagoproject.timeUp_ManagerTime.ManagerDB;
 
 public class TaskManager implements ManagerDB.HandlerUpdateTaskInDb {
@@ -25,10 +27,22 @@ public class TaskManager implements ManagerDB.HandlerUpdateTaskInDb {
     private Sorter sorter = new SortByIdTask();
 
 
-    public TaskManager(){
-        dbM = ManagerDB.getManagerDB(null);
+    private static TaskManager taskManager;
+
+    private TaskManager(Context context){
+        dbM = ManagerDB.getManagerDB(new DBManagmentTime(context));
     }
 
+    public static TaskManager getInstance(Context context) {
+        if(taskManager == null){
+            synchronized (TaskManager.class){
+                if(taskManager == null){
+                    taskManager = new TaskManager(context);
+                }
+            }
+        }
+        return taskManager;
+    }
 
     public void initTask(){
         initHabit();
@@ -36,8 +50,15 @@ public class TaskManager implements ManagerDB.HandlerUpdateTaskInDb {
         initGoal();
     }
 
+    public List<AbsTask> getAllTask(Filter filter, Sorter sorter){
+        List<AbsTask> tasks = new ArrayList<>(this.tasks.values());
+        filter.filter(tasks);
+        sorter.sort(tasks);
+        return tasks;
+    }
+
     public void initCheckListByTask(final AbsTask task){
-        Cursor c = ManagerDB.getManagerDB(null).getCursorCheckListByTask(task.getId());
+        Cursor c = dbM.getCursorCheckListByTask(task.getId());
         final List<CheckTask> listCheck = task.getListUnderTaskChecked();
         while(c.moveToNext()){
             int id = c.getInt(c.getColumnIndex(ManagerDB.ID_COLUMN));
@@ -50,7 +71,7 @@ public class TaskManager implements ManagerDB.HandlerUpdateTaskInDb {
     }
 
     public void initNotifyListByTask(final AbsTask task){
-        Cursor c = ManagerDB.getManagerDB(null).getCursorNotifyByTask(task.getId());
+        Cursor c = dbM.getCursorNotifyByTask(task.getId());
         final List<NotificationTask> listNotify = task.getListNotify();
         while(c.moveToNext()){
             int id = c.getInt(c.getColumnIndex(ManagerDB.ID_COLUMN));
@@ -126,7 +147,7 @@ public class TaskManager implements ManagerDB.HandlerUpdateTaskInDb {
     }
 
     public void notifyHandler(int flag){
-        handlerUpdateTaskInDb.notifyChange(flag);
+        if(handlerUpdateTaskInDb!=null)handlerUpdateTaskInDb.notifyChange(flag);
     }
 
     public Filter getFilter() {

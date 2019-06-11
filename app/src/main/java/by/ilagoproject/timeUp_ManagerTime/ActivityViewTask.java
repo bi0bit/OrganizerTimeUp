@@ -8,10 +8,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.LinearLayout;
 
-import AssambleClassManagmentApp.AbsTask;
-import AssambleClassManagmentApp.Daily;
-import AssambleClassManagmentApp.Goal;
-import AssambleClassManagmentApp.Habit;
+import AssambleClassManagmentTime.AbsTask;
+import AssambleClassManagmentTime.Daily;
+import AssambleClassManagmentTime.Goal;
+import AssambleClassManagmentTime.Habit;
+import AssambleClassManagmentTime.TaskManager;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -73,7 +74,7 @@ public class ActivityViewTask extends AppCompatActivity {
     }
 
     protected void updateTask(){
-        task = MainAppActivity.taskManager.getById(task.getId());
+        task = TaskManager.getInstance(this).getById(task.getId());
     }
 
     @Override
