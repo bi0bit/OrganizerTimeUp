@@ -4,10 +4,19 @@
 
     <item app:showAsAction="always"
         android:icon="@drawable/v_waste_bin_delete_button_white"
-        android:title="Удалить"
+        android:title="@string/app_delete"
         android:id="@+id/deleteButton" />
     <item app:showAsAction="always"
         android:icon="@drawable/v_pencil_edit_button_white"
-        android:title="Изменить"
+        android:title="@string/app_change"
         android:id="@+id/editButton" />
+    <item app:showAsAction="always"
+        android:icon="@drawable/v_statistic_white"
+        android:title="@string/app_complete"
+        android:id="@+id/statisticButton" />
+    <item app:showAsAction="always"
+        android:icon="@drawable/v_tick"
+        android:title="@string/app_complete"
+        android:id="@+id/completeButton" />
+    <!--TODO:realization complete button-->
 </menu>

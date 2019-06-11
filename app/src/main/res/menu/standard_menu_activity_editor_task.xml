@@ -2,7 +2,12 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item app:showAsAction="always"
-        android:title="Сохранить"
+        android:icon="@drawable/v_waste_bin_delete_button_white"
+        android:title="@string/app_delete"
+        android:id="@+id/deleteButton" />
+    <!--TODO:realization click button delete-->
+    <item app:showAsAction="always"
+        android:title="@string/app_save"
         android:icon="@drawable/v_tick"
         android:id="@+id/saveButton" />
 </menu>

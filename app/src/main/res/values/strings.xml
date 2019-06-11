@@ -6,6 +6,8 @@
     <string name="app_delete">Удалить</string>
     <string name="app_change">Изменить</string>
     <string name="app_rename">Переименовать</string>
+    <string name="app_complete">Выполнено</string>
+    <string name="app_save">Сохранить</string>
     <string name="dialog_OK">Ок</string>
     <string name="dialog_CANCEL">Отмена</string>
     <string name="dialog_BACK">Назад</string>

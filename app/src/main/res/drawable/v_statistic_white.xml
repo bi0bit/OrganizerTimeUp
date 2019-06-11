@@ -1,0 +1,13 @@
+<vector android:height="50dp" android:viewportHeight="40"
+    android:viewportWidth="40" android:width="50dp" xmlns:android="http://schemas.android.com/apk/res/android">
+    <path android:fillColor="@color/BackgroundLight" android:pathData="M6.3,31.1H4.7c-2.3,0 -4.2,1.9 -4.2,4.2v3.1c0,0.6 0.5,1.1 1.1,1.1h4.9c-0.1,-0.4 -0.2,-0.7 -0.2,-1.1V31.1zM6.3,31.1"/>
+    <group>
+        <clip-path android:pathData="M0.4,0.4h39.1v39.1h-39.1z M 0,0"/>
+        <path android:fillColor="@color/BackgroundLight" android:pathData="M39.3,12l-8.2,-11c-0.2,-0.3,-0.6,-0.5,-0.9,-0.5c-0.4,0,-0.7,0.2,-0.9,0.5l-8.2,11    c-0.3,0.3,-0.3,0.8,-0.1,1.2c0.2,0.4,0.6,0.6,1,0.6H25v24.6c0,0.6,0.5,1.1,1.1,1.1h8.2c0.6,0,1.1,-0.5,1.1,-1.1V13.8h2.9    c0.4,0,0.8,-0.2,1,-0.6C39.6,12.8,39.6,12.3,39.3,12L39.3,12z M39.3,12"/>
+    </group>
+    <group>
+        <clip-path android:pathData="M0.4,0.4h39.1v39.1h-39.1z M 0,0"/>
+        <path android:fillColor="@color/BackgroundLight" android:pathData="M14.5,25h-1.7c-2.3,0,-4.2,1.9,-4.2,4.2v9.2c0,0.6,0.5,1.1,1.1,1.1h4.9    c-0.1,-0.4,-0.2,-0.7,-0.2,-1.1V25z M14.5,25"/>
+    </group>
+    <path android:fillColor="@color/BackgroundLight" android:pathData="M22.7,18.9H21c-2.3,0 -4.2,1.9 -4.2,4.2v15.3c0,0.6 0.5,1.1 1.1,1.1h4.9c-0.1,-0.4 -0.2,-0.7 -0.2,-1.1V18.9zM22.7,18.9"/>
+</vector>

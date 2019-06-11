@@ -79,9 +79,10 @@ public class ActivityViewTask extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        Intent intent;
         switch (item.getItemId()){
             case R.id.editButton:
-                Intent intent = new Intent(ActivityViewTask.this, ActivityViewEditorTask.class);
+                intent = new Intent(ActivityViewTask.this, ActivityViewEditorTask.class);
                 intent.putExtra("update",true);
                 intent.putExtra("object",task);
                 startActivity(intent);
@@ -95,6 +96,11 @@ public class ActivityViewTask extends AppCompatActivity {
                         .setOnClickPositiveBtn(this::deleteTask)
                         .buildDialog(this.findViewById(android.R.id.content),QDialog.DIALOG_QUATION);
                 dialog.show();
+                return true;
+            case R.id.statisticButton:
+                intent = new Intent(ActivityViewTask.this, StatisticActivity.class);
+                intent.putExtra("object", task);
+                startActivity(intent);
                 return true;
         }
         return super.onOptionsItemSelected(item);
