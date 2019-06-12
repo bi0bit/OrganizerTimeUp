@@ -23,10 +23,18 @@ class ActualTaskFilter implements Filter {
 
     final Filter filter;
     final boolean nonComplete;
+    final long date;
 
     public ActualTaskFilter(Filter filter, boolean complete){
         this.filter = filter;
         this.nonComplete = complete;
+        date = -1;
+    }
+
+    public ActualTaskFilter(Filter filter, boolean complete, long date){
+        this.filter = filter;
+        this.nonComplete = complete;
+        this.date = date;
     }
 
     @Override
@@ -35,7 +43,11 @@ class ActualTaskFilter implements Filter {
         Iterator itr = tasks.iterator();
         while(itr.hasNext()){
             AbsTask task = (AbsTask) itr.next();
-            if((nonComplete && (!task.isActual() || task.isComplete())) || (!nonComplete && !task.isActual())){
+
+
+            boolean fit = (date == -1)? (nonComplete && (!task.isActual() || task.isComplete())) || (!nonComplete && !task.isActual()) :
+                    ((nonComplete && (!task.isActual(date) || task.isComplete(date))) || (!nonComplete && !task.isActual(date)));
+            if(fit){
                 itr.remove();
             }
         }

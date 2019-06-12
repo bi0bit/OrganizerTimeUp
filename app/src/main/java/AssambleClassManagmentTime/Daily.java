@@ -88,47 +88,48 @@ public class Daily extends AbsTask {
                 .rawQuery(ManagerDB.SEL_STRING_GETDAILY,new String[]{String.valueOf(getId())});
     }
 
+
     @Override
-    public boolean isActual() {
-        Calendar dateNow = Calendar.getInstance(Locale.getDefault());
-        dateNow.setTimeInMillis(System.currentTimeMillis());
-        resetTime(dateNow);
+    boolean isActualTask(long date) {
+        Calendar dateC = Calendar.getInstance(Locale.getDefault());
+        dateC.setTimeInMillis(date);
+        resetTime(dateC);
         List<DateDaily> dateLong = dates;
         switch (typeDaily){
             case EVERDAY: {
                 DateDaily dateDaily = dateLong.get(0);
-                Calendar date = Calendar.getInstance();
-                date.setTimeInMillis(dateDaily.longTime);
-                long difference = dateNow.getTimeInMillis() - date.getTime().getTime();
+                Calendar dateT = Calendar.getInstance();
+                dateT.setTimeInMillis(dateDaily.longTime);
+                long difference = dateC.getTimeInMillis() - dateT.getTime().getTime();
                 long day =  difference / (24 * 60 * 60 * 1000);
                 if (day % dateDaily.every == 0) return true;
                 break;
             }
             case EVERWEEK: {
-                int dayWeak = dateNow.get(Calendar.DAY_OF_WEEK);
-                Log.d("testFilterEverWeek", this.getName() + " weekday " + dateNow.get(Calendar.DAY_OF_WEEK) + ", " + dateNow.getTime().toString());
+                int dayWeak = dateC.get(Calendar.DAY_OF_WEEK);
+                Log.d("testFilterEverWeek", this.getName() + " weekday " + dateC.get(Calendar.DAY_OF_WEEK) + ", " + dateC.getTime().toString());
                 for (DateDaily dateDaily : dateLong) {
-                    Calendar date = Calendar.getInstance(Locale.getDefault());
-                    date.setTimeInMillis(dateDaily.longTime);
-                    Log.d("testFilterEverWeek", "weekday dateDaily " + date.get(Calendar.DAY_OF_WEEK) + "," + date.getTime().toString());
-                    if (dayWeak == date.get(Calendar.DAY_OF_WEEK)) return true;
+                    Calendar dateT = Calendar.getInstance(Locale.getDefault());
+                    dateT.setTimeInMillis(dateDaily.longTime);
+                    Log.d("testFilterEverWeek", "weekday dateDaily " + dateT.get(Calendar.DAY_OF_WEEK) + "," + dateT.getTime().toString());
+                    if (dayWeak == dateT.get(Calendar.DAY_OF_WEEK)) return true;
                 }
                 break;
             }
             case EVERMONTH: {
                 DateDaily dateDaily = dateLong.get(0);
-                Calendar date = Calendar.getInstance();
-                date.setTimeInMillis(dateDaily.longTime);
-                int diffYear = dateNow.get(Calendar.YEAR) - date.get(Calendar.YEAR);
-                int diffMonth = diffYear * 12 + date.get(Calendar.MONTH) - dateNow.get(Calendar.MONTH);
+                Calendar dateT = Calendar.getInstance();
+                dateT.setTimeInMillis(dateDaily.longTime);
+                int diffYear = dateC.get(Calendar.YEAR) - dateT.get(Calendar.YEAR);
+                int diffMonth = diffYear * 12 + dateT.get(Calendar.MONTH) - dateC.get(Calendar.MONTH);
                 if (diffMonth % dateDaily.every == 0) return true;
                 break;
             }
             case EVERYEAR: {
                 DateDaily dateDaily = dateLong.get(0);
-                Calendar date = Calendar.getInstance();
-                date.setTimeInMillis(dateDaily.longTime);
-                int diffYear = dateNow.get(Calendar.YEAR) - date.get(Calendar.YEAR);
+                Calendar dateT = Calendar.getInstance();
+                dateT.setTimeInMillis(dateDaily.longTime);
+                int diffYear = dateC.get(Calendar.YEAR) - dateT.get(Calendar.YEAR);
                 if (diffYear % dateDaily.every == 0) return true;
                 break;
             }
@@ -174,12 +175,12 @@ public class Daily extends AbsTask {
     }
 
     @Override
-    public boolean isComplete() {
+    boolean isCompleteTask(long date) {
         Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(date);
         resetTime(calendar);
         Cursor c =
                 ManagerDB.getManagerDB(null).getCursorOnHistoryCompleteByDate(getId(), calendar.getTimeInMillis());
-
         return c.getCount()>0;
     }
 

@@ -6,6 +6,8 @@ import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.IBinder;
 import android.util.Log;
 import android.widget.Toast;
@@ -25,6 +27,7 @@ import AssambleClassManagmentTime.TagManager;
 import AssambleClassManagmentTime.TaskManager;
 import by.ilagoproject.timeUp_ManagerTime.ActivityViewTask;
 import by.ilagoproject.timeUp_ManagerTime.ManagerDB;
+import by.ilagoproject.timeUp_ManagerTime.R;
 
 public class RemindService extends Service {
 
@@ -119,6 +122,8 @@ public class RemindService extends Service {
 
     void sendNotif(AbsTask task, NotificationTask notifyTask){
         Context context = this;
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher_round, options);
         notifyManager = (NotificationManager) context.getSystemService(NOTIFICATION_SERVICE);
         Intent notifyIntent = new Intent(this, ActivityViewTask.class);
         notifyIntent.putExtra("object", task);
@@ -131,7 +136,8 @@ public class RemindService extends Service {
                 .setContentTitle(task.getName() + ": "+notifyTask.getTitle())
                 .setContentText(notifyTask.getMessage())
                 .setPriority(Notification.PRIORITY_MAX)
-                .setSmallIcon(android.R.drawable.btn_star);
+                .setSmallIcon(android.R.drawable.btn_star)
+                .setLargeIcon(bitmap);
         Notification notification = notifyBuilder.build();
         notification.defaults = Notification.DEFAULT_SOUND | Notification.DEFAULT_VIBRATE | Notification.DEFAULT_LIGHTS;
         notifyManager.notify(notifyTask.getId(),notification);

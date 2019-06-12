@@ -20,4 +20,6 @@
     <color name="MaskItemNoActualTask">#E4E4DF</color>
     <color name="MarkLateDate">#FDCDCD</color>
     <color name="MarkNormalDate">#DCFFDA</color>
+    <color name="DiargamColor_Max">#DF6060</color>
+    <color name="DiagramColor_Fill">#3EE925</color>
 </resources>

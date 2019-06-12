@@ -2,7 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="@color/BackgroundLight">
     <include layout="@layout/app_tools_bar"/>
     <LinearLayout
         android:layout_width="match_parent"
@@ -11,9 +12,14 @@
         android:padding="@dimen/spacing_xsmall">
         <com.github.mikephil.charting.charts.LineChart
             android:id="@+id/lineDiagramCompleteTask"
-            android:layout_marginLeft="@dimen/spacing_normal"
-            android:layout_marginRight="@dimen/spacing_normal"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/bigSize_xxlarge"/>
+            android:layout_height="@dimen/bigSize_xxxlarge"/>
+        <ListView
+            android:id="@+id/listHistory"
+            android:dividerHeight="@dimen/divider_weight"
+            android:divider="@color/FocusFieldApp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+        </ListView>
     </LinearLayout>
 </LinearLayout>

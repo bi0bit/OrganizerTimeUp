@@ -1,6 +1,7 @@
 package by.ilagoproject.timeUp_ManagerTime;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -52,6 +53,9 @@ public class MainAppActivity extends AppCompatActivity implements ManagerDB.Hand
     TaskAdapterList goalList;
     TaskAdapterList habitList;
     FilterSetting filterSetting;
+
+    public final static String SHARED_PREFERENCE_NAME = "SETTING";
+    public final static String SHARED_PREFERENCE_SHORTMODE = "short_mode";
 
     static{
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
@@ -111,6 +115,15 @@ public class MainAppActivity extends AppCompatActivity implements ManagerDB.Hand
                 break;
             case R.id.filter:
                 filterShow();
+                break;
+            case R.id.shortMode:
+                item.setChecked(!item.isChecked());
+                SharedPreferences.Editor e = getSharedPreferences(SHARED_PREFERENCE_NAME, MODE_PRIVATE).edit();
+                e.putBoolean(SHARED_PREFERENCE_SHORTMODE, item.isChecked());
+                e.apply();
+                updateDailyList();
+                updateGoalList();
+                updateHabitList();
                 break;
         }
         return super.onOptionsItemSelected(item);
@@ -332,6 +345,8 @@ public class MainAppActivity extends AppCompatActivity implements ManagerDB.Hand
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.standard_menu_activity_task, menu);
+        boolean isCheck = getSharedPreferences(SHARED_PREFERENCE_NAME, MODE_PRIVATE).getBoolean(SHARED_PREFERENCE_SHORTMODE, false);
+        menu.findItem(R.id.shortMode).setChecked(isCheck);
         Spinner spinner = (Spinner) menu.findItem(R.id.spinnerTypeTask).getActionView();
         ArrayAdapter adapter =
                 ArrayAdapter.createFromResource(this,R.array.strings_type_task,R.layout.item_spinner_type_task);

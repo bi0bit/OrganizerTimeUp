@@ -24,18 +24,11 @@
         app:showAsAction="never"
         android:title="@string/createTag"/>
     <item
-        app:showAsAction="never"
-        android:title="@string/actualTask"
-        android:checkable="true"/>
-
-    <item
-        app:showAsAction="never"
-        android:title="@string/setting"/>
-    <item
         android:id="@+id/tags"
         app:showAsAction="never"
         android:title="@string/tags" />
     <item
+        android:id="@+id/shortMode"
         app:showAsAction="never"
         android:title="@string/shortMode"
         android:checkable="true"/>

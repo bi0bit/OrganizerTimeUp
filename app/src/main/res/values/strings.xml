@@ -8,6 +8,7 @@
     <string name="app_rename">Переименовать</string>
     <string name="app_complete">Выполнено</string>
     <string name="app_save">Сохранить</string>
+    <string name="app_statistic">Статистика</string>
     <string name="dialog_OK">Ок</string>
     <string name="dialog_CANCEL">Отмена</string>
     <string name="dialog_BACK">Назад</string>
@@ -89,7 +90,7 @@
     <string-array name="strings_type_habit">
         <item>Вредная</item>
         <item>Полезная</item>
-        <item>Вредная и полезная</item>
+        <!--<item>Вредная и полезная</item>-->
     </string-array>
     <string-array name="strings_type_daily">
         <item>Ежедневно</item>
@@ -101,5 +102,9 @@
         <item>Без сортировки</item>
         <item>Отсортировать по имени</item>
         <item>Отсортировать по приоритету</item>
+    </string-array>
+    <string-array name="typeComplete">
+        <item>Выполненно</item>
+        <item>Не выполненно</item>
     </string-array>
 </resources>

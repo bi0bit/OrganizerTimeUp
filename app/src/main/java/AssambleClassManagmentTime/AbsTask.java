@@ -2,6 +2,8 @@ package AssambleClassManagmentTime;
 
 import android.app.Activity;
 import android.app.TimePickerDialog;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -254,9 +256,28 @@ public abstract class AbsTask implements Parcelable {
         c.close();
     }
 
-    public abstract boolean isActual();
+    public final boolean isActual(){
+        return isActualTask(Calendar.getInstance().getTimeInMillis());
+    }
 
-    public abstract boolean isComplete();
+    public final boolean isActual(final long date){
+        return isActualTask(date);
+    }
+
+    abstract boolean isActualTask(final long date);
+
+
+    public final boolean isComplete(){
+        return isCompleteTask(Calendar.getInstance().getTimeInMillis());
+    }
+
+    public final boolean isComplete(final long date){
+        return isCompleteTask(date);
+    }
+
+    abstract boolean isCompleteTask(final long date);
+
+
 
     public abstract List<?> getDateTask();
 
@@ -280,7 +301,7 @@ public abstract class AbsTask implements Parcelable {
         setPriority(priority);
     }
 
-    static void resetTime(Calendar date){
+    public static void resetTime(Calendar date){
         date.set(Calendar.HOUR_OF_DAY, 0);
         date.set(Calendar.MINUTE, 0);
         date.set(Calendar.SECOND, 0);
@@ -388,11 +409,16 @@ public abstract class AbsTask implements Parcelable {
                     textView.setTextSize(TypedValue.COMPLEX_UNIT_PX, tagSize);
                     flexboxLayout.addView(textView);
                 }
+                SharedPreferences shP = view.getContext().getSharedPreferences(MainAppActivity.SHARED_PREFERENCE_NAME, Context.MODE_PRIVATE);
+                if(shP.getBoolean(MainAppActivity.SHARED_PREFERENCE_SHORTMODE, false))
+                    flexboxLayout.setVisibility(View.GONE);
+                else flexboxLayout.setVisibility(View.VISIBLE);
             }
             else flexboxLayout.setVisibility(View.GONE);
         }
         public void setDateItem(View view){}
         public void setContentItem(View view){
+            SharedPreferences shP = view.getContext().getSharedPreferences(MainAppActivity.SHARED_PREFERENCE_NAME, Context.MODE_PRIVATE);
             TextView textName =  view.findViewById(R.id.nameTask);
             textName.setText(getObject().getName());
             TextView textDescription =  view.findViewById(R.id.desriptionTask);
@@ -402,6 +428,9 @@ public abstract class AbsTask implements Parcelable {
             ListView checklistView = view.findViewById(R.id.checkListTask);
             checklistView.setAdapter(adapterCheckList);
             MainAppActivity.setListViewHeightBasedOnChildren(checklistView);
+            if(shP.getBoolean(MainAppActivity.SHARED_PREFERENCE_SHORTMODE, false))
+                checklistView.setVisibility(View.GONE);
+            else checklistView.setVisibility(View.VISIBLE);
         }
         public void setCountItem(View view,AbsTask task){
             TextView textCount = view.findViewById(R.id.countSeries);

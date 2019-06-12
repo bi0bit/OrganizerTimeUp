@@ -592,6 +592,32 @@ public final class ManagerDB {
         notifyHandler(UPDATE);
     }
 
+    public void completeTaskNonHandler(final int idTask, int countTask, final long dateComplete, @NonNull AbsTask.Type_Complete type_complete){
+        Cursor c = null;
+        try{
+            try {
+                c = dbR.rawQuery(SEL_STRING_HISTORYCOMPLETE_BY_DATECOMPLETE,
+                        new String[]{String.valueOf(idTask), String.valueOf(dateComplete)});
+                dbW.beginTransaction();
+                if(c.getCount()>0){
+                    dbW.execSQL(UPDATE_STRING_HISTORYCOMPLETE_BY_DATE_IDTASK, new String[]{
+                            String.valueOf(type_complete.ordinal()), String.valueOf(countTask), String.valueOf(idTask), String.valueOf(dateComplete)
+                    });
+                }
+                else
+                    dbW.execSQL(INSERT_STRING_HISTORYCOMPLETE, new String[]{
+                            String.valueOf(idTask), String.valueOf(type_complete.ordinal()), String.valueOf(dateComplete), String.valueOf(countTask)
+                    });
+                dbW.setTransactionSuccessful();
+            } finally {
+                if(c != null) c.close();
+                dbW.endTransaction();
+            }
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+    }
+
     public void uncompleteTask(final int idTask, final long dateComplete){
         try{
             try {
@@ -685,10 +711,7 @@ public final class ManagerDB {
     }
 
     public void updateTaskCountSeriesDb(final int idTask, final int count){
-        Cursor c = dbR.rawQuery(SEL_STRING_GETTASKBYID,new String[]{String.valueOf(idTask)});
-        c.moveToFirst();
         dbW.execSQL(UPDATE_STRING_COUNTSERIES, new String[]{String.valueOf(count), String.valueOf(idTask)});
-        c.close();
     }
 
     public void updateTag(int idTag, String newName){

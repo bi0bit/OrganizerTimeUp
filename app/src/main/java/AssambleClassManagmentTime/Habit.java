@@ -33,7 +33,7 @@ public class Habit extends AbsTask{
 
     public Habit(int id) {
         super(id, Type_Task.HABIT);
-        typeHabit = EnumSet.allOf(Type_Habit.class);
+        typeHabit = EnumSet.of(Type_Habit.POSITIVE);
     }
 
     static{
@@ -95,12 +95,13 @@ public class Habit extends AbsTask{
     }
 
     @Override
-    public boolean isActual() {
+    boolean isActualTask(long date) {
         return true;
     }
 
+
     @Override
-    public boolean isComplete() {
+    boolean isCompleteTask(long date) {
         return false;
     }
 

@@ -49,6 +49,10 @@ public class ActivityViewTask extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.standard_menu_activity_viewer_task,menu);
+        if(task.TYPE == AbsTask.Type_Task.GOAL)
+            menu.findItem(R.id.statisticButton).setVisible(false);
+        if(task.TYPE == AbsTask.Type_Task.HABIT)
+            menu.findItem(R.id.completeButton).setVisible(false);
         return super.onCreateOptionsMenu(menu);
     }
 

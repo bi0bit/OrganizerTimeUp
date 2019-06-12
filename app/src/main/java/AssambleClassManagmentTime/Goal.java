@@ -3,6 +3,8 @@ package AssambleClassManagmentTime;
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.drawable.ColorDrawable;
@@ -99,19 +101,20 @@ public class Goal  extends AbsTask{
     }
 
     @Override
-    public boolean isActual() {
+    boolean isActualTask(final long date) {
         boolean nonActualAfterEndDate = false;//TODO: Realization in setting choice parametr nonActualAfterEndDate
-        Calendar dateNow = Calendar.getInstance();
-        resetTime(dateNow);
+        Calendar dateC = Calendar.getInstance();
+        dateC.setTimeInMillis(date);
+        resetTime(dateC);
         Calendar startDate = Calendar.getInstance();
         startDate.setTimeInMillis(this.getStartDate());
         Calendar endDate = Calendar.getInstance();
         endDate.setTimeInMillis(this.getEndDate());
-        return !(dateNow.compareTo(endDate) > 0 && isComplete()) && dateNow.compareTo(startDate) >= 0; //TODO:realization separate by nonActualAfterEndDate: (!nonActualAfterEndDate || dateNow.compareTo(endDate) <= 0);
+        return !(dateC.compareTo(endDate) > 0 && isComplete()) && dateC.compareTo(startDate) >= 0; //TODO:realization separate by nonActualAfterEndDate: (!nonActualAfterEndDate || dateNow.compareTo(endDate) <= 0);
     }
 
     @Override
-    public boolean isComplete() {
+    boolean isCompleteTask(final long date) {
         Cursor c = ManagerDB.getManagerDB(null).getCursorOnHistoryCompleteByIdTask(getId());
         return c.getCount() > 0;
     }
@@ -269,6 +272,8 @@ public class Goal  extends AbsTask{
         @Override
         public void setDateItem(View view) {
             super.setDateItem(view);
+            SharedPreferences shP = view.getContext().getSharedPreferences(MainAppActivity.SHARED_PREFERENCE_NAME, Context.MODE_PRIVATE);
+
             TextView dateView = view.findViewById(R.id.dateDeadLineTask);
             String date = view.getResources().getString(R.string.fieldExecute) + " " + getObject().getEndDate("dd.MM.yyyy");
             dateView.setText(date);
@@ -286,6 +291,9 @@ public class Goal  extends AbsTask{
                 Drawable color = new ColorDrawable(view.getResources().getColor(R.color.BackgroundLight));
                 dateView.setBackground(color);
             }
+            if(shP.getBoolean(MainAppActivity.SHARED_PREFERENCE_SHORTMODE, false))
+                dateView.setVisibility(View.GONE);
+            else dateView.setVisibility(View.VISIBLE);
         }
 
         @Override
