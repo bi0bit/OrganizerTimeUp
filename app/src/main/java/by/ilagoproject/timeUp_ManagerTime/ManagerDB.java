@@ -269,10 +269,17 @@ public final class ManagerDB {
 
 
     /**
-     * <pre>command mask: 1 ? - name(text)
+     * <pre>command mask: 1 ? - check(text)
      *                2 ? - id(int) key for where</pre>
      */
-    public static final String UPDATE_STRING_CHECKLIST = "UPDATE "+ TABLENAME_CHECKLISTTASK + " SET name = ? WHERE id = ?";
+    public static final String UPDATE_STRING_CHECKLIST_CHECK = "UPDATE "+ TABLENAME_CHECKLISTTASK + " SET isCheck = ? WHERE id = ?";
+
+
+    /**
+     * <pre>command mask: 1 ? - check(text)
+     *                2 ? - idTask(int) key for where</pre>
+     */
+    public static final String UPDATE_STRING_CHECKLIST_RESETCHECK = "UPDATE "+ TABLENAME_CHECKLISTTASK + " SET isCheck = 0 WHERE idTask = ?";
 
 
     /**
@@ -712,6 +719,14 @@ public final class ManagerDB {
 
     public void updateTaskCountSeriesDb(final int idTask, final int count){
         dbW.execSQL(UPDATE_STRING_COUNTSERIES, new String[]{String.valueOf(count), String.valueOf(idTask)});
+    }
+
+    public void updateChecklistCheck(final int idCheck, final int isCheck){
+        dbW.execSQL(UPDATE_STRING_CHECKLIST_CHECK, new String[]{String.valueOf(isCheck), String.valueOf(idCheck)});
+    }
+
+    public void resetCheck(final int idTask){
+        dbW.execSQL(UPDATE_STRING_CHECKLIST_RESETCHECK, new String[]{String.valueOf(idTask)});
     }
 
     public void updateTag(int idTag, String newName){

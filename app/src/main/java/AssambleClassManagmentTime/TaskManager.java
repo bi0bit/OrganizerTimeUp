@@ -64,7 +64,7 @@ public class TaskManager implements ManagerDB.HandlerUpdateTaskInDb {
             int id = c.getInt(c.getColumnIndex(ManagerDB.ID_COLUMN));
             String name = c.getString(c.getColumnIndex(ManagerDB.CHECKLISTTEXT_COLUMNNAME));
             boolean check =
-                    c.getInt(c.getColumnIndex(ManagerDB.CHECKLISTTEXT_COLUMNNAME)) == 1;
+                    c.getInt(c.getColumnIndex(ManagerDB.CHECKLISTCHECK_COLUMNNAME)) == 1;
             CheckTask checkTask = new CheckTask(id, name, check);
             listCheck.add(checkTask);
         }

@@ -447,6 +447,7 @@ public abstract class AbsTask implements Parcelable {
             checkBox.setChecked(task.isComplete());
             // check complete task
             checkBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
+                // complete task ch
                 if(task.isActual()) {
                     Calendar calendar = Calendar.getInstance();
                     resetTime(calendar);
@@ -747,6 +748,7 @@ public abstract class AbsTask implements Parcelable {
             if(task.getListUnderTaskChecked().size() > 0){
                 CheckListAdapter adapterCheckList = new CheckListAdapter(view.getContext(),getObject().getListUnderTaskChecked(), null, null);
                 adapterCheckList.setEditable(false);
+                adapterCheckList.setUpdateList(true);
                 ListView listViewUnderTask = view.findViewById(R.id.underTaskList);
                 listViewUnderTask.setAdapter(adapterCheckList);
                 MainAppActivity.setListViewHeightBasedOnChildren(listViewUnderTask);

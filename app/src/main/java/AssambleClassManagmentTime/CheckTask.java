@@ -3,10 +3,12 @@ package AssambleClassManagmentTime;
 import java.io.Serializable;
 
 public class CheckTask implements Serializable {
+
     private int id;
     private boolean complete;
     private String text;
     public CheckTask(String textUnderTask){
+        id = -1;
         text = textUnderTask;
         complete = false;
     }
@@ -15,6 +17,10 @@ public class CheckTask implements Serializable {
         this.id = id;
         text = textUnderTask;
         this.complete = complete;
+    }
+
+    public int getId() {
+        return id;
     }
 
     public void setCompleteTask(boolean completeTask){

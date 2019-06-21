@@ -12,12 +12,10 @@ import androidx.appcompat.widget.Toolbar;
 
 import android.content.Context;
 import android.database.Cursor;
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.renderscript.Sampler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -36,15 +34,10 @@ import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.formatter.DefaultValueFormatter;
-import com.github.mikephil.charting.formatter.IFillFormatter;
 import com.github.mikephil.charting.formatter.ValueFormatter;
-import com.github.mikephil.charting.interfaces.dataprovider.LineDataProvider;
-import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
-import com.github.mikephil.charting.utils.MPPointF;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -96,14 +89,19 @@ public class StatisticActivity extends AppCompatActivity {
 
             LineDataSet dataSet = new LineDataSet(entries, task.getName());
             dataSet.setAxisDependency(YAxis.AxisDependency.RIGHT);
-            dataSet.setColor(getResources().getColor(R.color.FieldApp));
+            int colorLine = (task.TYPE == AbsTask.Type_Task.HABIT && ((Habit)task).getTypeHabitInt() < 0)? getResources().getColor(R.color.RedComponent) :
+                    getResources().getColor(R.color.GreenComponent);
+            dataSet.setColor(colorLine);
             dataSet.setCircleRadius(4f);
-            dataSet.setCircleColor(getResources().getColor(R.color.FieldApp));
+
+            dataSet.setCircleColor(colorLine);
             dataSet.setValueFormatter(new DefaultValueFormatter(0));
             dataSet.setValueTextSize(10f);
             dataSet.setMode(LineDataSet.Mode.LINEAR);
             dataSet.setHighlightEnabled(false);
-            dataSet.setFillColor(getResources().getColor(R.color.DiagramColor_Fill));
+            int colorFill = (task.TYPE == AbsTask.Type_Task.HABIT && ((Habit)task).getTypeHabitInt() < 0)? getResources().getColor(R.color.DiagramColor_FillNegative) :
+                    getResources().getColor(R.color.DiagramColor_Fill);
+            dataSet.setFillColor(colorFill);
             dataSet.setDrawFilled(true);
             XAxis xAxis = chartLine.getXAxis();
             ValueFormatter formatter = new ValueFormatter() {
@@ -127,8 +125,8 @@ public class StatisticActivity extends AppCompatActivity {
             limitLine.setTypeface(Typeface.SANS_SERIF);
             limitLine.setTextStyle(Paint.Style.STROKE);
             limitLine.setTextSize(12f);
-            limitLine.setTextColor(getResources().getColor(R.color.DiargamColor_Max));
-            limitLine.setLineColor(getResources().getColor(R.color.DiargamColor_Max));
+            limitLine.setTextColor(getResources().getColor(R.color.DiagramColor_Max));
+            limitLine.setLineColor(getResources().getColor(R.color.DiagramColor_Max));
             limitLine.enableDashedLine(8f, 8f, 8f);
 
             YAxis yAxis = chartLine.getAxisLeft();

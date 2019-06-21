@@ -6,7 +6,9 @@
     <string name="app_delete">Удалить</string>
     <string name="app_change">Изменить</string>
     <string name="app_rename">Переименовать</string>
-    <string name="app_complete">Выполнено</string>
+    <string name="app_completed">Выполнено</string>
+    <string name="app_toComplete">Выполнить</string>
+    <string name="app_toNonComplete">Отменить выполнение</string>
     <string name="app_save">Сохранить</string>
     <string name="app_statistic">Статистика</string>
     <string name="dialog_OK">Ок</string>
@@ -29,7 +31,7 @@
     <string name="fieldCheckList">Чек-лист</string>
     <string name="fieldEditCounter">Восстановить серию:</string>
     <string name="fieldCounter">Серия:</string>
-    <string name="fieldTag">Тэги:</string>
+    <string name="fieldTag">Теги:</string>
     <string name="fieldNameTag">Название тега:</string>
     <string name="fieldTypeDailyTask">Тип ежедневной задачи</string>
     <string name="fieldDayList">Повторять</string>
@@ -72,7 +74,7 @@
     <string name="sortingBy">Сортировать по…</string>
     <string name="filter">Фильтр…</string>
     <string name="tags">Теги</string>
-    <string name="shortMode">Сокращенный режим</string>
+    <string name="shortMode">Сокращенный вид</string>
     <string name="filterActual">Актуальные задачи</string>
     <string name="filterNonComplete">Только не выполненные</string>
     <string name="filterPriority">По приоритету</string>

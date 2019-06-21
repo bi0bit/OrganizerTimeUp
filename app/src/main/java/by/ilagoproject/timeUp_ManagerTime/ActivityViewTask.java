@@ -19,9 +19,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.Toolbar;
 import androidx.databinding.ViewDataBinding;
+
+import java.util.Calendar;
+
 import by.ilagoproject.timeUp_ManagerTime.databinding.ViewerHeaderDailyBinding;
 import by.ilagoproject.timeUp_ManagerTime.databinding.ViewerHeaderGoalBinding;
 import by.ilagoproject.timeUp_ManagerTime.databinding.ViewerHeaderHabitBinding;
+
+import static AssambleClassManagmentTime.AbsTask.resetTime;
 
 
 public class ActivityViewTask extends AppCompatActivity {
@@ -49,6 +54,15 @@ public class ActivityViewTask extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.standard_menu_activity_viewer_task,menu);
+        if(task.isComplete()){
+            menu.findItem(R.id.completeButton).setTitle(R.string.app_toNonComplete);
+            menu.findItem(R.id.completeButton).setIcon(R.drawable.v_on_no_complete);
+        }
+        else {
+            menu.findItem(R.id.completeButton).setTitle(R.string.app_toComplete);
+            menu.findItem(R.id.completeButton).setIcon(R.drawable.v_tick);
+        }
+
         if(task.TYPE == AbsTask.Type_Task.GOAL)
             menu.findItem(R.id.statisticButton).setVisible(false);
         if(task.TYPE == AbsTask.Type_Task.HABIT)
@@ -92,6 +106,7 @@ public class ActivityViewTask extends AppCompatActivity {
                 startActivity(intent);
                 return true;
             case R.id.deleteButton:
+                //delete button
                 AlertDialog.Builder dialog = QDialog.getBuilder()
                         .setCancelable(true)
                         .setTitle(getResources().getString(R.string.eventDeleteTask))
@@ -105,6 +120,29 @@ public class ActivityViewTask extends AppCompatActivity {
                 intent = new Intent(ActivityViewTask.this, StatisticActivity.class);
                 intent.putExtra("object", task);
                 startActivity(intent);
+                return true;
+            case R.id.completeButton:
+                // complete task ev
+                if(task.isActual()) {
+                    Calendar calendar = Calendar.getInstance();
+                    resetTime(calendar);
+                    long date = calendar.getTimeInMillis();
+                    if (!task.isComplete()) {
+                        ManagerDB.getManagerDB(null).incrementTaskCountSeriesDb(task.getId(), 1);
+                        ManagerDB.getManagerDB(null).completeTask(task.getId(), task.getCountSeries() + 1, date, AbsTask.Type_Complete.COMPLETE);
+                        item.setTitle(R.string.app_toNonComplete);
+                        item.setIcon(R.drawable.v_on_no_complete);
+                    }
+                    else {
+                        int increment = (task.getCountSeries() == 0) ? 0 : -1;
+                        ManagerDB.getManagerDB(null).incrementTaskCountSeriesDb(task.getId(), increment);
+                        if(task.TYPE == AbsTask.Type_Task.GOAL) ManagerDB.getManagerDB(null).uncompleteTask(task.getId());
+                        else ManagerDB.getManagerDB(null).uncompleteTask(task.getId(), date);
+                        item.setTitle(R.string.app_toComplete);
+                        item.setIcon(R.drawable.v_tick);
+                    }
+
+                }
                 return true;
         }
         return super.onOptionsItemSelected(item);

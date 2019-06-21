@@ -11,6 +11,8 @@ import java.util.List;
 import AssambleClassManagmentTime.CheckTask;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+
+import AssambleClassManagmentTime.TaskManager;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -22,6 +24,10 @@ public class CheckListAdapter extends ArrayAdapter<CheckTask> {
     private final ClickItemButton onClickDelCheck;
 
     private boolean editable = true;
+    private boolean initCheckBox = false;
+
+
+    private boolean updateList = false;
 
     public CheckListAdapter(@NonNull Context context, @NonNull List<CheckTask> objects, ClickItemButton editButton, ClickItemButton delButton) {
         super(context, 0, objects);
@@ -46,6 +52,10 @@ public class CheckListAdapter extends ArrayAdapter<CheckTask> {
         this.editable = editable;
     }
 
+    public void setUpdateList(boolean updateList) {
+        this.updateList = updateList;
+    }
+
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
@@ -59,9 +69,19 @@ public class CheckListAdapter extends ArrayAdapter<CheckTask> {
         else{
             holder = (ViewHolder) convertView.getTag();
         }
-        holder.checkBox.setChecked(checkTask.isCompleteTask());
         holder.checkBox.setText(checkTask.getText());
-        holder.checkBox.setOnCheckedChangeListener((v,c)->{});
+        holder.checkBox.setOnCheckedChangeListener(null); //crutches
+        holder.checkBox.setChecked(checkTask.isCompleteTask());
+        initCheckBox = checkTask.getId() > -1;
+        holder.checkBox.setOnCheckedChangeListener((v,c)->{
+           // check task
+            checkTask.setCompleteTask(c);
+            if(initCheckBox){
+                ManagerDB.getManagerDB(null).updateChecklistCheck(checkTask.getId(), c ? 1 : 0); //crutches
+                if(updateList) // crutches
+                    TaskManager.getInstance(null).notifyHandler(ManagerDB.UPDATE);
+            }
+        });
         View finalConvertView = convertView;
         holder.editButton.setOnClickListener((v)-> onClickEditCheck.click(finalConvertView, parent, checkTask, this));
         holder.deleteButton.setOnClickListener((v)-> onClickDelCheck.click(finalConvertView, parent, checkTask, this));

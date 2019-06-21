@@ -16,7 +16,7 @@
         android:id="@+id/statisticButton" />
     <item app:showAsAction="always"
         android:icon="@drawable/v_tick"
-        android:title="@string/app_complete"
+        android:title="@string/app_completed"
         android:id="@+id/completeButton" />
     <!--TODO:realization complete button-->
 </menu>

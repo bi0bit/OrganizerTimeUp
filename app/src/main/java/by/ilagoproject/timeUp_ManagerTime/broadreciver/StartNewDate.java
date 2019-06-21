@@ -10,6 +10,7 @@ import java.util.Calendar;
 import java.util.List;
 
 import AssambleClassManagmentTime.AbsTask;
+import AssambleClassManagmentTime.Daily;
 import AssambleClassManagmentTime.Filtering.BuilderFilter;
 import AssambleClassManagmentTime.Filtering.FilterSetting;
 import AssambleClassManagmentTime.Habit;
@@ -33,6 +34,8 @@ public class StartNewDate extends BroadcastReceiver {
         TagManager.update();
         TaskManager tM = TaskManager.getInstance(context);
         tM.initTask();
+        Calendar calendarNow = Calendar.getInstance();
+        resetTime(calendarNow);
         Calendar calendarPre = Calendar.getInstance();
         calendarPre.add(Calendar.DATE, -1);
         resetTime(calendarPre);
@@ -42,11 +45,36 @@ public class StartNewDate extends BroadcastReceiver {
         for(AbsTask task : tasks){
             if(task.TYPE == AbsTask.Type_Task.GOAL) continue;
             if(task.TYPE != AbsTask.Type_Task.HABIT) {
+                Daily daily = (Daily) task;
                 Log.d("StartDayReceiver", task.getName() + " count:"+task.getCountSeries() +" ");
-                int increment = (task.getCountSeries()==0)? 0 : 1;
-                dbM.completeTaskNonHandler(task.getId(), task.getCountSeries() - increment, calendarPre.getTimeInMillis(), AbsTask.Type_Complete.NO_COMPLETE);
-                dbM.incrementTaskCountSeriesDb(task.getId(), -increment);
-                task.setCountSeries(task.getCountSeries() - increment);
+                //crutches
+                if(daily.getTypeDaily() == Daily.Type_Daily.EVERMONTH){
+                    if(calendarNow.get(Calendar.MONTH) != calendarPre.get(Calendar.MONTH)){
+                        dbM.resetCheck(task.getId());
+                        int increment = (task.getCountSeries() == 0) ? 0 : 1;
+                        dbM.completeTaskNonHandler(task.getId(), task.getCountSeries() - increment, calendarPre.getTimeInMillis(), AbsTask.Type_Complete.NO_COMPLETE);
+                        dbM.incrementTaskCountSeriesDb(task.getId(), -increment);
+                        task.setCountSeries(task.getCountSeries() - increment);
+                    }
+                    else return;
+                }
+                else if(daily.getTypeDaily() == Daily.Type_Daily.EVERYEAR){
+                    if(calendarNow.get(Calendar.YEAR) != calendarPre.get(Calendar.YEAR)){
+                        dbM.resetCheck(task.getId());
+                        int increment = (task.getCountSeries() == 0) ? 0 : 1;
+                        dbM.completeTaskNonHandler(task.getId(), task.getCountSeries() - increment, calendarPre.getTimeInMillis(), AbsTask.Type_Complete.NO_COMPLETE);
+                        dbM.incrementTaskCountSeriesDb(task.getId(), -increment);
+                        task.setCountSeries(task.getCountSeries() - increment);
+                    }
+                    else return;
+                }
+                else {
+                    dbM.resetCheck(task.getId());
+                    int increment = (task.getCountSeries() == 0) ? 0 : 1;
+                    dbM.completeTaskNonHandler(task.getId(), task.getCountSeries() - increment, calendarPre.getTimeInMillis(), AbsTask.Type_Complete.NO_COMPLETE);
+                    dbM.incrementTaskCountSeriesDb(task.getId(), -increment);
+                    task.setCountSeries(task.getCountSeries() - increment);
+                }
             }
             else{
                 Log.d("StartDayReceiver", task.getName() + " count:"+task.getCountSeries() +" ");
