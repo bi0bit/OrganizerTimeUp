@@ -5,7 +5,7 @@
     <item app:showAsAction="always"
           app:actionViewClass="android.widget.Spinner"
           android:title=""
-          android:id="@+id/spinnerTypeTask" />
+          android:id="@+id/selectTypeTask" />
 
     <item
         android:id="@+id/sortBy"
@@ -32,4 +32,8 @@
         app:showAsAction="never"
         android:title="@string/shortMode"
         android:checkable="true"/>
+    <item
+        android:id="@+id/aboutAuthor"
+        app:showAsAction="never"
+        android:title="Об авторе"/>
 </menu>

@@ -64,19 +64,15 @@ public class StatisticActivity extends AppCompatActivity {
         //init statistic
         List<Entry> entries = new ArrayList<>();
         Cursor c = ManagerDB.getManagerDB(null).getCursorOnHistoryCompleteByIdTask(task.getId());
+
         int maxCount = 0;
-        int i = 0;
         while(c.moveToNext()){
             long date = c.getLong(c.getColumnIndex(ManagerDB.HISTORYCOMPLETE_DATE_COLUMNAME));
             int count = c.getInt(c.getColumnIndex(ManagerDB.HISTORYCOMPLETE_COUNT_COLUMNAME));
             if(count > maxCount) maxCount = count;
-            Log.d("StatisticTest","count: " + count + " data: " + new Date(date).toString());
             int intComplete = c.getInt(c.getColumnIndex(ManagerDB.HISTORYCOMPLETE_TYPE_COLUMNAME));
             AbsTask.Type_Complete type_complete = AbsTask.Type_Complete.values()[intComplete];
             history.add(new HistoryComplete(date, count, type_complete));
-            entries.add(new Entry(i,count));
-            Log.d("StatisticTest","i:" + i);
-            i++;
         }
 
 
@@ -85,69 +81,77 @@ public class StatisticActivity extends AppCompatActivity {
         Collections.sort(history1, (o1,o2)->Long.compare(o2.date,o1.date));
         listHistory.setAdapter(new HistoryCompleteAdapter(this, history1));
 
-        if(history.size()>1) {
+        Collections.sort(history, (o1,o2)->Long.compare(o1.date,o2.date));
 
-            LineDataSet dataSet = new LineDataSet(entries, task.getName());
-            dataSet.setAxisDependency(YAxis.AxisDependency.RIGHT);
-            int colorLine = (task.TYPE == AbsTask.Type_Task.HABIT && ((Habit)task).getTypeHabitInt() < 0)? getResources().getColor(R.color.RedComponent) :
-                    getResources().getColor(R.color.GreenComponent);
-            dataSet.setColor(colorLine);
-            dataSet.setCircleRadius(4f);
-
-            dataSet.setCircleColor(colorLine);
-            dataSet.setValueFormatter(new DefaultValueFormatter(0));
-            dataSet.setValueTextSize(10f);
-            dataSet.setMode(LineDataSet.Mode.LINEAR);
-            dataSet.setHighlightEnabled(false);
-            int colorFill = (task.TYPE == AbsTask.Type_Task.HABIT && ((Habit)task).getTypeHabitInt() < 0)? getResources().getColor(R.color.DiagramColor_FillNegative) :
-                    getResources().getColor(R.color.DiagramColor_Fill);
-            dataSet.setFillColor(colorFill);
-            dataSet.setDrawFilled(true);
-            XAxis xAxis = chartLine.getXAxis();
-            ValueFormatter formatter = new ValueFormatter() {
-                @Override
-                public String getAxisLabel(float value, AxisBase axis) {
-                    SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy", Locale.getDefault());
-                    Log.d("StatisticTest", "value: " + value);
-                    return dateFormat.format(new Date(history.get((int) value).date));
-                }
-            };
-            xAxis.setGranularity(1f);
-            xAxis.setTextSize(10f);
-            xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
-            xAxis.setValueFormatter(formatter);
-            xAxis.setXOffset(-120f);
-            xAxis.setLabelCount(5, true);
-
-            LimitLine limitLine = new LimitLine(maxCount, "Max");
-            limitLine.setLineWidth(1f);
-            limitLine.setLabelPosition(LimitLine.LimitLabelPosition.LEFT_TOP);
-            limitLine.setTypeface(Typeface.SANS_SERIF);
-            limitLine.setTextStyle(Paint.Style.STROKE);
-            limitLine.setTextSize(12f);
-            limitLine.setTextColor(getResources().getColor(R.color.DiagramColor_Max));
-            limitLine.setLineColor(getResources().getColor(R.color.DiagramColor_Max));
-            limitLine.enableDashedLine(8f, 8f, 8f);
-
-            YAxis yAxis = chartLine.getAxisLeft();
-            yAxis.setDrawLabels(false);
-            yAxis.setDrawAxisLine(false);
-            yAxis.setDrawGridLines(false);
-
-            yAxis.addLimitLine(limitLine);
-
-            chartLine.getAxisRight().setEnabled(false);
-            chartLine.getDescription().setEnabled(false);
-            chartLine.setData(new LineData(dataSet));
-            chartLine.setDragEnabled(false);
-            chartLine.setScaleEnabled(false);
-            chartLine.setTouchEnabled(false);
-            chartLine.setDoubleTapToZoomEnabled(false);
-            chartLine.setBackground(new ColorDrawable(getResources().getColor(R.color.BackgroundLight)));
-            chartLine.setExtraLeftOffset(38f);
-            chartLine.setExtraRightOffset(38f);
-            chartLine.invalidate();
+        int i = 0;
+        for(HistoryComplete h : history){
+            entries.add(new Entry(i,h.count));
+            i++;
         }
+
+        if(history.size()<=1) return;
+
+        LineDataSet dataSet = new LineDataSet(entries, task.getName());
+        dataSet.setAxisDependency(YAxis.AxisDependency.RIGHT);
+        int colorLine = (task.TYPE == AbsTask.Type_Task.HABIT && ((Habit)task).getTypeHabitInt() < 0)? getResources().getColor(R.color.RedComponent) :
+                getResources().getColor(R.color.GreenComponent);
+        dataSet.setColor(colorLine);
+        dataSet.setCircleRadius(4f);
+
+        dataSet.setCircleColor(colorLine);
+        dataSet.setValueFormatter(new DefaultValueFormatter(0));
+        dataSet.setValueTextSize(10f);
+        dataSet.setMode(LineDataSet.Mode.LINEAR);
+        dataSet.setHighlightEnabled(false);
+        int colorFill = (task.TYPE == AbsTask.Type_Task.HABIT && ((Habit)task).getTypeHabitInt() < 0)? getResources().getColor(R.color.DiagramColor_FillNegative) :
+                getResources().getColor(R.color.DiagramColor_Fill);
+        dataSet.setFillColor(colorFill);
+        dataSet.setDrawFilled(true);
+        XAxis xAxis = chartLine.getXAxis();
+        ValueFormatter formatter = new ValueFormatter() {
+            @Override
+            public String getAxisLabel(float value, AxisBase axis) {
+                SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy", Locale.getDefault());
+                Log.d("StatisticTest", "value: " + value);
+                return dateFormat.format(new Date(history.get((int) value).date));
+            }
+        };
+        xAxis.setGranularity(1f);
+        xAxis.setTextSize(10f);
+        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+        xAxis.setValueFormatter(formatter);
+        xAxis.setXOffset(-120f);
+        xAxis.setLabelCount(5, true);
+
+        LimitLine limitLine = new LimitLine(maxCount, "Max");
+        limitLine.setLineWidth(1f);
+        limitLine.setLabelPosition(LimitLine.LimitLabelPosition.LEFT_TOP);
+        limitLine.setTypeface(Typeface.SANS_SERIF);
+        limitLine.setTextStyle(Paint.Style.STROKE);
+        limitLine.setTextSize(12f);
+        limitLine.setTextColor(getResources().getColor(R.color.DiagramColor_Max));
+        limitLine.setLineColor(getResources().getColor(R.color.DiagramColor_Max));
+        limitLine.enableDashedLine(8f, 8f, 8f);
+
+        YAxis yAxis = chartLine.getAxisLeft();
+        yAxis.setDrawLabels(false);
+        yAxis.setDrawAxisLine(false);
+        yAxis.setDrawGridLines(false);
+
+        yAxis.addLimitLine(limitLine);
+
+        chartLine.getAxisRight().setEnabled(false);
+        chartLine.getDescription().setEnabled(false);
+        chartLine.setData(new LineData(dataSet));
+        chartLine.setDragEnabled(false);
+        chartLine.setScaleEnabled(false);
+        chartLine.setTouchEnabled(false);
+        chartLine.setDoubleTapToZoomEnabled(false);
+        chartLine.setBackground(new ColorDrawable(getResources().getColor(R.color.BackgroundLight)));
+        chartLine.setExtraLeftOffset(38f);
+        chartLine.setExtraRightOffset(38f);
+        chartLine.animateXY(3000, 3000);
+
     }
 
     @Override

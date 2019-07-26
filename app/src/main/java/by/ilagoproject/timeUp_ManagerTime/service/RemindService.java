@@ -1,6 +1,7 @@
 package by.ilagoproject.timeUp_ManagerTime.service;
 
 import android.app.Notification;
+import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
@@ -8,6 +9,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.Build;
 import android.os.IBinder;
 import android.util.Log;
 import android.widget.Toast;
@@ -128,6 +130,12 @@ public class RemindService extends Service {
         Intent notifyIntent = new Intent(this, ActivityViewTask.class);
         notifyIntent.putExtra("object", task);
         PendingIntent contentIntent = PendingIntent.getActivity(this,0,notifyIntent,PendingIntent.FLAG_CANCEL_CURRENT);
+// Since android Oreo notification channel is needed.
+        String channelId = "100";
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            NotificationChannel channel = new NotificationChannel(channelId, "Channel human readable title", NotificationManager.IMPORTANCE_DEFAULT);
+            notifyManager.createNotificationChannel(channel);
+        }
         Notification.Builder notifyBuilder = new Notification.Builder(context);
         notifyBuilder.setContentIntent(contentIntent)
                 .setTicker(task.getName() + ": " + notifyTask.getTitle())
@@ -138,6 +146,9 @@ public class RemindService extends Service {
                 .setPriority(Notification.PRIORITY_MAX)
                 .setSmallIcon(android.R.drawable.btn_star)
                 .setLargeIcon(bitmap);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            notifyBuilder.setChannelId(channelId);
+        }
         Notification notification = notifyBuilder.build();
         notification.defaults = Notification.DEFAULT_SOUND | Notification.DEFAULT_VIBRATE | Notification.DEFAULT_LIGHTS;
         notifyManager.notify(notifyTask.getId(),notification);

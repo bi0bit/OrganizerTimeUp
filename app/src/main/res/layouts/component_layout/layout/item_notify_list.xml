@@ -9,7 +9,6 @@
     <ImageView
         android:layout_width="@dimen/spacing_xlarge"
         android:layout_height="@dimen/spacing_xlarge"
-        android:src="@drawable/v_clock"
         app:srcCompat="@drawable/v_clock"
         android:layout_marginLeft="@dimen/spacing_xsmall"
         android:layout_marginRight="@dimen/spacing_xsmall"

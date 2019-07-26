@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="by.ilagoproject.timeUp_ManagerTime">
+
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
 
     <application
         android:allowBackup="true"
@@ -12,14 +15,15 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/appActivityTheme">
-        <activity android:name=".StatisticActivity"></activity>
+        <activity android:name=".ActivityAboutAuthor"></activity>
+        <activity android:name=".StatisticActivity" />
 
-        <receiver android:name=".broadreciver.StartNewDate">
+        <receiver android:name=".broadreciver.StartNewDate" android:enabled="true">
             <intent-filter>
-                <action android:name="android.intent.action.DATE_CHANGED"/>
+                <action android:name="android.intent.action.DATE_CHANGED" />
             </intent-filter>
         </receiver>
-        <receiver android:name=".broadreciver.StartServiceReciver">
+        <receiver android:name=".broadreciver.StartServiceReciver" android:enabled="true">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
                 <action android:name="android.intent.action.TIME_SET" />

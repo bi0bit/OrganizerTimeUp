@@ -1,8 +1,16 @@
 package by.ilagoproject.timeUp_ManagerTime;
 
+import android.Manifest;
+import android.app.Activity;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.media.AudioManager;
+import android.media.ToneGenerator;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -20,6 +28,9 @@ import android.widget.Toast;
 
 import com.github.aakira.expandablelayout.ExpandableLinearLayout;
 
+import java.io.File;
+import java.io.IOException;
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
@@ -37,18 +48,30 @@ import AssambleClassManagmentTime.Sorting.SortByPriority;
 import AssambleClassManagmentTime.Sorting.Sorter;
 import AssambleClassManagmentTime.TagManager;
 import AssambleClassManagmentTime.TaskManager;
+
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+
+import by.ilagoproject.timeUp_ManagerTime.broadreciver.StartNewDate;
 import by.ilagoproject.timeUp_ManagerTime.service.RemindService;
 
-public class MainAppActivity extends AppCompatActivity implements ManagerDB.HandlerUpdateTaskInDb, ManagerDB.HandlerUpdateTagInDb{
+import edu.cmu.pocketsphinx.Assets;
+import edu.cmu.pocketsphinx.Hypothesis;
+import edu.cmu.pocketsphinx.RecognitionListener;
+import edu.cmu.pocketsphinx.SpeechRecognizer;
+import edu.cmu.pocketsphinx.SpeechRecognizerSetup;
+
+public class MainAppActivity extends AppCompatActivity implements ManagerDB.HandlerUpdateTaskInDb, ManagerDB.HandlerUpdateTagInDb, RecognitionListener {
 
     private AbsTask.Type_Task selectTypeTask;
     ManagerDB dbManager;
     static TaskManager taskManager;
     ListView listView;
+    Spinner spinnerTypeTask;
     TaskAdapterList dailyList;
     TaskAdapterList goalList;
     TaskAdapterList habitList;
@@ -56,6 +79,16 @@ public class MainAppActivity extends AppCompatActivity implements ManagerDB.Hand
 
     public final static String SHARED_PREFERENCE_NAME = "SETTING";
     public final static String SHARED_PREFERENCE_SHORTMODE = "short_mode";
+
+    public final static String KWS_SPHINX="TimeUp";
+    public final static String KWS_CONTROL="command";
+    public final static String KEY_WORD="окей тайм ап";
+
+
+
+    public final StartNewDate reciver = new StartNewDate();
+
+    SpeechRecognizer recognizer;
 
     static{
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
@@ -65,6 +98,7 @@ public class MainAppActivity extends AppCompatActivity implements ManagerDB.Hand
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        this.getApplicationContext().registerReceiver( reciver ,new IntentFilter("android.intent.action.DATE_CHANGED"));
         setContentView(R.layout.activity_tasks);
         DBManagmentTime db = new DBManagmentTime(this);
         ManagerDB.getManagerDB(db);
@@ -93,6 +127,12 @@ public class MainAppActivity extends AppCompatActivity implements ManagerDB.Hand
         setSupportActionBar(toolbar);
         Intent intent = new Intent(this, RemindService.class);
         startService(intent);
+        int permissionCheck = ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.RECORD_AUDIO);
+        if (permissionCheck != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.RECORD_AUDIO}, 1);
+            return;
+        }
+        new RunRecognizer(this).execute();
     }
 
     protected void startViewActivity(AbsTask obj, Class cls){
@@ -124,6 +164,9 @@ public class MainAppActivity extends AppCompatActivity implements ManagerDB.Hand
                 updateDailyList();
                 updateGoalList();
                 updateHabitList();
+                break;
+            case R.id.aboutAuthor:
+                startViewActivity(null,ActivityAboutAuthor.class);
                 break;
         }
         return super.onOptionsItemSelected(item);
@@ -347,12 +390,12 @@ public class MainAppActivity extends AppCompatActivity implements ManagerDB.Hand
         getMenuInflater().inflate(R.menu.standard_menu_activity_task, menu);
         boolean isCheck = getSharedPreferences(SHARED_PREFERENCE_NAME, MODE_PRIVATE).getBoolean(SHARED_PREFERENCE_SHORTMODE, false);
         menu.findItem(R.id.shortMode).setChecked(isCheck);
-        Spinner spinner = (Spinner) menu.findItem(R.id.spinnerTypeTask).getActionView();
+        spinnerTypeTask = (Spinner) menu.findItem(R.id.selectTypeTask).getActionView();
         ArrayAdapter adapter =
                 ArrayAdapter.createFromResource(this,R.array.strings_type_task,R.layout.item_spinner_type_task);
         adapter.setDropDownViewResource(R.layout.item_spinner_dropdown_type_task);
-        spinner.setAdapter(adapter);
-        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        spinnerTypeTask.setAdapter(adapter);
+        spinnerTypeTask.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 switch (position) {
@@ -379,6 +422,7 @@ public class MainAppActivity extends AppCompatActivity implements ManagerDB.Hand
 
     public void setSelectTypeTask(AbsTask.Type_Task selectTypeTask) {
         this.selectTypeTask = selectTypeTask;
+        if(spinnerTypeTask != null) this.spinnerTypeTask.setSelection(selectTypeTask.ordinal());
         switch (this.selectTypeTask) {
             case GOAL:
                 listView.setAdapter(goalList);
@@ -441,6 +485,11 @@ public class MainAppActivity extends AppCompatActivity implements ManagerDB.Hand
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        if(recognizer!=null){
+            recognizer.cancel();
+            recognizer.shutdown();
+        }
+        unregisterReceiver(reciver);
     }
 
     public static void setListViewHeightBasedOnChildren (ListView listView) {
@@ -468,4 +517,157 @@ public class MainAppActivity extends AppCompatActivity implements ManagerDB.Hand
         listView.setLayoutParams(params);
         listView.requestLayout();
     }
+
+    public void switchRecoginizer(String listingWord){
+        recognizer.stop();
+        if (listingWord.equals(KWS_SPHINX)) recognizer.startListening(KWS_SPHINX);
+        else recognizer.startListening(listingWord, 5000);
+    }
+
+    public void processingResultRecognizer(String result){
+        if(result.matches(".*(актуально|актуальные).*")){
+            FilterSetting filterSetting = this.filterSetting;
+            filterSetting.actual = true;
+            taskManager.setFilter(BuilderFilter.buildFilter(filterSetting));
+        }
+        if(result.matches(".*(очистить фильтр).*")){
+            FilterSetting filterSetting = this.filterSetting;
+            filterSetting.actual = false;
+            filterSetting.nonComplete = false;
+            filterSetting.date = -1;
+            filterSetting.priority_tasks = null;
+            filterSetting.tags = null;
+            taskManager.setFilter(BuilderFilter.buildFilter(filterSetting));
+        }
+        if(result.matches(".*(привычки|цели|ежедневные\\sдела).*")){
+            if(result.matches(".*(привычки).*"))
+                setSelectTypeTask(AbsTask.Type_Task.HABIT);
+            else if(result.matches(".*(цели).*"))
+                setSelectTypeTask(AbsTask.Type_Task.GOAL);
+            else if(result.matches(".*(ежедневные\\sдела).*"))
+                setSelectTypeTask(AbsTask.Type_Task.DAILY);
+        }
+        if(result.matches(".*(нормальные|важные|очень\\sважные).*")){
+            FilterSetting filterSetting = this.filterSetting;
+            EnumSet<AbsTask.Priority_Task> priority_tasks = EnumSet.noneOf(AbsTask.Priority_Task.class);
+            if(result.matches(".*(нормальные).*"))
+                priority_tasks.add(AbsTask.Priority_Task.MIN);
+            if(result.matches(".*(?<!очень)\\s+(важные).*"))
+                priority_tasks.add(AbsTask.Priority_Task.NORMAL);
+            if(result.matches(".*(очень\\sважные).*"))
+                priority_tasks.add(AbsTask.Priority_Task.MAX);
+            filterSetting.priority_tasks = priority_tasks.size() > 0 ? priority_tasks : null;
+            taskManager.setFilter(BuilderFilter.buildFilter(filterSetting));
+        }
+        if(result.matches(".*(сортировка|отсортируй).*")){
+            if(result.matches(".*(названию).*"))
+                taskManager.setSorter(new SortByName());
+            if(result.matches(".*(приоритету).*"))
+                taskManager.setSorter(new SortByPriority());
+        }
+    }
+
+    @Override
+    public void onBeginningOfSpeech() {
+        Log.d("Recognizer","start audio");
+    }
+
+    @Override
+    public void onEndOfSpeech() {
+        Log.d("Recognizer","end audio");
+        if(!recognizer.getSearchName().equals(KWS_SPHINX))
+            switchRecoginizer(KWS_SPHINX);
+    }
+
+    @Override
+    public void onPartialResult(Hypothesis hypothesis) {
+        if(hypothesis == null) return;
+        String text = hypothesis.getHypstr();
+        Log.d("Recognizer","onPartialResult: " + text);
+        if(text.equals(KEY_WORD)){
+            new ToneGenerator(AudioManager.STREAM_MUSIC, ToneGenerator.MAX_VOLUME).startTone(ToneGenerator.TONE_CDMA_PIP, 200);
+            switchRecoginizer(KWS_CONTROL);
+        }
+    }
+
+    @Override
+    public void onResult(Hypothesis hypothesis) {
+        if(hypothesis == null) return;
+        String text = hypothesis.getHypstr();
+        Log.d("Recognizer","onResult: " + text);
+        processingResultRecognizer(text);
+    }
+
+    @Override
+    public void onError(Exception e) {
+
+    }
+
+    @Override
+    public void onTimeout() {
+        switchRecoginizer(KWS_SPHINX);
+    }
+
+//    @Override
+//    public void onRequestPermissionsResult(int requestCode,
+//                                           @NonNull String[] permissions, @NonNull  int[] grantResults) {
+//        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+//
+//        if (requestCode == 1) {
+//            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+//                // Recognizer initialization is a time-consuming and it involves IO,
+//                // so we execute it in async task
+//                new RunRecognizer(this).execute();
+//            } else {
+//                finish();
+//            }
+//        }
+//    }
+
+    public void setupRecognizer(File fileDir) throws IOException{
+        File dict = new File(fileDir, "my_dictionary.dict");
+        recognizer = SpeechRecognizerSetup.defaultSetup()
+                .setAcousticModel(new File(fileDir, "ru"))
+                .setBoolean("-remove_noise", false)
+                .setFloat("-beam", 1e-30f)
+                .setDictionary(dict)
+                .getRecognizer();
+        recognizer.addListener(this);
+
+        recognizer.addKeyphraseSearch(KWS_SPHINX, KEY_WORD);
+
+        recognizer.addGrammarSearch(KWS_CONTROL, new File(fileDir, "app_grammar.gram"));
+    }
+
+    public static class RunRecognizer extends AsyncTask<Void,Void, Exception>{
+        WeakReference<MainAppActivity> activity;
+        RunRecognizer(Activity activity){
+            this.activity = new WeakReference<>((MainAppActivity) activity);
+        }
+
+        @Override
+        protected Exception doInBackground(Void... voids) {
+            try {
+                Assets assets = new Assets(activity.get());
+                File fileDir = assets.syncAssets();
+                activity.get().setupRecognizer(fileDir);
+            }
+            catch (IOException e) {
+                e.printStackTrace();
+                return e;
+            }
+            catch (Exception e){
+                e.printStackTrace();
+                return e;
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Exception e) {
+            if(e == null)
+                activity.get().switchRecoginizer(KWS_SPHINX);
+        }
+    }
+
 }

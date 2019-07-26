@@ -130,18 +130,21 @@ public class ActivityViewTask extends AppCompatActivity {
                     if (!task.isComplete()) {
                         ManagerDB.getManagerDB(null).incrementTaskCountSeriesDb(task.getId(), 1);
                         ManagerDB.getManagerDB(null).completeTask(task.getId(), task.getCountSeries() + 1, date, AbsTask.Type_Complete.COMPLETE);
+                        task.setCountSeries(task.getCountSeries()+1);
                         item.setTitle(R.string.app_toNonComplete);
                         item.setIcon(R.drawable.v_on_no_complete);
                     }
                     else {
                         int increment = (task.getCountSeries() == 0) ? 0 : -1;
                         ManagerDB.getManagerDB(null).incrementTaskCountSeriesDb(task.getId(), increment);
-                        if(task.TYPE == AbsTask.Type_Task.GOAL) ManagerDB.getManagerDB(null).uncompleteTask(task.getId());
+                        task.setCountSeries(task.getCountSeries()+increment);
+                        if (task.TYPE == AbsTask.Type_Task.GOAL)
+                            ManagerDB.getManagerDB(null).uncompleteTask(task.getId());
                         else ManagerDB.getManagerDB(null).uncompleteTask(task.getId(), date);
                         item.setTitle(R.string.app_toComplete);
                         item.setIcon(R.drawable.v_tick);
                     }
-
+                    task.getBuilderView().setCountItem(this.findViewById(android.R.id.content),task);
                 }
                 return true;
         }

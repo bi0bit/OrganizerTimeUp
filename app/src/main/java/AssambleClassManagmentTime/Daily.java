@@ -95,6 +95,7 @@ public class Daily extends AbsTask {
         dateC.setTimeInMillis(date);
         resetTime(dateC);
         List<DateDaily> dateLong = dates;
+        if(dateLong.size() < 1) return false;
         switch (typeDaily){
             case EVERDAY: {
                 DateDaily dateDaily = dateLong.get(0);
@@ -179,9 +180,27 @@ public class Daily extends AbsTask {
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(date);
         resetTime(calendar);
-        Cursor c =
-                ManagerDB.getManagerDB(null).getCursorOnHistoryCompleteByDate(getId(), calendar.getTimeInMillis());
-        return c.getCount()>0;
+
+        if(typeDaily == Type_Daily.EVERMONTH){
+            Cursor c = ManagerDB.getManagerDB(null).getCursorOnHistoryCompleteByIdTask(getId());
+            long dateC = c.moveToPosition(c.getCount()-1)? c.getLong(c.getColumnIndex(ManagerDB.HISTORYCOMPLETE_DATE_COLUMNAME)) : -1;
+            Calendar calendarC = Calendar.getInstance();
+            calendarC.setTimeInMillis(dateC);
+            resetTime(calendarC);
+            return calendarC.get(Calendar.MONTH) == calendar.get(Calendar.MONTH);
+        }
+        if(typeDaily == Type_Daily.EVERYEAR){
+            Cursor c = ManagerDB.getManagerDB(null).getCursorOnHistoryCompleteByIdTask(getId());
+            long dateC = c.moveToPosition(c.getCount()-1)? c.getLong(c.getColumnIndex(ManagerDB.HISTORYCOMPLETE_DATE_COLUMNAME)) : -1;
+            Calendar calendarC = Calendar.getInstance();
+            calendarC.setTimeInMillis(dateC);
+            resetTime(calendarC);
+            return calendarC.get(Calendar.YEAR) == calendar.get(Calendar.YEAR);
+        }
+        else{
+            Cursor c = ManagerDB.getManagerDB(null).getCursorOnHistoryCompleteByDate(getId(), calendar.getTimeInMillis());
+            return c.getCount()>0;
+        }
     }
 
     @Override
